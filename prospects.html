@@ -10,7 +10,7 @@
   --ink: #141414; --ink2: #2d2d2d; --ink3: #555; --ink4: #888; --ink5: #bbb;
   --paper: #f4f1eb; --paper2: #ede9e1; --paper3: #e5e0d7;
   --rule: #d8d2c8; --rule2: #c8c1b5;
-  --gold: #8b6914; --gold-bg: #f7f0de; --gold-border: #5aab78;
+  --gold: #8b6914; --gold-bg: #f7f0de; --gold-border: #d4af5a;
   --red: #c0392b; --red-bg: #fdf0ee;
   --amber: #a0570a; --amber-bg: #fdf4e7;
   --green: #1a5c35; --green-bg: #e8f5ee;
@@ -26,7 +26,7 @@ body.dark {
   --ink:#f0ece4; --ink2:#d8d2c8; --ink3:#b0a898; --ink4:#908880; --ink5:#706860;
   --paper:#1c1c1c; --paper2:#242424; --paper3:#2c2c2c;
   --rule:#383838; --rule2:#484848;
-  --gold:#d4b060; --gold-bg:#2a2210; --gold-border:#6abf88;
+  --gold:#d4b060; --gold-bg:#2a2210; --gold-border:#d4b060;
   --red:#f08070; --red-bg:#2c1a1a;
   --amber:#e09840; --amber-bg:#2c2010;
   --green:#60b880; --green-bg:#102818;
@@ -65,7 +65,7 @@ nav {
   font-family:var(--mono); font-size:9px; letter-spacing:1px; padding:4px 10px; cursor:pointer;
 }
 .dark-toggle:hover{border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.8);}
-body.dark .dark-toggle{border-color:rgba(90,171,120,0.4);color:var(--gold-border);}
+body.dark .dark-toggle{border-color:rgba(212,175,90,0.4);color:var(--gold-border);}
 
 /* ── HEADER ── */
 header {
@@ -249,8 +249,8 @@ body.dark .detail{background:#1e1e1e;border-left-color:#363636;}
   font-family:var(--mono);font-size:9px;letter-spacing:0.5px;padding:5px 12px;
   border:1px solid;cursor:pointer;background:none;
 }
-.d-btn-edit{color:var(--gold-border);border-color:rgba(90,171,120,0.4);}
-.d-btn-edit:hover{background:rgba(90,171,120,0.1);}
+.d-btn-edit{color:var(--gold-border);border-color:rgba(212,175,90,0.4);}
+.d-btn-edit:hover{background:rgba(212,175,90,0.1);}
 .d-btn-del{color:#f08070;border-color:rgba(240,128,112,0.3);}
 .d-btn-del:hover{background:rgba(240,128,112,0.1);}
 .d-btn-convert{color:#60b880;border-color:rgba(96,184,128,0.3);}
@@ -341,7 +341,7 @@ body.dark .form-sec{border-bottom-color:#363636;}
 body.dark .modal-actions{border-top-color:#363636;}
 .btn-cancel{font-family:var(--mono);font-size:10px;padding:8px 18px;background:var(--paper2);border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;}
 .btn-save{font-family:var(--mono);font-size:10px;padding:8px 18px;background:var(--gold-border);color:#141414;border:1px solid var(--gold-border);cursor:pointer;}
-.btn-save:hover{background:#5aab7822;/*b860;}
+.btn-save:hover{background:#d4b860;}
 .btn-delete{font-family:var(--mono);font-size:10px;padding:8px 18px;background:none;border:1px solid rgba(192,57,43,0.3);color:var(--red);cursor:pointer;margin-right:auto;}
 body.dark .btn-cancel{background:#2c2c2c;border-color:#484848;color:var(--ink2);}
 body.dark .btn-save{background:var(--gold-border);color:#141414;}
@@ -365,7 +365,7 @@ body.dark .toast{background:#2c2c2c;border-color:#484848;color:var(--ink);}
 <body>
 
 <style>
-.paq-nav{background:#141414;border-bottom:2px solid #5aab78;display:flex;align-items:center;height:38px;position:sticky;top:0;z-index:200;padding:0 6px;gap:0;}
+.paq-nav{background:#141414;border-bottom:2px solid #d4af5a;display:flex;align-items:center;height:38px;position:sticky;top:0;z-index:200;padding:0 6px;gap:0;}
 .paq-nav-btn{
   display:flex;align-items:center;justify-content:center;
   text-decoration:none;padding:0 13px;height:100%;
@@ -397,9 +397,6 @@ body.dark .toast{background:#2c2c2c;border-color:#484848;color:var(--ink);}
     <div>
       <div class="logo-main">Prospect CRM</div>
       <div class="logo-sub">Pipeline &amp; Outreach</div>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <button class="dark-toggle" id="dark-toggle-btn" onclick="toggleDark()">◐ AUTO</button>
     </div>
   </div>
   <div class="hdr-stats">
@@ -643,7 +640,7 @@ async function dbDelete(id){
 
 function showLoader(on){
   let el=document.getElementById('db-loader');
-  if(!el){el=document.createElement('div');el.id='db-loader';el.style.cssText='position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#5aab78,#6abf88,#5aab78);z-index:999;transition:opacity .3s';document.body.prepend(el);}
+  if(!el){el=document.createElement('div');el.id='db-loader';el.style.cssText='position:fixed;top:38px;left:0;right:0;height:3px;background:linear-gradient(90deg,#78a0e8,#a880e8,#e09840);z-index:999;transition:opacity .3s';document.body.prepend(el);}
   el.style.opacity=on?'1':'0';
 }
 
@@ -968,73 +965,11 @@ function clearSearch(){
   renderAll();
 }
 
-// ── SOLAR AUTO DARK MODE ─────────────────────────────────────────────
-const SOLAR_LAT = 41.8781;
-const SOLAR_LNG = -87.6298;
-const SOLAR_TZ  = 'America/Chicago';
-
-function solarTime(date, isRise){
-  const rad = Math.PI / 180;
-  const localStr = new Date(date).toLocaleDateString('en-CA', {timeZone: SOLAR_TZ});
-  const [yr, mo, dy] = localStr.split('-').map(Number);
-  const A = Math.floor((14 - mo) / 12);
-  const Y = yr + 4800 - A;
-  const M = mo + 12 * A - 3;
-  const JD = dy + Math.floor((153*M+2)/5) + 365*Y + Math.floor(Y/4) - Math.floor(Y/100) + Math.floor(Y/400) - 32045 - 0.5;
-  const n   = JD - 2451545.0;
-  const L   = ((280.460 + 0.9856474 * n) % 360 + 360) % 360;
-  const g   = ((357.528 + 0.9856003 * n) % 360 + 360) % 360;
-  const lam = L + 1.915 * Math.sin(g * rad) + 0.020 * Math.sin(2 * g * rad);
-  const eps = 23.439 - 0.0000004 * n;
-  const sinDec = Math.sin(eps * rad) * Math.sin(lam * rad);
-  const dec = Math.asin(sinDec);
-  const cosHA = (Math.cos(90.833 * rad) - Math.sin(SOLAR_LAT * rad) * sinDec)
-              / (Math.cos(SOLAR_LAT * rad) * Math.cos(dec));
-  if(cosHA < -1 || cosHA > 1) return null;
-  const HA = Math.acos(Math.max(-1, Math.min(1, cosHA))) / rad;
-  const EoT = 4 * (L - 0.0057183 - lam);
-  const solarNoon = 720 - 4 * SOLAR_LNG - EoT;
-  const eventMin = isRise ? solarNoon - HA * 4 : solarNoon + HA * 4;
-  const utcBase = new Date(localStr + 'T00:00:00Z');
-  return new Date(utcBase.getTime() + eventMin * 60000);
-}
-
-let _darkOverride = null;
-
-function applyAutoTheme(){
-  const now = new Date();
-  const rise = solarTime(now, true);
-  const set  = solarTime(now, false);
-  const isDark = _darkOverride !== null ? _darkOverride
-               : (!rise || !set || now < rise || now >= set);
-  document.body.classList.toggle('dark', isDark);
-  const btn = document.getElementById('dark-toggle-btn');
-  if(!btn) return;
-  const fmt = t => t ? t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:SOLAR_TZ}) : '--';
-  if(_darkOverride !== null){
-    btn.textContent = isDark ? '◑ MANUAL' : '◐ MANUAL';
-    btn.title = 'Manual override — click again to return to auto';
-  } else {
-    btn.textContent = isDark ? '◑ AUTO' : '◐ AUTO';
-    btn.title = 'Auto (Chicago) · Sunrise ' + fmt(rise) + ' · Sunset ' + fmt(set);
-  }
-}
-
 function toggleDark(){
-  if(_darkOverride === null){
-    _darkOverride = !document.body.classList.contains('dark');
-  } else {
-    _darkOverride = null;
-  }
-  applyAutoTheme();
+  document.body.classList.toggle('dark');
+  localStorage.setItem('paq-dark',document.body.classList.contains('dark')?'1':'0');
 }
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', applyAutoTheme);
-} else {
-  applyAutoTheme();
-}
-setInterval(applyAutoTheme, 60000);
+if(localStorage.getItem('paq-dark')==='1') document.body.classList.add('dark');
 
 function toast(title,msg){
   const el=document.createElement('div');el.className='toast';
