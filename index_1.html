@@ -1,0 +1,3054 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PAQ Publishing — Roster Whiteboard</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #141414;
+  --ink2: #2d2d2d;
+  --ink3: #555;
+  --ink4: #888;
+  --ink5: #bbb;
+  --paper: #f4f1eb;
+  --paper2: #ede9e1;
+  --paper3: #e5e0d7;
+  --rule: #d8d2c8;
+  --rule2: #c8c1b5;
+  --gold: #8b6914;
+  --gold-bg: #f7f0de;
+  --gold-border: #d4af5a;
+  --bmi: #1a4b8c;
+  --bmi-bg: #e8eef8;
+  --ascap: #7b2d2d;
+  --ascap-bg: #f8ebe8;
+  --sesac: #2d5c3f;
+  --sesac-bg: #e8f3ec;
+  --prs: #4a2d7b;
+  --prs-bg: #f0ebe8;
+  --red: #c0392b;
+  --red-bg: #fdf0ee;
+  --amber: #a0570a;
+  --amber-bg: #fdf4e7;
+  --green: #1a5c35;
+  --green-bg: #e8f5ee;
+  --blue: #1a3d7b;
+  --blue-bg: #e8eef8;
+/* Admin accent colors */
+/* Empire = muted amber */
+--empire:        #8b5e0a;
+--empire-mid:    #c9931a;
+--empire-bg:     #fdf7ed;
+--empire-card:   #f8f0de;
+--empire-border: rgba(180,130,20,0.25);
+--empire-alias:  #9e7018;
+/* Kobalt = muted blue */
+--kobalt:        #2a4f8a;
+--kobalt-mid:    #4a72b8;
+--kobalt-bg:     #eef3fb;
+--kobalt-card:   #e3ecf7;
+--kobalt-border: rgba(74,114,184,0.25);
+--kobalt-alias:  #3a5f9a;
+/* SongSplits = muted yellow */
+--splits:        #7a6a00;
+--splits-mid:    #8da800;
+--splits-bg:     #fdfbe8;
+--splits-card:   #f7f4d4;
+--splits-border: rgba(160,140,10,0.25);
+--splits-alias:  #7a6a00;
+  --serif: 'DM Serif Display', serif;
+  --mono: 'DM Mono', monospace;
+  --sans: 'DM Sans', sans-serif;
+  --r: 0px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.1);
+}
+
+/* ── DARK THEME ─────────────────────────── */
+body.dark {
+  --ink:    #f0ece4;
+  --ink2:   #d8d2c8;
+  --ink3:   #b0a898;
+  --ink4:   #908880;
+  --ink5:   #706860;
+  --paper:  #1c1c1c;
+  --paper2: #242424;
+  --paper3: #2c2c2c;
+  --rule:   #383838;
+  --rule2:  #484848;
+  --gold:         #b8a820;
+  --gold-bg:      #2a2210;
+  --gold-border:  #b8a820;
+  --red:          #f08070;
+  --red-bg:       #2c1a1a;
+  --amber:        #e09840;
+  --amber-bg:     #2c2010;
+  --green:        #60b880;
+  --green-bg:     #102818;
+  --blue:         #78a0e8;
+  --blue-bg:      #101828;
+  --bmi-bg:       #141c2c;
+  --ascap-bg:     #2c1a1a;
+  --sesac-bg:     #102014;
+  --prs-bg:       #1c1428;
+}
+
+/* Body + layout */
+body.dark { background: var(--paper); color: var(--ink); }
+body.dark .layout { background: var(--paper); }
+
+/* Toolbar */
+body.dark .toolbar { background: #202020; border-bottom-color: #363636; }
+body.dark .srch input { background: #2c2c2c; border-color: #404040; color: var(--ink); }
+body.dark .srch input::placeholder { color: var(--ink5); }
+body.dark .srch-icon { color: var(--ink4); }
+
+/* Filter pills */
+body.dark .pill { color: var(--ink3); }
+body.dark .pill:hover { color: var(--ink); border-bottom-color: var(--rule2); }
+body.dark .pill.on { color: var(--ink); border-bottom-color: var(--gold-border); }
+body.dark .toolbar-row2 { border-bottom-color: #363636; }
+
+/* Add button / view toggle */
+body.dark .add-btn { background: #333; color: var(--gold-border); }
+body.dark .add-btn:hover { background: #404040; }
+body.dark .view-toggle { background: #2c2c2c; border-color: #404040; }
+body.dark .vtb { color: var(--ink3); }
+body.dark .vtb.on { background: #444; color: var(--gold-border); }
+
+/* Select dropdowns in toolbar */
+body.dark select { background: #2c2c2c; border-color: #404040; color: var(--ink2); }
+
+/* Cards */
+body.dark .wcard { background: transparent; box-shadow: none; }
+body.dark .wcard:hover { transform: scale(0.992); box-shadow: inset 0 1px 8px rgba(0,0,0,0.20); background: rgba(255,255,255,0.025); }
+body.dark .wcard-name::after {
+  background: linear-gradient(
+    to bottom,
+    rgba(20,20,20,0.28) 0%,
+    rgba(20,20,20,0.10) 55%,
+    rgba(20,20,20,0.0) 100%
+  );
+}
+
+body.dark .wcard-name { color: var(--ink); }
+body.dark .empire .wcard-alias   { color: #d4a050; }
+body.dark .kobalt .wcard-alias   { color: #7898d8; }
+body.dark .songsplits .wcard-alias { color: #8da800; }
+
+/* Card section headers */
+body.dark .admin-section { background: var(--paper); }
+body.dark .admin-section-name { color: var(--ink); }
+body.dark .co-group-name { color: var(--ink2); }
+
+/* Compact toggle */
+body.dark .compact-toggle-btn { background: #2c2c2c; border-color: #404040; color: var(--ink3); }
+body.dark .compact-toggle-btn.on { background: var(--gold-border); color: #141414; border-color: var(--gold-border); }
+
+/* Table */
+body.dark .tbl-wrap { background: var(--paper2); border: none; box-shadow: 0 2px 12px rgba(0,0,0,0.25); }
+body.dark thead tr { background: #1a1a1a; }
+body.dark th { color: rgba(255,255,255,0.4); border-right-color: rgba(255,255,255,0.05); }
+body.dark th.sortable:hover { background: rgba(255,255,255,0.04); color: rgba(255,255,255,0.7); }
+body.dark .th-sub { color: rgba(255,255,255,0.2); }
+body.dark tbody tr { background: var(--paper2); border-bottom-color: var(--rule); }
+body.dark tbody tr:nth-child(even) { background: var(--paper3); }
+body.dark tbody tr:hover { background: #343434 !important; }
+body.dark td { color: var(--ink2); border-right-color: var(--rule); }
+body.dark .wname { color: var(--ink); }
+body.dark .walias { color: var(--gold); }
+body.dark .cname { color: var(--ink2); }
+body.dark .adm-empire   .aname { color: #d4a050; }
+body.dark .adm-kobalt   .aname { color: #7898d8; }
+body.dark .adm-songsplits .aname { color: #8da800; }
+body.dark .td-num { color: var(--ink4); }
+
+/* PRO badge */
+body.dark .pro-badge { background: #303030; border-color: #505050; color: var(--ink2); }
+
+/* Status tags */
+body.dark .tag-active    { background: #152e1e; color: #68c890; border-color: #2a5040; }
+body.dark .tag-retention { background: #302010; color: #e09840; border-color: #584020; }
+body.dark .tag-inactive  { background: #2c2c2c; color: var(--ink3); border-color: #484848; }
+
+/* Chips */
+body.dark .chip-green  { background: #152e1e; color: #68c890; border-color: #1e4030; }
+body.dark .chip-green .chip-dot { background: #68c890; }
+body.dark .chip-amber  { background: #302010; color: #e09840; border-color: #483018; }
+body.dark .chip-amber .chip-dot { background: #e09840; }
+body.dark .chip-red    { background: #301c1c; color: #f08070; border-color: #502828; }
+body.dark .chip-red .chip-dot { background: #f08070; }
+body.dark .chip-pending { background: #302010; color: #e09840; border-color: #483018; }
+body.dark .chip-sub    { color: var(--ink3); }
+
+/* Quarter run badges */
+body.dark .qb-sent { background: #1e3828; color: #68c890; }
+body.dark .qb-recv { background: #2c2010; color: #b8a820; }
+body.dark .qb-miss { background: #303030; color: var(--ink3); }
+
+/* Bool yes/no */
+body.dark .bool-y { color: #68c890; }
+body.dark .bool-n { color: #f08070; }
+body.dark .outreach-badge.outreach-y { background: #152e1e; color: #68c890; border-color: #2a5040; }
+body.dark .outreach-badge.outreach-n { background: #301c1c; color: #f08070; border-color: #603030; }
+
+/* Sidebar */
+body.dark .side-card { background: transparent; border-bottom-color: #383838; }
+body.dark .side-title { color: var(--ink3); }
+body.dark .badge-count { background: #404040; color: var(--gold-border); }
+body.dark .alert-item { border-bottom-color: #363636; }
+body.dark .alert-n { color: var(--ink); }
+body.dark .alert-d { color: var(--ink3); }
+body.dark .alert-ico.monthly { background: #2c2010; }
+body.dark .alert-ico.audit   { background: #2c1818; }
+body.dark .alert-ico.splits  { background: #2c1818; }
+body.dark .pro-row { border-bottom-color: #363636; }
+body.dark .pro-label { color: var(--ink2); }
+body.dark .pro-bar-wrap { background: #363636; }
+body.dark .pro-count { color: var(--ink3); }
+body.dark .leg-item { color: var(--ink2); }
+
+/* Modal */
+body.dark .modal-overlay { background: rgba(0,0,0,0.7); }
+body.dark .modal { background: #242424; border: none; box-shadow: 0 8px 40px rgba(0,0,0,0.5); }
+body.dark .modal-title { color: var(--ink); }
+body.dark .form-sec { color: var(--ink3); border-bottom-color: #363636; }
+body.dark .form-label { color: var(--ink2); }
+body.dark .form-input, body.dark .form-select { background: #2c2c2c; border-color: #484848; color: var(--ink); }
+body.dark .form-input:focus, body.dark .form-select:focus { border-color: var(--gold-border); }
+body.dark .form-check { color: var(--ink2); }
+body.dark .modal-actions { border-top-color: #363636; }
+body.dark .btn-cancel { background: #2c2c2c; border-color: #484848; color: var(--ink2); }
+body.dark .btn-cancel:hover { border-color: var(--ink2); }
+body.dark .btn-delete { border-color: rgba(240,128,112,0.35); color: #f08070; }
+body.dark .btn-delete:hover { background: #2c1818; border-color: #f08070; }
+body.dark .btn-save { background: var(--gold-border); color: #141414; }
+body.dark .btn-save:hover { background: #d4b860; }
+
+/* Detail panel */
+body.dark .detail { background: #1e1e1e; border-left: none; }
+body.dark .tck-circle { background: #2a2a2a; border-color: #555; }
+body.dark .key-btn { color: var(--ink3); }
+body.dark .key-btn:hover { opacity:0.7; background:none; }
+body.dark .key-advance-btn { background: #2a2a2a; border-color: #444; color: var(--ink3); }
+body.dark .key-advance-btn:hover { background: #333; border-color: #666; }
+/* Dark mode: header keeps its dark bg but text needs to stay visible */
+body.dark header { background: #111; border-bottom-color: var(--gold-border); }
+body.dark .logo-main { color: #f0ead8; }
+body.dark .logo-sub { color: var(--gold-border); }
+body.dark .hstat-n { color: #f0ead8; }
+body.dark .hstat-n.amber { color: #fbbf24; }
+body.dark .hstat-n.red { color: #f87171; }
+body.dark .hstat-l { color: rgba(255,255,255,0.35); }
+body.dark .hdr-clock { color: rgba(255,255,255,0.35); }
+body.dark .hdr-top { border-bottom-color: rgba(255,255,255,0.08); }
+body.dark .hdr-stats { border-top-color: rgba(255,255,255,0.05); }
+body.dark .hstat { border-right-color: rgba(255,255,255,0.08); }
+body.dark .tck input:checked+.tck-circle { background:var(--green); border-color:var(--green); }
+body.dark .d-sec { border-bottom-color: #363636; }
+body.dark .d-sec-title { color: var(--ink3); }
+body.dark .d-sec.needs-action { background: rgba(217,119,6,0.10); border-left-color: #d97706; }
+body.dark .d-sec.needs-action .d-sec-title { color: #f59e0b; }
+body.dark .d-k { color: var(--ink3); }
+body.dark .d-v { color: var(--ink); }
+body.dark .d-v.gold { color: var(--gold); }
+body.dark .d-date-input { background: #2c2c2c; border-color: #484848; color: var(--ink); }
+body.dark .d-date-save { background: #152e1e; color: #68c890; border-color: #2a5040; }
+body.dark .d-date-save:hover { background: #1e3828; }
+body.dark .d-link-input { background: #2c2c2c; border-color: #484848; color: var(--ink2); }
+body.dark .d-link-save { background: #141e30; color: #78a0e8; border-color: #283860; }
+body.dark .d-link-save:hover { background: #1c2838; }
+body.dark .muso-check-btn { background: #1c2838; border-color: #304870; color: #78a0e8; }
+body.dark .toggle-row span { color: var(--ink); }
+body.dark .tgl-track { background: #404040; }
+
+/* Toast */
+body.dark .toast { background: #2c2c2c; border-color: #484848; color: var(--ink); }
+body.dark .toast-title { color: var(--gold-border); }
+
+/* Dark theme toggle button */
+.dark-toggle {
+  background: none;
+  border: 1px solid rgba(255,255,255,0.18);
+  color: rgba(255,255,255,0.45);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  padding: 4px 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.dark-toggle:hover { border-color: rgba(255,255,255,0.4); color: rgba(255,255,255,0.8); }
+body.dark .dark-toggle { border-color: rgba(212,175,90,0.4); color: var(--gold-border); }
+body.dark .dark-toggle:hover { border-color: var(--gold-border); }
+
+/* Additional dark overrides for card section headers and misc */
+body.dark .admin-section-hdr { border-color: #404040 !important; }
+body.dark .empire .admin-section-hdr { border-color: #c9931a !important; }
+body.dark .kobalt .admin-section-hdr { border-color: #4a72b8 !important; }
+body.dark .songsplits .admin-section-hdr { border-color: #8da800 !important; }
+body.dark .admin-section-label { background: #2c2c2c !important; border-color: #484848 !important; }
+body.dark .empire .admin-section-label     { background: #2c2010 !important; color: #d4a050 !important; border-color: #584020 !important; }
+body.dark .kobalt .admin-section-label     { background: #101828 !important; color: #78a0e8 !important; border-color: #283860 !important; }
+body.dark .songsplits .admin-section-label { background: #252510 !important; color: #b8a820 !important; border-color: #404010 !important; }
+body.dark .empire .admin-section-name     { color: #d4a050; }
+body.dark .kobalt .admin-section-name     { color: #78a0e8; }
+body.dark .songsplits .admin-section-name { color: #b8a820; }
+body.dark .admin-section-count { color: var(--ink3); }
+body.dark .co-group-count { color: var(--ink3); }
+body.dark .empire .co-group-hdr     { border-color: rgba(212,160,80,0.35); }
+body.dark .kobalt .co-group-hdr     { border-color: rgba(120,160,232,0.35); }
+body.dark .songsplits .co-group-hdr { border-color: rgba(176,152,10,0.35); }
+body.dark .wcard-dots .wdot { color: var(--ink3); }
+body.dark .pro-bar-wrap { background: #404040; }
+body.dark .tgl-knob { background: #e8e2d8; }
+body.dark input[type="checkbox"] { accent-color: var(--gold-border); }
+body.dark .co-group-name { color: var(--ink); }
+body.dark .admin-section-name { color: var(--ink); }
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;}
+
+/* ── HEADER ─────────────────────────────── */
+header {
+  background:var(--ink);
+  padding:0 40px;
+  border-bottom:3px solid var(--gold-border);
+}
+.hdr-top {
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 0 14px;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}.logo-block { display:flex;align-items:baseline;gap:14px; }
+.logo-main {
+  font-family:var(--serif);
+  font-size:28px;
+  color:#f0ead8;
+  letter-spacing:-0.5px;
+  line-height:1;
+}
+.logo-divider { width:1px;height:22px;background:rgba(255,255,255,0.15);align-self:center; }
+.logo-sub {
+  font-family:var(--mono);
+  font-size:9px;
+  letter-spacing:3.5px;
+  text-transform:uppercase;
+  color:var(--gold-border);
+}
+.hdr-clock {
+  font-family:var(--mono);
+  font-size:11px;
+  color:rgba(255,255,255,0.3);
+  display:flex;align-items:center;gap:8px;
+}
+.live-dot {
+  width:6px;height:6px;border-radius:50%;
+  background:#4ade80;box-shadow:0 0 6px #4ade80;
+  animation:blink 2s ease-in-out infinite;
+}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.3;}}
+
+.hdr-stats {
+  display:flex;gap:0;padding:10px 0;
+  border-top:1px solid rgba(255,255,255,0.04);
+}
+.hstat {
+  padding:4px 28px 4px 0;
+  border-right:1px solid rgba(255,255,255,0.07);
+  margin-right:28px;
+}
+.hstat:last-child{border-right:none;margin-right:0;}
+.hstat-n {
+  font-family:var(--serif);font-size:22px;color:#f0ead8;line-height:1.1;
+}
+.hstat-n.amber{color:#fbbf24;}
+.hstat-n.red{color:#f87171;}
+.hstat-l {
+  font-family:var(--mono);font-size:7.5px;
+  letter-spacing:2.5px;text-transform:uppercase;
+  color:rgba(255,255,255,0.28);margin-top:1px;
+}
+
+/* ── TOOLBAR ─────────────────────────────── */
+.toolbar {
+  background:var(--paper2);
+  border-bottom:1px solid var(--rule);
+  padding:0 40px;
+  display:flex; flex-direction:column;
+  position:sticky;top:38px;z-index:40;
+  box-shadow:var(--shadow-sm);
+}
+.toolbar-row1 {
+  display:flex; align-items:center; gap:8px;
+  padding:8px 0;
+  border-bottom:1px solid var(--rule);
+}
+.toolbar-row2 {
+  display:flex; align-items:center; gap:2px;
+  padding:4px 0 0;
+  flex-wrap:nowrap; overflow-x:auto;
+}
+.srch {
+  position:relative;
+  flex:0 0 200px;
+}
+.srch-icon {
+  position:absolute;left:9px;top:50%;transform:translateY(-50%);
+  color:var(--ink4);font-size:11px;pointer-events:none;
+}
+.srch input {
+  width:100%;background:var(--paper);
+  border:1px solid var(--rule2);border-radius:0;
+  padding:6px 10px 6px 27px;
+  font-family:var(--mono);font-size:10.5px;color:var(--ink);outline:none;
+  transition:border-color 0.15s;
+}
+.srch input:focus{border-color:var(--ink3);}
+.srch input::placeholder{color:var(--ink5);}
+.srch-clear{position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  background:none;border:none;cursor:pointer;color:var(--ink4);font-size:12px;
+  line-height:1;padding:0 2px;opacity:0;transition:opacity 0.15s;}
+.srch-clear.visible{opacity:1;}
+.srch-clear:hover{color:var(--ink);}
+.srch input{padding-right:24px;}
+
+.tb-select {
+  background:var(--paper);border:1px solid var(--rule2);
+  border-radius:0;padding:6px 10px;
+  font-family:var(--mono);font-size:10px;color:var(--ink2);
+  outline:none;cursor:pointer;min-width:140px;
+  transition:border-color 0.15s;
+}
+.tb-select:focus{border-color:var(--ink3);}
+
+.tb-sep{width:1px;height:20px;background:var(--rule2);margin:0 2px;}
+
+.pill {
+  padding:5px 10px 4px;
+  background:transparent;
+  border:none;
+  border-bottom:none;
+  color:var(--ink4);
+  font-family:var(--mono);font-size:8.5px;letter-spacing:0.5px;
+  cursor:pointer;transition:color 0.12s;white-space:nowrap;
+  user-select:none;
+  position:relative;
+}
+.pill::after {
+  content:'';
+  position:absolute;
+  bottom:0; left:0; right:0;
+  height:1px;
+  background:transparent;
+  transition:background 0.12s;
+}
+.pill:hover::after { background:var(--rule2); }
+.pill.on { color:var(--ink); font-weight:600; }
+.pill.on::after { background:var(--ink); }
+
+.add-btn {
+  margin-left:auto;
+  padding:6px 16px;
+  background:var(--ink);border:none;border-radius:0;
+  color:var(--gold-border);font-family:var(--mono);font-size:9px;
+  letter-spacing:1px;cursor:pointer;transition:all 0.15s;
+  white-space:nowrap;
+}
+.add-btn:hover{background:var(--ink2);box-shadow:var(--shadow);}
+
+/* ── LAYOUT ─────────────────────────────── */
+.layout {
+  display:grid;grid-template-columns:1fr 260px;
+  gap:20px;max-width:1800px;margin:0 auto;
+  padding:20px 40px 48px;
+}
+
+/* ── TABLE ─────────────────────────────── */
+.tbl-wrap {
+  background:var(--paper2);
+  border:none;
+  border-radius:0;
+  box-shadow:0 2px 12px rgba(0,0,0,0.07);
+  overflow:hidden;
+}
+.tbl-scroll{overflow-x:auto;}
+table{width:100%;border-collapse:collapse;min-width:1100px;}
+
+thead tr { background:var(--ink); }
+th {
+  font-family:var(--mono);font-size:8px;
+  letter-spacing:2px;text-transform:uppercase;
+  color:rgba(255,255,255,0.45);
+  padding:11px 14px;text-align:left;
+  font-weight:400;white-space:nowrap;
+  border-right:1px solid rgba(255,255,255,0.06);
+  position:relative;overflow:hidden;
+}
+th:last-child{border-right:none;}
+th.sortable{cursor:pointer;user-select:none;}
+th.sortable:hover{color:rgba(255,255,255,0.85);background:rgba(255,255,255,0.04);}
+th.sort-asc::after{content:' ↑';font-size:9px;opacity:0.9;}
+th.sort-desc::after{content:' ↓';font-size:9px;opacity:0.9;}
+.th-sub{display:block;font-size:6.5px;color:rgba(255,255,255,0.22);letter-spacing:1.5px;margin-top:2px;text-transform:uppercase;}
+
+tbody tr {
+  border-bottom:1px solid var(--rule);
+  transition:background 0.1s;
+  cursor:pointer;
+  background:var(--paper2);
+}
+tbody tr:nth-child(even){ background:var(--paper3); }
+tbody tr:last-child{border-bottom:none;}
+tbody tr:hover{ background:#ddd8ce!important; }
+
+/* Admin left-border accent — thick, clean, no background tint */
+tbody tr.adm-empire     { border-left:4px solid #c9931a; }
+tbody tr.adm-kobalt     { border-left:4px solid #4a72b8; }
+tbody tr.adm-songsplits { border-left:4px solid #8da800; }
+
+/* Compliance flags override border color */
+/* Flag compliance shown via chips in cells — admin color always wins on border */
+
+/* Admin dot on the admin name cell */
+.adm-dot {
+  display:inline-block;width:7px;height:7px;border-radius:50%;
+  margin-right:6px;vertical-align:middle;flex-shrink:0;
+}
+.adm-empire     .adm-dot { background:#c9931a; }
+.adm-kobalt     .adm-dot { background:#4a72b8; }
+.adm-songsplits .adm-dot { background:#8da800; }
+.adm-empire     .aname   { color:#8b5e0a; }
+.adm-kobalt     .aname   { color:#2a4f8a; }
+.adm-songsplits .aname   { color:#7a6a00; }
+
+td {
+  padding:10px 14px;
+  font-size:12.5px;color:var(--ink2);
+  vertical-align:middle;
+  border-right:1px solid var(--rule);
+  position:relative;overflow:hidden;
+}
+td:last-child{border-right:none;}
+
+/* Resizable column handles */
+.col-resize-handle {
+  position:absolute;right:0;top:0;bottom:0;
+  width:5px;cursor:col-resize;z-index:2;
+  background:transparent;transition:background 0.15s;
+}
+.col-resize-handle:hover,.col-resize-handle.dragging{background:rgba(26,61,123,0.25);}
+
+.td-num{
+  font-family:var(--mono);font-size:9px;
+  color:var(--ink5);text-align:center;width:36px;
+}
+
+/* Writer name cell */
+.wname{font-weight:600;font-size:13px;color:var(--ink);line-height:1.25;}
+.walias{font-family:var(--mono);font-size:9px;color:var(--gold);margin-top:2px;}
+.wtags{display:flex;gap:4px;margin-top:5px;flex-wrap:wrap;}
+.tag{
+  font-family:var(--mono);font-size:7px;letter-spacing:1px;
+  text-transform:uppercase;padding:2px 6px;border-radius:0;
+}
+.tag-active{background:#e8f5ee;color:var(--green);border:1px solid #a7d9bb;}
+.tag-retention{background:#fdf4e7;color:var(--amber);border:1px solid #f0c070;}
+.tag-inactive{background:var(--paper3);color:var(--ink4);border:1px solid var(--rule2);}
+.muso-lnk{
+  display:inline-flex;align-items:center;gap:3px;
+  font-family:var(--mono);font-size:8px;color:var(--ink4);
+  text-decoration:none;margin-top:5px;
+  padding:2px 6px;border:1px solid var(--rule2);border-radius:0;
+  transition:all 0.12s;
+}
+.muso-lnk:hover{color:var(--gold);border-color:var(--gold-border);background:var(--gold-bg);}
+
+/* PRO badge — subtle */
+.pro-badge {
+  display:inline-flex;align-items:center;
+  font-family:var(--mono);font-size:7.5px;
+  padding:1px 6px;border-radius:0;
+  letter-spacing:0.5px;
+  color:var(--ink4);background:var(--paper3);border:1px solid var(--rule2);
+}
+
+/* Company / admin */
+.cname{font-size:12px;font-weight:500;color:var(--ink2);}
+.aname{font-size:11px;font-family:var(--mono);display:inline-flex;align-items:center;}
+.adm-empire     .aname { color:#8b5e0a; }
+.adm-kobalt     .aname { color:#2a4f8a; }
+.adm-songsplits .aname { color:#7a6a00; }
+.adm-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:5px;flex-shrink:0;}
+.adm-empire     .adm-dot { background:#c9931a; }
+.adm-kobalt     .adm-dot { background:#4a72b8; }
+.adm-songsplits .adm-dot { background:#8da800; }
+
+/* Chip — date status pill */
+.chip {
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:9px;
+  padding:3px 8px;border-radius:0;border:1px solid transparent;
+  white-space:nowrap;
+}
+.chip-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+.chip-green{background:var(--green-bg);color:var(--green);border-color:#a7d9bb;}
+.chip-green .chip-dot{background:var(--green);}
+.chip-amber{background:var(--amber-bg);color:var(--amber);border-color:#f0c070;}
+.chip-amber .chip-dot{background:var(--amber);}
+.chip-red{background:var(--red-bg);color:var(--red);border-color:#e8a8a0;}
+.chip-red .chip-dot{background:var(--red);}
+.chip-sub{display:block;font-family:var(--mono);font-size:7.5px;color:var(--ink4);margin-top:3px;}
+
+/* Audit pending chip */
+.chip-pending{background:#fef9c3;color:#854d0e;border-color:#fde68a;}
+.chip-pending .chip-dot{background:#d97706;}
+
+/* Bool badges */
+.bool-y{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:var(--green);}
+.bool-n{display:inline-flex;align-items:center;gap:3px;font-family:var(--mono);font-size:9px;color:var(--red);}
+.outreach-badge{display:inline-block;font-family:var(--mono);font-size:7.5px;padding:1px 6px;border-radius:0;margin-top:3px;}
+.outreach-y{background:var(--green-bg);color:var(--green);border:1px solid #a7d9bb;}
+.outreach-n{background:var(--red-bg);color:var(--red);border:1px solid #e8a8a0;}
+
+/* Q badges */
+.q-row{display:flex;gap:3px;flex-wrap:wrap;}
+.qb{font-family:var(--mono);font-size:8px;padding:3px 7px;border-radius:0;font-weight:500;}
+.qb-sent{background:var(--green-bg);color:var(--green);}
+.qb-recv{background:var(--blue-bg);color:var(--blue);}
+.qb-miss{background:var(--red-bg);color:var(--red);}
+.qb-fut{background:var(--paper3);color:var(--ink4);}
+
+/* Actions */
+.act-cell{display:flex;gap:5px;}
+.act-btn{padding:3px 8px;background:var(--paper);border:1px solid var(--rule2);border-radius:0;color:var(--ink3);font-size:10px;cursor:pointer;transition:all 0.12s;}
+.act-btn:hover{background:var(--paper3);border-color:var(--ink3);}
+.empty-row td{text-align:center;padding:36px;font-family:var(--mono);font-size:11px;color:var(--ink4);}
+
+/* ── CARD VIEW — whiteboard style ──────── */
+.cards-wrap{padding:20px 24px 40px;}
+
+/* Admin section separator */
+.admin-section{margin-bottom:44px;}
+.admin-section-hdr{
+  display:flex;align-items:center;gap:14px;
+  margin-bottom:20px;
+  padding:10px 0 10px;
+  border-bottom:2px solid;
+}
+.admin-section-hdr.empire     { border-color: #c9931a; }
+.admin-section-hdr.kobalt     { border-color: #4a72b8; }
+.admin-section-hdr.songsplits { border-color: #8da800; }
+
+.admin-section-label{
+  font-family:var(--mono);font-size:8px;letter-spacing:3px;text-transform:uppercase;
+  padding:3px 10px;border-radius:0;border:1px solid;
+}
+.empire .admin-section-label     { background:#fdf3e0; color:#8b5e0a; border-color:#e8c06a; }
+.kobalt .admin-section-label     { background:#e8eef8; color:#2a4f8a; border-color:#96b0d8; }
+.songsplits .admin-section-label { background:#fafae0; color:#7a6a00; border-color:#d0c240; }
+
+.admin-section-name{
+  font-family:var(--serif);font-size:24px;letter-spacing:-0.3px;
+}
+.empire .admin-section-name     { color:#8b5e0a; }
+.kobalt .admin-section-name     { color:#2a4f8a; }
+.songsplits .admin-section-name { color:#7a6a00; }
+
+.admin-section-count{
+  margin-left:auto;
+  font-family:var(--mono);font-size:9px;color:var(--ink4);
+}
+
+/* Company group within admin section */
+.co-group{margin-bottom:24px;}
+.co-group-hdr{
+  display:flex;align-items:baseline;gap:10px;
+  margin-bottom:9px;
+  padding-bottom:6px;
+  border-bottom:1px solid;
+}
+.empire .co-group-hdr     { border-color: rgba(201,147,26,0.35); }
+.kobalt .co-group-hdr     { border-color: rgba(74,114,184,0.35); }
+.songsplits .co-group-hdr { border-color: rgba(176,152,10,0.35); }
+
+.co-group-name{
+  font-family:var(--serif);font-size:17px;color:var(--ink);
+}
+.co-group-count{
+  margin-left:auto;
+  font-family:var(--mono);font-size:8.5px;color:var(--ink5);
+}
+.co-cards{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(210px,1fr));
+  gap:7px;
+}
+
+/* Individual writer card */
+.wcard{
+  border:none;
+  border-left:3px solid transparent;
+  border-radius:0;
+  padding:10px 12px;
+  cursor:pointer;
+  transition:box-shadow 0.15s, transform 0.12s;
+  position:relative;
+  background:transparent;
+  box-shadow:none;
+  isolation:isolate;
+}
+.empire  .wcard { border-left-color:#c9931a; }
+.kobalt  .wcard { border-left-color:#4a72b8; }
+.songsplits .wcard { border-left-color:#8da800; }
+
+.wcard:hover{ transform:scale(0.992); box-shadow:inset 0 1px 8px rgba(0,0,0,0.05); background:rgba(0,0,0,0.025); }
+
+/* Flag overrides — compliance shown via dots, not border */
+/* border-left always stays admin color */
+
+.wcard-name{
+  font-size:12px;font-weight:600;color:var(--ink);
+  line-height:1.2;margin-bottom:2px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  position:relative;z-index:1;
+}
+.wcard-alias{
+  font-family:var(--mono);font-size:7.5px;margin-bottom:7px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  position:relative;z-index:1;
+}
+
+/* Soft glow backdrop — sits behind name+alias, fades out downward */
+.wcard-name::after {
+  content:'';
+  position:absolute;
+  left:-12px; right:-12px;
+  top:0; bottom:-30px;
+  background: linear-gradient(
+    to bottom,
+    rgba(255,255,255,0.22) 0%,
+    rgba(255,255,255,0.08) 55%,
+    rgba(255,255,255,0.0) 100%
+  );
+  filter: blur(18px);
+  z-index:-1;
+  pointer-events:none;
+}
+.empire     .wcard-alias { color:#c9931a; }
+.kobalt     .wcard-alias { color:#4a72b8; }
+.songsplits .wcard-alias { color:#8da800; }
+
+.wcard-dots{
+  display:flex;flex-direction:column;gap:3px;
+}
+.wdot-row{
+  display:flex;gap:6px;align-items:center;
+}
+.wdot{
+  display:flex;align-items:center;gap:4px;
+  font-family:var(--mono);font-size:7.5px;
+  color:var(--ink4);white-space:nowrap;
+
+}
+.wdot-pip{
+  width:7px;height:7px;border-radius:50%;flex-shrink:0;
+}
+.wdot-pip.pip-sq{ border-radius:1px; } /* square — for stmt received/sent */
+.pip-green{background:var(--green);}
+.pip-amber{background:var(--amber);}
+.pip-red{background:var(--red);}
+.pip-yellow{background:#d97706;}
+.pip-blue{background:var(--blue);}
+.pip-gray{background:var(--ink5);}
+
+.apr-item{display:flex;align-items:center;gap:8px;padding:7px 10px;background:var(--paper);border:1px solid var(--rule);cursor:grab;user-select:none;font-size:9px;}
+.apr-item.apr-dragging{opacity:0.4;}
+.apr-item.apr-over{border-color:var(--gold-border);background:var(--amber-bg);}
+.apr-handle{color:var(--ink4);font-size:13px;cursor:grab;}
+.apr-num{color:var(--ink4);width:12px;text-align:right;flex-shrink:0;}
+.apr-ico{font-size:11px;}
+.apr-lbl{color:var(--ink);flex:1;}
+/* Toggle pill arrows */
+.toggle-pill { display:inline-flex; align-items:center; gap:4px; }
+.pill-arrow { font-size:9px; opacity:0; transition:opacity 0.15s; }
+.toggle-pill.on .pill-arrow { opacity:1; }
+
+/* Compact toggle button inside card view */
+.card-view-toolbar {
+  display:flex; align-items:center; justify-content:flex-end;
+  padding:8px 24px 0;
+}
+.compact-toggle-btn {
+  padding:4px 12px;
+  background:var(--paper);border:1px solid var(--rule2);
+  border-radius:0;color:var(--ink3);
+  font-family:var(--mono);font-size:8.5px;letter-spacing:0.5px;
+  cursor:pointer;transition:all 0.12s;
+}
+.compact-toggle-btn:hover { border-color:var(--ink3); color:var(--ink); }
+.compact-toggle-btn.on { background:var(--ink); border-color:var(--ink); color:var(--gold-border); }
+
+/* Compact card mode */
+.co-cards.compact { grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:4px; }
+.wcard.compact-card { padding:6px 8px 6px 10px; }
+.wcard.compact-card .wcard-dots { display:none; }
+.wcard.compact-card .wcard-alias { margin-bottom:0; font-size:7px; }
+.wcard.compact-card .wcard-name  { font-size:11.5px; }
+.compact-dots { display:flex; gap:4px; margin-top:5px; flex-wrap:wrap; pointer-events:none; }
+.cdot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.cdot.pip-sq { border-radius:1px; }
+
+/* Compact view — flagged highlights */
+.wcard.compact-card.c-highlight-green  { background:#edf7f0; }
+.wcard.compact-card.c-highlight-blue   { background:#edf2fb; }
+.wcard.compact-card.c-highlight-amber  { background:#fdf4e7; }
+.wcard.compact-card.c-no-highlight     { opacity:0.65; }
+.wcard.c-no-highlight                   { opacity:0.35; }
+.admin-toggle { cursor:pointer; user-select:none; }
+.admin-toggle:hover .admin-section-name { opacity:0.75; }
+.co-toggle { cursor:pointer; user-select:none; }
+.co-toggle:hover .co-group-name { opacity:0.7; }
+
+.admin-chevron, .chevron {
+  font-size:16px;
+  display:inline-block;
+  transition:transform 0.2s ease;
+  transform:rotate(0deg);
+  line-height:1;
+  flex-shrink:0;
+}
+.admin-chevron.open { transform:rotate(90deg); }
+.chevron { font-size:13px; color:var(--ink4); margin-right:2px; }
+.chevron.open { transform:rotate(90deg); }
+
+.empire .admin-chevron   { color:#c9931a; }
+.kobalt .admin-chevron   { color:#4a72b8; }
+.songsplits .admin-chevron { color:#8da800; }
+
+/* Hidden utility */
+.hidden{display:none!important;}
+
+/* View toggle */
+.view-toggle{display:flex;gap:2px;background:var(--paper3);border:1px solid var(--rule2);border-radius:0;padding:2px;}
+.vtb{padding:4px 9px;border:none;background:transparent;border-radius:0;cursor:pointer;font-family:var(--mono);font-size:9px;color:var(--ink3);transition:all 0.12s;}
+.vtb.on{background:var(--ink);color:var(--gold-border);}
+
+/* ── SIDEBAR ─────────────────────────────── */
+.sidebar{display:flex;flex-direction:column;gap:16px;}
+.side-card{background:transparent;border:none;border-radius:0;padding:16px 0;box-shadow:none;border-bottom:1px solid var(--rule);}
+.side-title{font-family:var(--mono);font-size:8.5px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:12px;display:flex;align-items:center;justify-content:space-between;}
+.badge-count{background:var(--ink);color:var(--gold-border);font-family:var(--mono);font-size:8px;padding:1px 6px;border-radius:0;}
+
+/* Alert items */
+.alert-item{display:flex;gap:9px;padding:7px 0;border-bottom:1px solid var(--rule);}
+.alert-item:last-child{border-bottom:none;padding-bottom:0;}
+.alert-item:hover{background:var(--paper2);margin:0 -12px;padding-left:12px;padding-right:12px;}
+.alert-ico{width:26px;height:26px;border-radius:0;display:flex;align-items:center;justify-content:center;font-size:11px;flex-shrink:0;}
+.alert-ico.monthly{background:var(--amber-bg);}
+.alert-ico.audit{background:var(--red-bg);}
+.alert-ico.splits{background:var(--red-bg);}
+.alert-n{font-size:11px;font-weight:600;color:var(--ink);line-height:1.2;}
+.alert-d{font-family:var(--mono);font-size:8.5px;color:var(--ink4);margin-top:2px;}
+
+/* PRO breakdown */
+.pro-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--rule);}
+.pro-row:last-child{border-bottom:none;}
+.pro-label{font-family:var(--mono);font-size:10px;color:var(--ink2);width:44px;flex-shrink:0;}
+.pro-bar-wrap{flex:1;background:var(--paper3);border-radius:0;height:5px;overflow:hidden;}
+.pro-bar{height:100%;border-radius:0;transition:width 0.4s ease;}
+.pro-count{font-family:var(--mono);font-size:9px;color:var(--ink4);width:18px;text-align:right;flex-shrink:0;}
+.bar-bmi{background:var(--bmi);}
+.bar-ascap{background:var(--ascap);}
+.bar-sesac{background:var(--sesac);}
+.bar-prs{background:var(--prs);}
+
+/* Detail panel overdue highlight */
+.d-sec.needs-action { background:var(--amber-bg); border-left:3px solid var(--amber); border-radius:0 2px 2px 0; padding:10px 12px; margin-top:4px; }
+.d-sec.needs-action .d-sec-title { color:var(--amber); }
+
+/* Legend key checkboxes */
+.key-row{display:flex;align-items:center;gap:6px;padding:2px 0;}
+.key-period{font-family:var(--mono);font-size:9px;background:var(--paper2);border:1px solid var(--rule);padding:5px 8px;margin-bottom:10px;color:var(--ink2);line-height:1.6;width:100%;cursor:pointer;appearance:auto;}
+.key-btn{
+  display:flex;align-items:center;gap:6px;
+  background:none;border:none;cursor:pointer;
+  font-family:var(--mono);font-size:8.5px;color:var(--ink2);
+  padding:3px 2px;
+  transition:opacity 0.15s;
+  width:100%;text-align:left;
+}
+.key-btn:hover{ opacity:0.7; }
+.key-btn.off{ opacity:0.25; }
+.key-section{font-family:var(--mono);font-size:8px;color:var(--ink4);margin:8px 0 4px;letter-spacing:0.5px;}
+.key-section-btn{
+  font-family:var(--mono);font-size:8px;color:var(--ink3);letter-spacing:0.5px;
+  background:none;border:none;cursor:pointer;
+  padding:3px 2px;margin:8px 0 4px;
+  display:block;width:100%;text-align:left;
+  transition:opacity 0.15s;
+}
+.key-section-btn:hover{opacity:0.6;}
+.key-section-btn.off{opacity:0.3;}
+.key-advance-btn{
+  margin-top:10px;width:100%;
+  font-family:var(--mono);font-size:8.5px;
+  background:var(--paper2);border:1px solid var(--rule2);
+  color:var(--ink2);padding:5px 8px;cursor:pointer;
+  border-radius:0;transition:background 0.12s,border-color 0.12s;
+  text-align:left;
+}
+.key-advance-btn:hover{background:var(--rule);border-color:var(--ink4);}
+
+/* Legend */
+.legend-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+.leg-item{display:flex;align-items:center;gap:5px;font-family:var(--mono);font-size:8.5px;color:var(--ink3);}
+.leg-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+
+/* ── MODAL ─────────────────────────────── */
+.modal-overlay{
+  display:none;position:fixed;inset:0;
+  background:rgba(20,20,20,0.55);backdrop-filter:blur(3px);
+  z-index:100;align-items:center;justify-content:center;
+}
+.modal-overlay.open{display:flex;}
+.modal{
+  background:var(--paper);border:none;
+  border-radius:0;box-shadow:0 8px 40px rgba(0,0,0,0.18);
+  width:min(720px, 92vw);max-height:88vh;overflow-y:auto;
+  padding:28px;
+}
+.modal-title{font-family:var(--serif);font-size:22px;color:var(--ink);margin-bottom:20px;}
+.form-sec{font-family:var(--mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink4);margin:16px 0 10px;padding-bottom:5px;border-bottom:1px solid var(--rule);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-field{display:flex;flex-direction:column;gap:4px;}
+.form-label{font-family:var(--mono);font-size:8.5px;letter-spacing:1px;text-transform:uppercase;color:var(--ink3);}
+.form-input,.form-select{
+  background:var(--paper2);border:1px solid var(--rule2);
+  border-radius:0;padding:7px 10px;
+  font-family:var(--sans);font-size:12px;color:var(--ink);
+  outline:none;transition:border-color 0.15s;
+}
+.form-input:focus,.form-select:focus{border-color:var(--ink3);}
+.form-checks{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-top:4px;}
+.form-check{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--ink2);cursor:pointer;}
+.form-check input{cursor:pointer;}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:22px;padding-top:16px;border-top:1px solid var(--rule);}
+.btn-cancel{padding:8px 18px;background:var(--paper2);border:1px solid var(--rule2);border-radius:0;font-family:var(--mono);font-size:10px;cursor:pointer;color:var(--ink3);transition:all 0.12s;}
+.btn-cancel:hover{border-color:var(--ink3);}
+.btn-delete{padding:8px 18px;background:transparent;border:1px solid rgba(192,57,43,0.35);border-radius:0;font-family:var(--mono);font-size:10px;cursor:pointer;color:var(--red);transition:all 0.12s;}
+.btn-delete:hover{background:var(--red-bg);border-color:var(--red);}
+.btn-save{padding:8px 18px;background:var(--ink);border:none;border-radius:0;font-family:var(--mono);font-size:10px;cursor:pointer;color:var(--gold-border);transition:all 0.12s;}
+.btn-save:hover{background:var(--ink2);}
+
+/* ── DETAIL PANEL ─────────────────────────────── */
+.detail{
+  position:fixed;right:-380px;top:38px;bottom:0;width:360px;
+  background:var(--paper);border-left:none;
+  z-index:90;transition:right 0.25s ease;
+  overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,0.14);
+}
+.detail.open{right:0;}
+.detail-hdr{
+  background:var(--ink);padding:16px 20px;
+  border-bottom:2px solid var(--gold-border);
+  position:sticky;top:0;z-index:1;
+  display:flex;align-items:flex-start;gap:8px;
+}
+.detail-hdr-text{flex:1;min-width:0;}
+.detail-name{font-family:var(--serif);font-size:20px;color:#f0ead8;line-height:1.2;}
+.detail-alias{font-family:var(--mono);font-size:9px;color:var(--gold-border);margin-top:3px;}
+.detail-close{
+  background:none;border:none;color:rgba(255,255,255,0.4);
+  font-size:16px;cursor:pointer;transition:color 0.12s;
+  padding:4px 8px;flex-shrink:0;
+}
+.detail-close:hover{color:#fff;}
+.detail-edit-btn{
+  padding:5px 12px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:0;
+  color:var(--gold-border);
+  font-family:var(--mono);font-size:9px;letter-spacing:0.5px;
+  cursor:pointer;transition:all 0.12s;white-space:nowrap;
+}
+.detail-edit-btn:hover{background:rgba(255,255,255,0.15);}
+.detail-body{padding:16px;}
+.d-sec{margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--rule);}
+.d-sec:last-child{border-bottom:none;}
+.d-sec-title{font-family:var(--mono);font-size:8px;letter-spacing:2.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:10px;}
+.d-kv{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.d-k{font-family:var(--mono);font-size:7.5px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:2px;}
+.d-v{font-size:12px;color:var(--ink);font-weight:500;}
+.d-v.gold{color:var(--gold);}
+.d-date-row{display:flex;align-items:center;gap:8px;margin-top:8px;}
+.d-date-input{flex:1;padding:6px 8px;border:1px solid var(--rule);border-radius:0;font-family:var(--mono);font-size:11px;color:var(--ink);background:var(--paper);cursor:pointer;}
+.d-date-input:focus{outline:none;border-color:var(--gold-border);}
+.d-date-save{padding:6px 12px;border-radius:0;border:1px solid #a7d9bb;background:var(--green-bg);color:var(--green);font-family:var(--mono);font-size:9px;cursor:pointer;white-space:nowrap;transition:all 0.12s;}
+.d-date-save:hover{background:#d0f0dd;}
+.d-link-row{display:flex;align-items:center;gap:6px;margin-top:8px;}
+.d-link-input{flex:1;padding:6px 8px;border:1px solid var(--rule);border-radius:0;font-family:var(--mono);font-size:10px;color:var(--ink2);background:var(--paper);}
+.d-link-input:focus{outline:none;border-color:var(--gold-border);}
+.d-link-save{padding:6px 10px;border-radius:0;border:1px solid #93b0d8;background:var(--blue-bg);color:var(--blue);font-family:var(--mono);font-size:9px;cursor:pointer;white-space:nowrap;transition:all 0.12s;}
+.d-link-save:hover{background:#d0ddf8;}
+.d-action{
+  display:block;width:100%;margin-top:8px;padding:8px 12px;
+  border-radius:0;border:1px solid;cursor:pointer;
+  font-family:var(--mono);font-size:9px;letter-spacing:0.5px;
+  text-align:left;transition:all 0.12s;
+}
+.d-action.green{background:var(--green-bg);color:var(--green);border-color:#a7d9bb;}
+.d-action.green:hover{background:#d0f0dd;}
+.d-action.amber{background:var(--amber-bg);color:var(--amber);border-color:#f0c070;}
+.d-action.amber:hover{background:#fde8c0;}
+.d-action.red{background:var(--red-bg);color:var(--red);border-color:#e8a8a0;}
+.d-action.red:hover{background:#fde0dc;}
+.d-action.blue{background:var(--blue-bg);color:var(--blue);border-color:#93b0d8;}
+.d-action.blue:hover{background:#d0ddf8;}
+.toggle-row{display:flex;align-items:center;justify-content:space-between;padding:6px 0;}
+.toggle-row span{font-family:var(--mono);font-size:10px;color:var(--ink2);}
+/* Round tick checkbox */
+.tck{position:relative;width:20px;height:20px;flex-shrink:0;cursor:pointer;}
+.tck input{position:absolute;opacity:0;width:0;height:0;}
+.tck-circle{
+  width:20px;height:20px;border-radius:50%;
+  border:2px solid var(--rule2);
+  background:var(--paper);
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.15s,border-color 0.15s;
+  font-size:11px;color:transparent;line-height:1;
+  cursor:pointer;
+}
+.tck input:checked+.tck-circle{
+  background:var(--green);border-color:var(--green);color:#fff;
+}
+.tck-circle:hover{border-color:var(--ink3);}
+.tgl{position:relative;width:34px;height:18px;flex-shrink:0;}
+.tgl input{display:none;}
+.tgl-track{
+  position:absolute;inset:0;border-radius:0;
+  background:var(--rule2);cursor:pointer;transition:background 0.2s;
+}
+.tgl input:checked+.tgl-track{background:var(--green);}
+.tgl-knob{
+  position:absolute;top:2px;left:2px;
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;box-shadow:0 1px 3px rgba(0,0,0,0.2);
+  pointer-events:none;transition:left 0.2s;
+}
+.tgl input:checked~.tgl-knob{left:18px;}
+.q-item{padding:7px 0;border-bottom:1px solid var(--rule);}
+.q-item:last-child{border-bottom:none;}
+.q-item-lbl{font-family:var(--mono);font-size:8.5px;color:var(--ink3);margin-bottom:5px;}
+.muso-check-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:9px;color:var(--blue);
+  background:var(--blue-bg);border:1px solid #93b0d8;
+  padding:5px 10px;border-radius:0;cursor:pointer;
+  text-decoration:none;transition:all 0.12s;margin-top:6px;
+}
+.muso-check-btn:hover{background:#d0ddf8;}
+
+/* ── TOAST ─────────────────────────────── */
+.toast-wrap{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:200;}
+.toast{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--ink);border:1px solid rgba(255,255,255,0.08);
+  border-radius:0;padding:12px 14px;min-width:260px;max-width:320px;
+  box-shadow:var(--shadow-md);animation:slideIn 0.2s ease;
+}
+@keyframes slideIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.toast-ico{font-size:14px;margin-top:1px;flex-shrink:0;}
+.toast-title{font-family:var(--mono);font-size:10px;font-weight:500;color:#f0ead8;letter-spacing:0.5px;}
+.toast-msg{font-size:11px;color:rgba(255,255,255,0.45);margin-top:2px;}
+
+/* Audit priority view */
+.audit-priority-wrap .wcard-alias { color: var(--audit-alias-color, var(--ink3)); }
+/* Stmt priority view */
+.stmt-priority-wrap .wcard-alias { color: var(--audit-alias-color, var(--ink3)); }
+/* Priority 0 = received not sent → red */
+.stmt-priority-wrap[data-priority="0"] .wcard { border-left-color: var(--red) !important; }
+/* Priority 1 = not received not sent → amber */
+.stmt-priority-wrap[data-priority="1"] .wcard { border-left-color: var(--amber) !important; }
+
+/* Priority 0 = no audit → red border */
+.audit-priority-wrap[data-priority="0"] .wcard { border-left-color: var(--red) !important; }
+/* Priority 1 = overdue >12mo → red border */
+.audit-priority-wrap[data-priority="1"] .wcard { border-left-color: var(--red) !important; }
+/* Priority 2 = needs attention >6mo → amber border */
+.audit-priority-wrap[data-priority="2"] .wcard { border-left-color: var(--amber) !important; }
+
+/* Detail panel dark mode fixes */
+body.dark .detail-hdr { background: #1a1a1a; border-bottom-color: var(--gold-border); }
+body.dark .detail-name { color: #f0ead8; }
+body.dark .detail-alias { color: var(--gold-border); }
+body.dark .detail-close { color: rgba(255,255,255,0.4); }
+body.dark .detail-edit-btn { color: var(--gold-border); border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.08); }
+
+.genius-btn{
+  display:inline-flex;align-items:center;gap:5px;
+  font-family:var(--mono);font-size:9px;color:#7a6600;
+  background:#fffde0;border:1px solid #e0c800;
+  padding:5px 10px;border-radius:0;cursor:pointer;
+  text-decoration:none;transition:all 0.12s;margin-top:6px;
+}
+.genius-btn:hover{background:#fff5a0;}
+body.dark .genius-btn{background:#2a2a00;border-color:#d4c000;color:#e8d840;}
+body.dark .genius-btn:hover{background:#3a3a00;}
+</style>
+</head>
+<body>
+
+<style>
+.paq-nav{background:#141414;border-bottom:2px solid #d4af5a;display:flex;align-items:center;height:38px;position:sticky;top:0;z-index:200;padding:0 6px;gap:0;}
+.paq-nav-btn{
+  display:flex;align-items:center;justify-content:center;
+  text-decoration:none;padding:0 13px;height:100%;
+  border:none;background:none;cursor:pointer;
+  transition:opacity 0.15s;
+}
+.paq-nav:hover .paq-nav-btn svg{ opacity:0.25; }
+.paq-nav-btn:hover svg{ opacity:1 !important; }
+.paq-nav-btn.active svg{ opacity:1 !important; }
+.paq-nav-ico{display:flex;align-items:center;justify-content:center;}
+.paq-nav-btn svg{ opacity:0.55; transition:opacity 0.15s; }
+</style>
+<nav class="paq-nav">
+  <a href="index.html" class="paq-nav-btn active" title="Roster">
+    <span class="paq-nav-ico" style="color:#d4af5a"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="0.5"/><rect x="10" y="2" width="6" height="6" rx="0.5"/><rect x="2" y="10" width="6" height="6" rx="0.5"/><rect x="10" y="10" width="6" height="6" rx="0.5"/></svg></span>
+  </a>
+  <a href="prospects.html" class="paq-nav-btn" title="Prospects">
+    <span class="paq-nav-ico" style="color:#5aab78"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3.314 2.686-5 6-5s6 1.686 6 5"/><line x1="13" y1="3" x2="13" y2="7"/><line x1="11" y1="5" x2="15" y2="5"/></svg></span>
+  </a>
+  <a href="audit.html" class="paq-nav-btn" title="Audit Check">
+    <span class="paq-nav-ico" style="color:#5b8fd4"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/></svg></span>
+  </a>
+</nav>
+
+<!-- HEADER -->
+<header>
+  <div class="hdr-top">
+    <div class="logo-block">
+      <span class="logo-main">PAQ Publishing</span>
+      <div class="logo-divider"></div>
+      <span class="logo-sub">Roster Whiteboard</span>
+    </div>
+    <div class="hdr-clock">
+      <div class="live-dot"></div>
+      <span id="live-time"></span>
+      <button class="dark-toggle" id="dark-toggle-btn" onclick="toggleDark()">◐ DARK</button>
+    </div>
+  </div>
+  <div class="hdr-stats">
+    <div class="hstat"><div class="hstat-n" id="stat-total">—</div><div class="hstat-l">Total Writers</div></div>
+    <div class="hstat"><div class="hstat-n" id="stat-companies">—</div><div class="hstat-l">Total Companies</div></div>
+    <div class="hstat"><div class="hstat-n" id="stat-stmtrecv">—</div><div class="hstat-l">Stmts Received</div></div>
+    <div class="hstat"><div class="hstat-n" id="stat-stmtsent">—</div><div class="hstat-l">Stmts Sent</div></div>
+    <div class="hstat"><div class="hstat-n red" id="stat-audit">—</div><div class="hstat-l">Audits Due</div></div>
+  </div>
+</header>
+
+<!-- TOOLBAR -->
+<div class="toolbar">
+  <div class="toolbar-row1">
+    <div class="srch"><span class="srch-icon">⌕</span><input type="text" id="search" placeholder="Search writers…" oninput="onSearch(this.value)"><button class="srch-clear" id="srch-clear" onclick="clearSearch()" title="Clear search">✕</button></div>
+    <select class="tb-select" id="filter-company" onchange="renderAll()"><option value="">All Companies</option></select>
+    <select class="tb-select" id="filter-admin" onchange="renderAll()"><option value="">All Administrators</option></select>
+    <select class="tb-select" id="filter-pro" onchange="renderAll()">
+      <option value="">All PROs</option>
+      <option value="BMI">BMI</option>
+      <option value="ASCAP">ASCAP</option>
+      <option value="SESAC">SESAC</option>
+      <option value="PRS">PRS</option>
+    </select>
+    <button class="add-btn" onclick="openAddModal()">+ Add Writer</button>
+    <div class="view-toggle">
+      <button class="vtb on" id="vtb-cards" onclick="setView('cards')" title="Card view">⊞</button>
+      <button class="vtb" id="vtb-table" onclick="setView('table')" title="Table view">☰</button>
+    </div>
+  </div>
+  <div class="toolbar-row2">
+    <button class="pill on" id="pill-all" onclick="setFilter('all')">All</button>
+    <button class="pill toggle-pill" id="pill-auditComplete" onclick="cycleToggle('auditComplete')">Audit Complete <span class="pill-arrow" id="arrow-auditComplete"></span></button>
+    <button class="pill toggle-pill" id="pill-auditSent" onclick="cycleToggle('auditSent')">Audit Sent <span class="pill-arrow" id="arrow-auditSent"></span></button>
+    <button class="pill toggle-pill" id="pill-stmtRecv" onclick="cycleToggle('stmtRecv')">Stmt Recv <span class="pill-arrow" id="arrow-stmtRecv"></span></button>
+    <button class="pill toggle-pill" id="pill-stmtSent" onclick="cycleToggle('stmtSent')">Stmt Sent <span class="pill-arrow" id="arrow-stmtSent"></span></button>
+    <button class="pill" id="pill-splits" onclick="setFilter('splits')">Splits Missing</button>
+    <button class="pill" id="pill-active" onclick="setFilter('active')">Active</button>
+    <button class="pill" id="pill-retention" onclick="setFilter('retention')">Retention</button>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- TABLE -->
+  <div class="tbl-wrap hidden" id="view-table">
+    <div class="tbl-scroll">
+      <table>
+        <thead>
+          <tr>
+            <th style="width:36px">#</th>
+            <th class="sortable" onclick="sortBy('name')">Writer</th>
+            <th class="sortable" onclick="sortBy('pro')" style="width:58px">PRO</th>
+            <th class="sortable" onclick="sortBy('company')">Company<span class="th-sub">Genre</span></th>
+            <th class="sortable" onclick="sortBy('admin')">Administrator</th>
+            <th class="sortable" onclick="sortBy('scheduleA')">Sched. A<span class="th-sub">Last Completed</span></th>
+            <th class="sortable" onclick="sortBy('auditCompleted')">Audit Done<span class="th-sub">Last Completed</span></th>
+            <th class="sortable" onclick="sortBy('auditSent')">Audit Sent<span class="th-sub">Sent to Company</span></th>
+            <th>Splits</th>
+            <th class="sortable" onclick="sortBy('stmtRecv')">Stmt from Co.<span id="cq-label" class="th-sub"></span></th>
+            <th>Stmt to Client<span class="th-sub">Q4-Q1 / Q2-Q3</span></th>
+          </tr>
+        </thead>
+        <tbody id="tbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- CARD VIEW -->
+  <div id="view-cards">
+    <div class="card-view-toolbar">
+      <button class="compact-toggle-btn" id="btn-compact" onclick="toggleCompact()" title="Toggle compact view">⊟ Compact</button>
+    </div>
+    <div class="cards-wrap" id="cards-wrap"></div>
+  </div>
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <!-- Legend / Status Key — FIRST -->
+    <div class="side-card">
+      <div class="side-title">Status Key</div>
+      <select class="key-period" id="key-period-label" onchange="handlePeriodSelect(this)"></select>
+      <button class="key-section-btn" id="kgrp-audit" onclick="toggleKeyGroup('audit')">● Audits</button>
+      <button class="key-btn" id="kbtn-auditComp" onclick="toggleKeyFilter('auditComp')">
+        <div class="leg-dot" style="background:var(--green)"></div>Done
+      </button>
+      <button class="key-btn" id="kbtn-auditAttn" onclick="toggleKeyFilter('auditAttn')">
+        <div class="leg-dot" style="background:var(--amber)"></div>Needs attention
+      </button>
+      <button class="key-btn" id="kbtn-auditOver" onclick="toggleKeyFilter('auditOver')">
+        <div class="leg-dot" style="background:var(--red)"></div>Overdue
+      </button>
+      <button class="key-btn" id="kbtn-auditUnsent" onclick="toggleKeyFilter('auditUnsent')">
+        <div class="leg-dot" style="background:#d97706"></div>Done, unsent
+      </button>
+      <button class="key-section-btn" id="kgrp-stmt" onclick="toggleKeyGroup('stmt')">■ Statements</button>
+      <button class="key-btn" id="kbtn-stmtRecv" onclick="toggleKeyFilter('stmtRecv')">
+        <div class="leg-dot" style="background:var(--blue);border-radius:1px"></div>Received
+      </button>
+      <button class="key-btn" id="kbtn-stmtSent" onclick="toggleKeyFilter('stmtSent')">
+        <div class="leg-dot" style="background:var(--green);border-radius:1px"></div>Sent
+      </button>
+      <button class="key-btn" id="kbtn-stmtMiss" onclick="toggleKeyFilter('stmtMiss')">
+        <div class="leg-dot" style="background:var(--red);border-radius:1px"></div>Missing
+      </button>
+      <button class="key-btn" id="kbtn-stmtNone" onclick="toggleKeyFilter('stmtNone')">
+        <div class="leg-dot" style="background:var(--ink5);border-radius:1px"></div><span id="key-none-label">Not due</span>
+      </button>
+      <div style="margin-top:8px;font-family:var(--mono);font-size:7.5px;color:var(--ink5);line-height:1.8;border-top:1px solid var(--rule);padding-top:7px;">
+        ● &lt;6mo green · 6–12mo amber · &gt;12mo red
+      </div>
+      <button class="key-advance-btn" onclick="advanceStmtRun()">⇄ Advance statement period →</button>
+      <button id="btn-show-unsent" class="key-advance-btn" onclick="showUnsentList()" style="margin-top:4px;color:var(--ink4)">↓ Show unsent this period</button>
+    </div>
+
+    <!-- Alerts -->
+    <div class="side-card">
+      <div class="side-title" style="display:flex;align-items:center;justify-content:space-between">
+        <span>Alerts <span class="badge-count" id="alert-badge"></span></span>
+        <button onclick="openAlertPriority()" style="font-family:var(--mono);font-size:8px;background:none;border:1px solid var(--rule2);color:var(--ink3);padding:2px 6px;cursor:pointer;border-radius:0" title="Reorder alert priority">⠿ Priority</button>
+      </div>
+      <div id="alerts-list"></div>
+    </div>
+
+    <!-- Admin Breakdown -->
+    <div class="side-card">
+      <div class="side-title">By Administrator</div>
+      <div id="admin-breakdown"></div>
+    </div>
+
+    <!-- PRO Breakdown -->
+    <div class="side-card">
+      <div class="side-title">PRO Affiliation</div>
+      <div id="pro-breakdown"></div>
+    </div>
+  </div>
+</div>
+
+<!-- ADD/EDIT MODAL -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <div class="modal-title" id="modal-title">Add Writer</div>
+
+    <div class="form-sec">Identity</div>
+    <div class="form-grid">
+      <div class="form-field"><label class="form-label">Legal Name *</label><input class="form-input" id="f-name" type="text" placeholder="Full legal name"></div>
+      <div class="form-field"><label class="form-label">pka / Alias</label><input class="form-input" id="f-alias" type="text" placeholder="Stage name or pka"></div>
+      <div class="form-field">
+        <label class="form-label">PRO Affiliation</label>
+        <select class="form-select" id="f-pro">
+          <option value="">Unknown</option>
+          <option value="BMI">BMI</option>
+          <option value="ASCAP">ASCAP</option>
+          <option value="SESAC">SESAC</option>
+          <option value="PRS">PRS</option>
+        </select>
+      </div>
+      <div class="form-field"><label class="form-label">IPI Number</label><input class="form-input" id="f-ipi" type="text" placeholder="e.g. 00123456789"></div>
+      <div class="form-field">
+        <label class="form-label">Status</label>
+        <select class="form-select" id="f-status">
+          <option value="active">Active</option>
+          <option value="retention">Retention</option>
+          <option value="inactive">Inactive</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-sec">Company & Deal</div>
+    <div class="form-grid">
+      <div class="form-field"><label class="form-label">Publishing Company</label><input class="form-input" id="f-company" type="text" placeholder="Company name"></div>
+      <div class="form-field"><label class="form-label">Global Administrator</label><input class="form-input" id="f-admin" type="text" placeholder="e.g. Sony, Universal…"></div>
+      <div class="form-field">
+        <label class="form-label">Genre</label>
+        <select class="form-select" id="f-genre">
+          <option>Hip-Hop / Rap</option><option>R&amp;B / Soul</option><option>Pop</option>
+          <option>Country</option><option>Rock</option><option>Latin</option>
+          <option>Afrobeats</option><option>Electronic / Dance</option>
+          <option>Gospel / Christian</option><option>Alternative</option><option>Other</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-sec">Compliance Dates</div>
+    <div class="form-grid">
+      <div class="form-field"><label class="form-label">Last Schedule A</label><input class="form-input" id="f-scheduleA" type="date"></div>
+      <div class="form-field"><label class="form-label">Last Audit Completed</label><input class="form-input" id="f-auditCompleted" type="date"></div>
+      <div class="form-field"><label class="form-label">Last Audit Sent to Co.</label><input class="form-input" id="f-auditSent" type="date"></div>
+    </div>
+
+    <div class="form-sec">Status Flags</div>
+    <div class="form-checks">
+      <label class="form-check"><input type="checkbox" id="f-splits-missing"> Splits Missing</label>
+      <label class="form-check"><input type="checkbox" id="f-splits-outreach"> Splits Outreach Sent</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-recv-q1"> Q1 Stmt Received</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-recv-q2"> Q2 Stmt Received</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-recv-q3"> Q3 Stmt Received</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-recv-q4"> Q4 Stmt Received</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-sent-q1"> Q1 Stmt Sent</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-sent-q2"> Q2 Stmt Sent</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-sent-q3"> Q3 Stmt Sent</label>
+      <label class="form-check"><input type="checkbox" id="f-stmt-sent-q4"> Q4 Stmt Sent</label>
+    </div>
+
+    <div class="form-sec">Links</div>
+    <div class="form-grid">
+      <div class="form-field"><label class="form-label">Genius URL</label><input class="form-input" id="f-genius" type="url" placeholder="https://genius.com/artists/…"></div>
+      <div class="form-field"><label class="form-label">muso.ai URL</label><input class="form-input" id="f-muso" type="url" placeholder="https://www.muso.ai/music/…"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-delete" id="modal-del-btn" onclick="" style="display:none;">✕ Delete Writer</button>
+      <div style="flex:1"></div>
+      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-save" onclick="saveWriter()">Save Writer</button>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL PANEL -->
+<div class="detail" id="detail-panel">
+  <div class="detail-hdr">
+    <div class="detail-hdr-text">
+      <div class="detail-name" id="d-name"></div>
+      <div class="detail-alias" id="d-alias"></div>
+    </div>
+    <button class="detail-edit-btn" id="d-edit-btn" onclick="">✎ Edit</button>
+    <button class="detail-close" onclick="closeDetail()">✕</button>
+  </div>
+  <div class="detail-body" id="d-body"></div>
+</div>
+
+<div class="toast-wrap" id="toast-wrap"></div>
+
+<script>
+const TODAY = new Date('2026-03-11');
+const TODAY_STR = '2026-03-11';
+
+// ── SOLAR AUTO DARK MODE ─────────────────────────────────────────────
+// Latitude/longitude for Chicago, IL
+const SOLAR_LAT = 41.8781;
+const SOLAR_LNG = -87.6298;
+const SOLAR_TZ  = 'America/Chicago';
+
+function solarTime(date, isRise){
+  const rad = Math.PI / 180;
+  // Use local Chicago calendar date
+  const localStr = new Date(date).toLocaleDateString('en-CA', {timeZone: SOLAR_TZ}); // "YYYY-MM-DD"
+  const [yr, mo, dy] = localStr.split('-').map(Number);
+  // Julian Date at noon of that local date
+  const A = Math.floor((14 - mo) / 12);
+  const Y = yr + 4800 - A;
+  const M = mo + 12 * A - 3;
+  const JD = dy + Math.floor((153*M+2)/5) + 365*Y + Math.floor(Y/4) - Math.floor(Y/100) + Math.floor(Y/400) - 32045 - 0.5;
+  const n   = JD - 2451545.0;
+  const L   = ((280.460 + 0.9856474 * n) % 360 + 360) % 360;
+  const g   = ((357.528 + 0.9856003 * n) % 360 + 360) % 360;
+  const lam = L + 1.915 * Math.sin(g * rad) + 0.020 * Math.sin(2 * g * rad);
+  const eps = 23.439 - 0.0000004 * n;
+  const sinDec = Math.sin(eps * rad) * Math.sin(lam * rad);
+  const dec = Math.asin(sinDec);
+  const cosHA = (Math.cos(90.833 * rad) - Math.sin(SOLAR_LAT * rad) * sinDec)
+              / (Math.cos(SOLAR_LAT * rad) * Math.cos(dec));
+  if(cosHA < -1 || cosHA > 1) return null;
+  const HA = Math.acos(Math.max(-1, Math.min(1, cosHA))) / rad;
+  const EoT = 4 * (L - 0.0057183 - lam); // equation of time (no +360 fudge)
+  const solarNoon = 720 - 4 * SOLAR_LNG - EoT; // minutes from UTC midnight
+  const eventMin = isRise ? solarNoon - HA * 4 : solarNoon + HA * 4;
+  const utcBase = new Date(localStr + 'T00:00:00Z');
+  return new Date(utcBase.getTime() + eventMin * 60000);
+}
+
+let _darkOverride = null; // null=auto, true=forced dark, false=forced light
+
+function applyAutoTheme(){
+  const now = new Date();
+  const rise = solarTime(now, true);
+  const set  = solarTime(now, false);
+  const isDark = _darkOverride !== null ? _darkOverride
+               : (!rise || !set || now < rise || now >= set);
+  document.body.classList.toggle('dark', isDark);
+  const btn = document.getElementById('dark-toggle-btn');
+  if(!btn) return;
+  const fmt = t => t ? t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:SOLAR_TZ}) : '--';
+  if(_darkOverride !== null){
+    btn.textContent = isDark ? '◑ MANUAL' : '◐ MANUAL';
+    btn.title = 'Manual override — click again to return to auto';
+  } else {
+    btn.textContent = isDark ? '◑ AUTO' : '◐ AUTO';
+    btn.title = 'Auto (Chicago) · Sunrise ' + fmt(rise) + ' · Sunset ' + fmt(set);
+  }
+}
+
+function toggleDark(){
+  if(_darkOverride === null){
+    _darkOverride = !document.body.classList.contains('dark');
+  } else {
+    _darkOverride = null;
+  }
+  applyAutoTheme();
+}
+
+if(document.readyState==='loading'){
+  document.addEventListener('DOMContentLoaded', applyAutoTheme);
+} else {
+  applyAutoTheme();
+}
+setInterval(applyAutoTheme, 60000);
+const CQ = Math.ceil((TODAY.getMonth()+1)/3);
+const Q_NAMES = {1:'Q1 (Jan–Mar)',2:'Q2 (Apr–Jun)',3:'Q3 (Jul–Sep)',4:'Q4 (Oct–Dec)'};
+
+function mths(d){ return (TODAY - new Date(d))/(30.44*86400000); }
+function days(d){ return (TODAY - new Date(d))/86400000; }
+
+function runPeriodStr(label, year){
+  if(label==='Q4-Q1') return `Q4 ${year} – Q1 ${year+1}`;
+  return `Q2 ${year} – Q3 ${year}`;
+}
+function fmtD(d){ if(!d) return '—'; try{ return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); }catch(e){ return '—'; } }
+function ago(d){
+  const m=mths(d);
+  if(m<1) return 'This month';
+  if(m<12) return `${Math.floor(m)}mo ago`;
+  return `${(m/12).toFixed(1)}yr ago`;
+}
+function schedASt(d){ const m=mths(d); return m<12?'green':m<24?'amber':'red'; }
+function auditSt(d){ const m=mths(d); return m<6?'green':m<12?'amber':'red'; }
+function mDue(d){ return days(d)>30; }
+function musoUrl(n){ return `https://www.muso.ai/music/search?q=${encodeURIComponent(n)}`; }
+
+// ── WRITER DATA (from PRO List spreadsheet) ──────────────────────────
+let writers = [
+  // PAQ / Empire writers
+  {id:1,name:'India Arie Williams',alias:'Indiagothem Beats',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-06-01',auditSent:'2024-01-10',auditCompleted:'2023-11-01',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-10',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/india-arie',musoUrl:'https://www.muso.ai/music/india-arie'},
+  {id:2,name:'Kim Jaehyun',alias:'Kimj',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Pop',status:'active',scheduleA:'2025-09-15',auditSent:'2024-06-01',auditCompleted:'2024-04-25',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-05',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/kim-jaehyun',musoUrl:'https://www.muso.ai/music/kim-jaehyun'},
+  {id:3,name:'Daiki Ishii',alias:'Trill Dynasty',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-11-01',auditSent:'2023-05-01',auditCompleted:'2023-03-31',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-20',stmtRecv:{q1:false,q2:true,q3:true,q4:false},stmtSent:{q1:false,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/daiki-ishii',musoUrl:'https://www.muso.ai/music/daiki-ishii'},
+  {id:4,name:'Dennis Jose Rios Soto',alias:'Shorty Complete',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-03-01',auditSent:'2024-09-01',auditCompleted:'2024-06-16',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-28',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:true},geniusUrl:'https://genius.com/artists/dennis-jose-rios-soto',musoUrl:'https://www.muso.ai/music/dennis-jose-rios-soto'},
+  {id:5,name:'Matthew Davis Bosley',alias:'Bosley',pro:'BMI',company:'PAQ',admin:'Empire',genre:'R&B / Soul',status:'active',scheduleA:'2025-07-20',auditSent:'2024-02-15',auditCompleted:'2023-12-30',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-01',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/matthew-davis-bosley',musoUrl:'https://www.muso.ai/music/matthew-davis-bosley'},
+  {id:6,name:'Kevon Jordan Lewis',alias:'Guwop$',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-08-01',auditSent:'2022-11-01',auditCompleted:'2022-09-17',splitsMissing:true,splitsOutreach:false,monthlyCheck:'2025-11-01',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/kevon-jordan-lewis',musoUrl:'https://www.muso.ai/music/kevon-jordan-lewis'},
+  {id:7,name:'Elijah Gull',alias:'Doc Playboi',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-05-10',auditSent:'2023-08-01',auditCompleted:'2023-06-18',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-15',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/elijah-gull',musoUrl:'https://www.muso.ai/music/elijah-gull'},
+  {id:8,name:'Ricardo Tussaint',alias:'Rippa',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-10-01',auditSent:'2024-04-01',auditCompleted:'2024-02-23',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-08',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/ricardo-tussaint',musoUrl:'https://www.muso.ai/music/ricardo-tussaint'},
+  {id:9,name:'Marcus J Gotch',alias:'Marcuss Muzik',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-12-01',auditSent:'2023-04-01',auditCompleted:'2023-01-14',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-05',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/marcus-j-gotch',musoUrl:'https://www.muso.ai/music/marcus-j-gotch'},
+  {id:10,name:'Amanda J Jones',alias:'Jean Jones',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'R&B / Soul',status:'active',scheduleA:'2025-08-15',auditSent:'2024-07-01',auditCompleted:'2024-05-26',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-20',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/amanda-j-jones',musoUrl:'https://www.muso.ai/music/amanda-j-jones'},
+  {id:11,name:'Antwon Hicks',alias:'Twon Beats',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-04-01',auditSent:'2023-10-01',auditCompleted:'2023-07-20',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-09',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/antwon-hicks',musoUrl:'https://www.muso.ai/music/antwon-hicks'},
+  {id:12,name:'Adrian McKinnon',alias:'Mxv',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Electronic / Dance',status:'active',scheduleA:'2025-11-01',auditSent:'2024-05-15',auditCompleted:'2024-02-28',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-05',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/adrian-mckinnon',musoUrl:'https://www.muso.ai/music/adrian-mckinnon'},
+  {id:13,name:'Solomon Naar',alias:'Cmgxbreezy',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-09-01',auditSent:'2023-02-01',auditCompleted:'2022-11-06',splitsMissing:true,splitsOutreach:true,monthlyCheck:'2025-12-10',stmtRecv:{q1:false,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/solomon-naar',musoUrl:'https://www.muso.ai/music/solomon-naar'},
+  {id:14,name:'Jack Richmeier',alias:'Jahk',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Pop',status:'active',scheduleA:'2026-01-15',auditSent:'2025-03-01',auditCompleted:'2024-12-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-01',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:true},geniusUrl:'https://genius.com/artists/jack-richmeier',musoUrl:'https://www.muso.ai/music/jack-richmeier'},
+  {id:15,name:'Matthias Ringleb',alias:'Slim Pharoah',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-02-01',auditSent:'2023-07-01',auditCompleted:'2023-05-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-15',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/matthias-ringleb',musoUrl:'https://www.muso.ai/music/matthias-ringleb'},
+  {id:16,name:'Damion Deron Williams',alias:'DJ Swift',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-09-01',auditSent:'2024-01-01',auditCompleted:'2023-10-26',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-25',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/damion-deron-williams',musoUrl:'https://www.muso.ai/music/damion-deron-williams'},
+  {id:17,name:'Omir Bernard',alias:'Popp Hunna',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-06-01',auditSent:'2022-09-01',auditCompleted:'2022-07-06',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-01',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/omir-bernard',musoUrl:'https://www.muso.ai/music/omir-bernard'},
+  {id:18,name:'Denzel Ayuk',alias:'Forte Bowie',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Afrobeats',status:'active',scheduleA:'2025-12-01',auditSent:'2024-08-01',auditCompleted:'2024-06-30',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-07',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/denzel-ayuk',musoUrl:'https://www.muso.ai/music/denzel-ayuk'},
+  {id:19,name:'Sebastian Julien Graux',alias:'Graux',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Pop',status:'active',scheduleA:'2025-07-01',auditSent:'2024-03-01',auditCompleted:'2024-01-30',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-20',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sebastian-julien-graux',musoUrl:'https://www.muso.ai/music/sebastian-julien-graux'},
+  {id:20,name:'Oliver Nazemi',alias:'Kosfinger',pro:'PRS',company:'PAQ',admin:'Empire',genre:'Electronic / Dance',status:'active',scheduleA:'2025-10-15',auditSent:'2024-06-01',auditCompleted:'2024-04-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-05',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/oliver-nazemi',musoUrl:'https://www.muso.ai/music/oliver-nazemi'},
+  {id:21,name:'Mahir Karaosmanovic',alias:'Makalo',pro:'BMI',company:'PAQ',admin:'Empire',genre:'R&B / Soul',status:'active',scheduleA:'2025-05-01',auditSent:'2023-11-01',auditCompleted:'2023-09-19',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-10',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/mahir-karaosmanovic',musoUrl:'https://www.muso.ai/music/mahir-karaosmanovic'},
+  {id:22,name:'Tzurel Halfon',alias:'Zuri',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-08-01',auditSent:'2023-01-01',auditCompleted:'2022-11-18',splitsMissing:true,splitsOutreach:false,monthlyCheck:'2025-10-05',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/tzurel-halfon',musoUrl:'https://www.muso.ai/music/tzurel-halfon'},
+  {id:23,name:'Tchakalla Anthony Romeo',alias:'Gunboi',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-03-15',auditSent:'2024-01-20',auditCompleted:'2023-11-19',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-18',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/tchakalla-anthony-romeo',musoUrl:'https://www.muso.ai/music/tchakalla-anthony-romeo'},
+  {id:24,name:'Gregory Sanders Jr.',alias:'Hitman Audio',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-06-15',auditSent:'2023-09-01',auditCompleted:'2023-06-25',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-10',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/gregory-sanders-jr',musoUrl:'https://www.muso.ai/music/gregory-sanders-jr'},
+  {id:25,name:'Bryan Fleurimond',alias:'Bryon Sanon',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'R&B / Soul',status:'active',scheduleA:'2026-01-20',auditSent:'2025-02-01',auditCompleted:'2025-01-01',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-04',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:true},geniusUrl:'https://genius.com/artists/bryan-fleurimond',musoUrl:'https://www.muso.ai/music/bryan-fleurimond'},
+  {id:26,name:'Sekai Santiago Paz Hayward',alias:'Sekai',pro:'BMI',company:'PAQ',admin:'Empire',genre:'R&B / Soul',status:'active',scheduleA:'2025-08-01',auditSent:'2024-04-15',auditCompleted:'2024-02-10',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-22',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sekai-santiago-paz-hayward',musoUrl:'https://www.muso.ai/music/sekai-santiago-paz-hayward'},
+  {id:27,name:'Kevin Christopher Earl',alias:'Flask',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-10-01',auditSent:'2022-12-01',auditCompleted:'2022-10-20',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-12-20',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/kevin-christopher-earl',musoUrl:'https://www.muso.ai/music/kevin-christopher-earl'},
+  {id:28,name:'Taylor Watson',alias:'Tay Money',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-11-15',auditSent:'2024-07-01',auditCompleted:'2024-04-17',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-02',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/taylor-watson',musoUrl:'https://www.muso.ai/music/taylor-watson'},
+  {id:29,name:'Truman Rogers II',alias:'Big Kay Breezy',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-07-01',auditSent:'2022-10-01',auditCompleted:'2022-07-22',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-25',stmtRecv:{q1:false,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/truman-rogers-ii',musoUrl:'https://www.muso.ai/music/truman-rogers-ii'},
+  {id:30,name:'Balwinder Singh',alias:'Yeah Proof',pro:'PRS',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-09-01',auditSent:'2024-02-01',auditCompleted:'2023-11-19',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-08',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/balwinder-singh',musoUrl:'https://www.muso.ai/music/balwinder-singh'},
+  {id:31,name:'Adnan Khan',alias:'Menace',pro:'ASCAP',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-04-15',auditSent:'2023-06-01',auditCompleted:'2023-03-29',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-01',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/adnan-khan',musoUrl:'https://www.muso.ai/music/adnan-khan'},
+  {id:32,name:'Gabriel Nowee',alias:'Goldiie',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-06-01',auditSent:'2023-12-01',auditCompleted:'2023-10-06',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-14',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/goldiie',musoUrl:'https://www.muso.ai/music/goldiie'},
+  {id:33,name:'Brayon Nelson',alias:'Mook',pro:'BMI',company:'PAQ',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-05-01',auditSent:'2022-08-01',auditCompleted:'2022-06-18',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-11-20',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/mook',musoUrl:'https://www.muso.ai/music/mook'},
+  // Verde / Empire
+  {id:34,name:'Jose Jimenez Suarez',alias:'Kronix Magical',pro:'ASCAP',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-10-01',auditSent:'2024-05-01',auditCompleted:'2024-03-04',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-05',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/kronix-magical',musoUrl:'https://www.muso.ai/music/kronix-magical'},
+  {id:35,name:'Sharon Ramirez',alias:'',pro:'SESAC',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-07-15',auditSent:'2024-03-01',auditCompleted:'2023-12-25',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-20',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sharon-ramirez',musoUrl:'https://www.muso.ai/music/sharon-ramirez'},
+  {id:36,name:'Johnathan A.G. Abreu',alias:'Oreoo Beatz',pro:'ASCAP',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2024-11-01',auditSent:'2023-05-01',auditCompleted:'2023-03-15',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-10',stmtRecv:{q1:false,q2:true,q3:true,q4:false},stmtSent:{q1:false,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/oreoo-beatz',musoUrl:'https://www.muso.ai/music/oreoo-beatz'},
+  {id:37,name:'Jadiel Oliveras',alias:'Jonniel',pro:'ASCAP',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-08-01',auditSent:'2024-01-15',auditCompleted:'2023-10-26',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-06',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/jonniel',musoUrl:'https://www.muso.ai/music/jonniel'},
+  {id:38,name:'Jose Fernando Rivera',alias:'Kendo Kaponi',pro:'BMI',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-03-01',auditSent:'2024-09-01',auditCompleted:'2024-06-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-15',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/kendo-kaponi',musoUrl:'https://www.muso.ai/music/kendo-kaponi'},
+  {id:39,name:'Jorge Hernandez',alias:'Juhn',pro:'BMI',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2025-06-15',auditSent:'2024-02-01',auditCompleted:'2024-01-02',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-28',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/juhn',musoUrl:'https://www.muso.ai/music/juhn'},
+  {id:40,name:'Ivan Chevere',alias:'Mate Traxx',pro:'SESAC',company:'Verde',admin:'Empire',genre:'Latin',status:'active',scheduleA:'2024-10-01',auditSent:'2023-04-01',auditCompleted:'2023-01-13',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-28',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/mate-traxx',musoUrl:'https://www.muso.ai/music/mate-traxx'},
+  // Music Lane / Empire
+  {id:41,name:'Desmond Peterson',alias:'Benny Wond3r',pro:'BMI',company:'Music Lane',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-05-01',auditSent:'2023-11-01',auditCompleted:'2023-08-12',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-10',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/benny-wond3r',musoUrl:'https://www.muso.ai/music/benny-wond3r'},
+  {id:42,name:'Daniel Winsch',alias:'Baby Winsch',pro:'BMI',company:'Music Lane',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-09-01',auditSent:'2024-04-01',auditCompleted:'2024-02-21',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-01',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/baby-winsch',musoUrl:'https://www.muso.ai/music/baby-winsch'},
+  {id:43,name:'Yusuf Alisytine',alias:'Yousseff Ali [Syft Inc]',pro:'BMI',company:'Music Lane',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-07-01',auditSent:'2022-12-01',auditCompleted:'2022-09-18',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-12-05',stmtRecv:{q1:false,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/yousseff-ali',musoUrl:'https://www.muso.ai/music/yousseff-ali'},
+  // In Class / Empire
+  {id:44,name:'Cory Orville Reid',alias:'Nebu Kiniza [Open On Sunday]',pro:'BMI',company:'In Class',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-11-01',auditSent:'2024-06-15',auditCompleted:'2024-04-19',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-25',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/nebu-kiniza',musoUrl:'https://www.muso.ai/music/nebu-kiniza'},
+  // Gold Tune / Empire
+  {id:45,name:'Christopher Gibbs',alias:'Natra Average',pro:'BMI',company:'Gold Tune',admin:'Empire',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-04-01',auditSent:'2023-07-01',auditCompleted:'2023-05-11',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-15',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/natra-average',musoUrl:'https://www.muso.ai/music/natra-average'},
+
+  // Kobalt writers
+  {id:46,name:'Donovan Knight',alias:'DK The Punisher',pro:'BMI',company:'75 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-07-01',auditSent:'2024-03-01',auditCompleted:'2024-01-14',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-01',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/dk-the-punisher',musoUrl:'https://www.muso.ai/music/dk-the-punisher'},
+  {id:47,name:'Javar Rockamore',alias:'[The Loopholes]',pro:'BMI',company:'75 Music Publishing',admin:'Kobalt',genre:'R&B / Soul',status:'active',scheduleA:'2025-11-01',auditSent:'2024-07-15',auditCompleted:'2024-06-06',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-08',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/javar-rockamore',musoUrl:'https://www.muso.ai/music/javar-rockamore'},
+  {id:48,name:'Robert Reese',alias:'Bobby Keyz [The Loopholes]',pro:'BMI',company:'75 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-09-01',auditSent:'2023-03-01',auditCompleted:'2023-01-17',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-20',stmtRecv:{q1:false,q2:true,q3:true,q4:false},stmtSent:{q1:false,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/bobby-keyz',musoUrl:'https://www.muso.ai/music/bobby-keyz'},
+  {id:49,name:'Theodore Thomas',alias:'Stonii [The Loopholes]',pro:'BMI',company:'75 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-05-01',auditSent:'2023-10-01',auditCompleted:'2023-07-15',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-18',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/stonii',musoUrl:'https://www.muso.ai/music/stonii'},
+  {id:50,name:'George Daniels',alias:'Sticks',pro:'BMI',company:'75 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-03-01',auditSent:'2022-06-01',auditCompleted:'2022-04-11',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-10-10',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sticks',musoUrl:'https://www.muso.ai/music/sticks'},
+  {id:51,name:'Brince Elam',alias:'Stoopid Beats',pro:'BMI',company:'BDT Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-08-01',auditSent:'2024-02-01',auditCompleted:'2023-12-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-05',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/stoopid-beats',musoUrl:'https://www.muso.ai/music/stoopid-beats'},
+  {id:52,name:'Donald Sales',alias:'Hazel',pro:'ASCAP',company:'BDT Music Publishing',admin:'Kobalt',genre:'R&B / Soul',status:'active',scheduleA:'2025-12-01',auditSent:'2025-01-01',auditCompleted:'2024-11-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-07',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:false},geniusUrl:'https://genius.com/artists/hazel',musoUrl:'https://www.muso.ai/music/hazel'},
+  {id:53,name:'Andre Atkins',alias:'Triple A',pro:'BMI',company:'Blu 7 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-11-01',auditSent:'2023-05-01',auditCompleted:'2023-03-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-15',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/triple-a',musoUrl:'https://www.muso.ai/music/triple-a'},
+  {id:54,name:'Ayoola Ogundeyi',alias:'Ayo Jay',pro:'BMI',company:'Blu 7 Music Publishing',admin:'Kobalt',genre:'Afrobeats',status:'active',scheduleA:'2025-06-01',auditSent:'2024-01-01',auditCompleted:'2023-11-26',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-22',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/ayo-jay',musoUrl:'https://www.muso.ai/music/ayo-jay'},
+  {id:55,name:'Calvin Tarvin',alias:'Tiggi',pro:'BMI',company:'Blu 7 Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-04-15',auditSent:'2023-08-01',auditCompleted:'2023-06-10',splitsMissing:true,splitsOutreach:false,monthlyCheck:'2026-01-08',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/calvin-tarvin',musoUrl:'https://www.muso.ai/music/calvin-tarvin'},
+  {id:56,name:'Ives Lemos',alias:'DJ Flipp',pro:'BMI',company:'Circle Point Music Publishing',admin:'Kobalt',genre:'Electronic / Dance',status:'active',scheduleA:'2025-09-01',auditSent:'2024-04-01',auditCompleted:'2024-01-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-04',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/ives-lemos',musoUrl:'https://www.muso.ai/music/ives-lemos'},
+  {id:57,name:'Yusef Ali El',alias:'Ye Ali',pro:'ASCAP',company:'Circle Point Music Publishing',admin:'Kobalt',genre:'R&B / Soul',status:'active',scheduleA:'2026-01-10',auditSent:'2025-04-01',auditCompleted:'2025-02-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-09',stmtRecv:{q1:true,q2:true,q3:true,q4:true},stmtSent:{q1:true,q2:true,q3:true,q4:true},geniusUrl:'https://genius.com/artists/yusef-ali-el',musoUrl:'https://www.muso.ai/music/yusef-ali-el'},
+  {id:58,name:'Chris Valenzuela',alias:'[Dream Addix]',pro:'ASCAP',company:'Grey State Music Publishing',admin:'Kobalt',genre:'Pop',status:'active',scheduleA:'2025-10-01',auditSent:'2024-06-01',auditCompleted:'2024-03-25',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-10',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/dream-addix',musoUrl:'https://www.muso.ai/music/dream-addix'},
+  {id:59,name:'Michael Ferrucci',alias:'[Dream Addix]',pro:'ASCAP',company:'Grey State Music Publishing',admin:'Kobalt',genre:'Pop',status:'active',scheduleA:'2025-10-01',auditSent:'2024-06-01',auditCompleted:'2024-04-16',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-10',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/dream-addix',musoUrl:'https://www.muso.ai/music/dream-addix'},
+  {id:60,name:'Nosakhere Andrews',alias:'Mr. 217',pro:'ASCAP',company:'Grey State Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-08-01',auditSent:'2023-01-01',auditCompleted:'2022-10-12',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-11-30',stmtRecv:{q1:false,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/mr-217',musoUrl:'https://www.muso.ai/music/mr-217'},
+  {id:61,name:'Calvin Price',alias:'Critacal',pro:'SESAC',company:'L.I.T.T Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-07-01',auditSent:'2024-01-15',auditCompleted:'2023-12-14',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-20',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/critacal',musoUrl:'https://www.muso.ai/music/critacal'},
+  {id:62,name:'Dyllan McKinney',alias:'DmacTooBangin',pro:'BMI',company:'L.I.T.T Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-12-01',auditSent:'2023-06-01',auditCompleted:'2023-03-17',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-05',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/dmactoobangin',musoUrl:'https://www.muso.ai/music/dmactoobangin'},
+  {id:63,name:'Steven Bolden',alias:'Sauce Lord',pro:'BMI',company:'L.I.T.T Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-03-01',auditSent:'2022-09-01',auditCompleted:'2022-07-04',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-01',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sauce-lord',musoUrl:'https://www.muso.ai/music/sauce-lord'},
+  {id:64,name:'Brandon Henshaw',alias:'Youngstarr',pro:'BMI',company:'Manticore Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-05-15',auditSent:'2023-11-01',auditCompleted:'2023-08-29',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-01',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/youngstarr',musoUrl:'https://www.muso.ai/music/youngstarr'},
+  {id:65,name:'Sean Stein',alias:'D.I.$',pro:'BMI',company:'Manticore Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-09-01',auditSent:'2023-03-01',auditCompleted:'2023-01-23',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-12',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/dis',musoUrl:'https://www.muso.ai/music/dis'},
+  {id:66,name:'Akano Wisdom',alias:'Spax',pro:'BMI',company:'NIGO Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-08-01',auditSent:'2024-02-15',auditCompleted:'2023-11-18',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-28',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/spax',musoUrl:'https://www.muso.ai/music/spax'},
+  {id:67,name:'Larry Ortega',alias:'Otee Beats',pro:'BMI',company:'NIGO Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-06-01',auditSent:'2022-10-01',auditCompleted:'2022-08-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-12-15',stmtRecv:{q1:false,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/otee-beats',musoUrl:'https://www.muso.ai/music/otee-beats'},
+  {id:68,name:'Mayowa Emmanuel Adewale',alias:'Mayorkun',pro:'BMI',company:'NIGO Music Publishing',admin:'Kobalt',genre:'Afrobeats',status:'active',scheduleA:'2025-11-01',auditSent:'2024-05-01',auditCompleted:'2024-03-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-28',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/mayorkun',musoUrl:'https://www.muso.ai/music/mayorkun'},
+  {id:69,name:'Panshak Zamani',alias:'Ice Prince',pro:'PRS',company:'NIGO Music Publishing',admin:'Kobalt',genre:'Afrobeats',status:'active',scheduleA:'2025-07-15',auditSent:'2024-01-01',auditCompleted:'2023-10-28',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-05',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/ice-prince',musoUrl:'https://www.muso.ai/music/ice-prince'},
+  {id:70,name:'Lyrica Nasha Anderson',alias:'',pro:'BMI',company:'Seger Music Publishing',admin:'Kobalt',genre:'R&B / Soul',status:'active',scheduleA:'2025-09-01',auditSent:'2024-03-15',auditCompleted:'2024-01-27',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-15',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/lyrica-anderson',musoUrl:'https://www.muso.ai/music/lyrica-anderson'},
+  {id:71,name:'Karriem Hicks',alias:'',pro:'BMI',company:'Seger Music Publishing',admin:'Kobalt',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-04-01',auditSent:'2022-07-01',auditCompleted:'2022-04-09',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2025-11-10',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/karriem-hicks',musoUrl:'https://www.muso.ai/music/karriem-hicks'},
+
+  // SongSplits writers
+  {id:72,name:'Karl S Torres',alias:'Sou El Flotador',pro:'ASCAP',company:'PAQ',admin:'SongSplits',genre:'Latin',status:'active',scheduleA:'2025-10-01',auditSent:'2024-04-01',auditCompleted:'2024-01-22',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-03',stmtRecv:{q1:true,q2:true,q3:true,q4:false},stmtSent:{q1:true,q2:true,q3:false,q4:false},geniusUrl:'https://genius.com/artists/sou-el-flotador',musoUrl:'https://www.muso.ai/music/sou-el-flotador'},
+  {id:73,name:'Joshua Coleman',alias:'Neil Gang',pro:'ASCAP',company:'PAQ',admin:'SongSplits',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2025-06-01',auditSent:'2023-12-01',auditCompleted:'2023-09-23',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-02-18',stmtRecv:{q1:true,q2:false,q3:true,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/neil-gang',musoUrl:'https://www.muso.ai/music/neil-gang'},
+  {id:74,name:'Terrelle Francis',alias:'Say Terrelle',pro:'BMI',company:'PAQ',admin:'SongSplits',genre:'Hip-Hop / Rap',status:'active',scheduleA:'2024-08-01',auditSent:'2023-02-01',auditCompleted:'2022-11-07',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-01-20',stmtRecv:{q1:false,q2:true,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/say-terrelle',musoUrl:'https://www.muso.ai/music/say-terrelle'},
+  {id:75,name:'Ismael Ortiz Daniel Enrique',alias:'Orteez',pro:'BMI',company:'PAQ',admin:'SongSplits',genre:'Latin',status:'active',scheduleA:'2025-04-01',auditSent:'2024-09-01',auditCompleted:'2024-06-08',splitsMissing:false,splitsOutreach:false,monthlyCheck:'2026-03-07',stmtRecv:{q1:true,q2:true,q3:false,q4:false},stmtSent:{q1:true,q2:false,q3:false,q4:false},geniusUrl:'https://genius.com/artists/orteez',musoUrl:'https://www.muso.ai/music/orteez'},
+  {id:76,name:'Bisbo Records',alias:'Catalog',pro:'',company:'PAQ',admin:'SongSplits',genre:'Various',status:'active',scheduleA:'',auditSent:'',auditCompleted:'',splitsMissing:false,splitsOutreach:false,monthlyCheck:'',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'',musoUrl:''},
+  {id:77,name:'Doomsday Productions',alias:'Catalog',pro:'',company:'PAQ',admin:'SongSplits',genre:'Various',status:'active',scheduleA:'',auditSent:'',auditCompleted:'',splitsMissing:false,splitsOutreach:false,monthlyCheck:'',stmtRecv:{q1:false,q2:false,q3:false,q4:false},stmtSent:{q1:false,q2:false,q3:false,q4:false},geniusUrl:'',musoUrl:''},
+];
+
+let nextId=78, currentFilter='all', searchQ='', editingId=null;
+let currentView='cards';
+let compactMode=false;
+
+// Statement run: Q4-Q1 (Oct–Mar) vs Q2-Q3 (Apr–Sep) — manually set, persisted
+const _autoRun = (TODAY.getMonth()+1 >= 10 || TODAY.getMonth()+1 <= 3)
+  ? {qs:[4,1], label:'Q4-Q1'}
+  : {qs:[2,3], label:'Q2-Q3'};
+const _savedRunRaw = localStorage.getItem('stmtRun');
+let STMT_RUN;
+if(_savedRunRaw){
+  try {
+    const _parsed = JSON.parse(_savedRunRaw);
+    STMT_RUN = _parsed; // new format: {qs, label, year}
+  } catch(e) {
+    // legacy string format
+    const _yr = TODAY.getFullYear();
+    const _legRunYr = (_savedRunRaw==='Q4-Q1' && (TODAY.getMonth()+1)<=3) ? _yr-1 : _yr;
+    STMT_RUN = _savedRunRaw==='Q4-Q1'
+      ? {qs:[4,1], label:'Q4-Q1', year:_legRunYr}
+      : {qs:[2,3], label:'Q2-Q3', year:_yr};
+  }
+} else {
+  const _yr = TODAY.getFullYear();
+  // Q4-Q1 run year = year Q4 started: if Jan-Mar, Q4 was last year
+  const _runYr = (_autoRun.qs[0]===4 && (TODAY.getMonth()+1)<=3) ? _yr-1 : _yr;
+  STMT_RUN = {qs:_autoRun.qs, label:_autoRun.label, year:_runYr};
+}
+let pendingAdvanceUnsent = []; // writers not yet sent, shown in alerts during advance warning
+
+// Run history — snapshots of writer stmt data per period
+function getRunHistory(){ try{ return JSON.parse(localStorage.getItem('stmtRunHistory')||'[]'); }catch(e){return[];} }
+function saveRunHistory(h){ localStorage.setItem('stmtRunHistory', JSON.stringify(h)); }
+
+
+function renderUnsentCount(){
+  const btn = document.getElementById('btn-show-unsent');
+  if(!btn) return;
+  const total = writers.filter(w => w.status !== 'inactive').length;
+  const sent = writers.filter(w => w.status !== 'inactive' && stmtRunSent(w)).length;
+  btn.textContent = `↓ Show unsent this period  ${sent}/${total}`;
+}
+function showUnsentList(){
+  // Toggle stmtSent filter down (-1) to surface unsent writers
+  toggleState.stmtSent = -1;
+  const pill = document.getElementById('pill-stmtSent');
+  if(pill){
+    const arrow = pill.querySelector('.pill-arrow');
+    if(arrow) arrow.textContent = '↓';
+    pill.classList.add('on');
+  }
+  renderAll();
+}
+
+function advanceStmtRun(){
+  const yr = TODAY.getFullYear();
+  // Q4-Q1 (year Y) → Q2-Q3 (year Y+1);  Q2-Q3 (year Y) → Q4-Q1 (year Y)
+  const nextYear = STMT_RUN.qs[0]===4 ? STMT_RUN.year+1 : STMT_RUN.year;
+  const nextRun = STMT_RUN.qs[0]===4
+    ? {qs:[2,3], label:'Q2-Q3', year:nextYear}
+    : {qs:[4,1], label:'Q4-Q1', year:nextYear};
+  const nextPeriodStr = runPeriodStr(nextRun.label, nextRun.year);
+
+  // Find unsent writers
+  const unsent = writers.filter(w=>!STMT_RUN.qs.every(q=>w.stmtSent[`q${q}`]));
+
+  // Build confirm message
+  let msg = `Advance statement period to ${nextRun.label}?\n\nThis will clear all current statement data.`;
+  if(unsent.length>0){
+    const names = unsent.slice(0,8).map(w=>w.name+(w.alias?` (${w.alias})`:''));
+    const extra = unsent.length>8 ? `\n  …and ${unsent.length-8} more` : '';
+    msg += `\n\n⚠ ${unsent.length} writer${unsent.length>1?'s have':' has'} NOT been sent statements:\n  • ${names.join('\n  • ')}${extra}`;
+    // Show unsent in alerts
+    pendingAdvanceUnsent = unsent.map(w=>w.id);
+    renderAlerts();
+  }
+
+  const proceed = confirm(msg);
+  if(!proceed){
+    pendingAdvanceUnsent = [];
+    renderAlerts();
+    return;
+  }
+
+  // Ask to save current run
+  const saveRun = confirm(`Save the current ${STMT_RUN.label} run data before advancing?\nYou'll be able to view it later from the period dropdown.`);
+  if(saveRun){
+    const runNum = STMT_RUN.qs[0]===4 ? 1 : 2;
+    const snapshot = {
+      label: runPeriodStr(STMT_RUN.label, STMT_RUN.year),
+      year: yr,
+      periodStr: runPeriodStr(STMT_RUN.label, STMT_RUN.year),
+      savedAt: TODAY_STR,
+      writers: writers.map(w=>({
+        id:w.id, name:w.name,
+        recv: w.stmtRecv[`q${STMT_RUN.qs[0]}`] && w.stmtRecv[`q${STMT_RUN.qs[1]}`],
+        sent: w.stmtSent[`q${STMT_RUN.qs[0]}`] && w.stmtSent[`q${STMT_RUN.qs[1]}`],
+        recvDate: w[`stmtRecvDate${runNum}`]||'',
+        sentDate: w[`stmtSentDate${runNum}`]||w.stmtSentDate||''
+      }))
+    };
+    const hist = getRunHistory();
+    // Replace if same period+year already saved
+    const existIdx = hist.findIndex(h=>h.label===snapshot.label&&h.year===snapshot.year);
+    if(existIdx>=0) hist[existIdx]=snapshot; else hist.push(snapshot);
+    saveRunHistory(hist);
+    toast('Run Saved', `${snapshot.periodStr} statement data has been saved.`);
+  }
+
+  // Clear current run stmt data
+  const runNum = STMT_RUN.qs[0]===4 ? 1 : 2;
+  writers.forEach(w=>{
+    STMT_RUN.qs.forEach(q=>{ w.stmtRecv[`q${q}`]=false; w.stmtSent[`q${q}`]=false; });
+    w[`stmtRecvDate${runNum}`]='';
+    w[`stmtSentDate${runNum}`]='';
+    if(runNum===1) w.stmtSentDate='';
+    dbSave(w);
+  });
+
+  pendingAdvanceUnsent = [];
+  STMT_RUN = nextRun;
+  localStorage.setItem('stmtRun', JSON.stringify(STMT_RUN));
+  renderAll();
+  toast('Period Advanced', `Now tracking ${STMT_RUN.label}.`);
+}
+
+function viewPastRun(idx){
+  const hist = getRunHistory();
+  if(idx<0||idx>=hist.length) return;
+  const run = hist[idx];
+  // Show run data in a simple alert-style toast / modal overlay
+  const notSent = run.writers.filter(w=>!w.sent);
+  const sent = run.writers.filter(w=>w.sent);
+  let info = `${run.periodStr} — saved ${run.savedAt}\n\n`;
+  info += `✓ Sent (${sent.length}): ${sent.map(w=>w.name).join(', ')||'none'}\n\n`;
+  info += `✗ Not sent (${notSent.length}): ${notSent.map(w=>w.name).join(', ')||'none'}`;
+  alert(info);
+}
+
+// Toggle states: 0=off, 1=asc (show complete/sent first), -1=desc (show incomplete/not-sent first)
+const toggleState = { auditComplete:0, auditSent:0, stmtRecv:0, stmtSent:0 };
+// Key visibility filters — which dot types to show on cards
+const keyFilter = { auditComp:true, auditAttn:true, auditOver:true, auditUnsent:true, stmtRecv:true, stmtSent:true, stmtMiss:true, stmtNone:true };
+
+function toggleCompact(){
+  compactMode=!compactMode;
+  document.getElementById('btn-compact').classList.toggle('on', compactMode);
+  renderCards();
+}
+
+// checkStmtRunAdvance removed — use manual advanceStmtRun() button in key
+function checkStmtRunAdvance(){
+  // no-op: period is now manually advanced via the Status Key
+}
+
+// ── RENDER ───────────────────────────────────────────────────────────
+function getFiltered(){
+  let d=[...writers];
+  const q=searchQ.toLowerCase();
+  if(q) d=d.filter(w=>(w.name+' '+(w.alias||'')+' '+w.company).toLowerCase().includes(q));
+  const co=document.getElementById('filter-company').value;
+  const adm=document.getElementById('filter-admin').value;
+  const pro=document.getElementById('filter-pro').value;
+  if(co) d=d.filter(w=>w.company===co);
+  if(adm) d=d.filter(w=>w.admin===adm);
+  if(pro) d=d.filter(w=>w.pro===pro);
+  if(currentFilter==='active') d=d.filter(w=>w.status==='active');
+  if(currentFilter==='retention') d=d.filter(w=>w.status==='retention');
+  if(currentFilter==='stale') d=d.filter(w=>rowFlags(w).stale||rowFlags(w).pending);
+  if(currentFilter==='splits') d=d.filter(w=>w.splitsMissing);
+  // Key color filters — only apply removal when a group has SOME (not all) keys off
+  // If an entire group is off (via header), just hide its dots — don't remove cards
+  const auditKeys = ['auditComp','auditAttn','auditOver','auditUnsent'];
+  const stmtKeys  = ['stmtRecv','stmtSent','stmtMiss','stmtNone'];
+  const auditAllOff = auditKeys.every(k=>!keyFilter[k]);
+  const auditAllOn  = auditKeys.every(k=>keyFilter[k]);
+  const stmtAllOff  = stmtKeys.every(k=>!keyFilter[k]);
+  const stmtAllOn   = stmtKeys.every(k=>keyFilter[k]);
+  // Only filter within a group when it's partially engaged (some on, some off)
+  const applyAuditFilter = !auditAllOff && !auditAllOn;
+  const applyStmtFilter  = !stmtAllOff  && !stmtAllOn;
+  if(applyAuditFilter || applyStmtFilter){
+    d = d.filter(w => {
+      if(applyAuditFilter){
+        const auditDate = w.auditCompleted || w.auditSent;
+        const aSt = auditSt(auditDate);
+        const flags = rowFlags(w);
+        const auditCompKey = aSt==='green' ? 'auditComp' : aSt==='amber' ? 'auditAttn' : 'auditOver';
+        if(!keyFilter[auditCompKey]) return false;
+        const auditSentSt = auditSt(w.auditSent);
+        const auditSentKey = flags.pending ? 'auditUnsent' : auditSentSt==='green' ? 'auditComp' : auditSentSt==='amber' ? 'auditAttn' : 'auditOver';
+        if(!keyFilter[auditSentKey]) return false;
+      }
+      if(applyStmtFilter){
+        const recvKey = stmtRunRecv(w) ? 'stmtRecv' : 'stmtNone';
+        if(!keyFilter[recvKey]) return false;
+        const sentKey = stmtRunSent(w) ? 'stmtSent' : 'stmtMiss';
+        if(!keyFilter[sentKey]) return false;
+      }
+      return true;
+    });
+  }
+  // Toggle filters
+  // stmtRecv===-1: hard-filter — keep only writers who have NOT received a statement this run
+  if(toggleState.stmtRecv===-1){
+    d=d.filter(w=>!stmtRunRecv(w));
+  }
+  // auditSent===-1: hard-filter — keep only writers needing a send (audit done <12mo, not sent/sent before audit)
+  if(toggleState.auditSent===-1){
+    d=d.filter(w=>{
+      const pri = auditPriority(w);
+      if(pri<2) return false; // >12mo or no audit — remove
+      const sentGreen = auditSt(w.auditSent)==='green';
+      const sentBefore = w.auditSent && w.auditCompleted && new Date(w.auditSent) < new Date(w.auditCompleted);
+      return !sentGreen || sentBefore; // keep only unsent or sent-before-audit
+    });
+  }
+  return d;
+}
+
+// Helpers for statement run checks
+function stmtRunSent(w){ if(!w.stmtSent) return false; return STMT_RUN.qs.every(q=>w.stmtSent[`q${q}`]); }
+function stmtRunRecv(w){ if(!w.stmtRecv) return false; return STMT_RUN.qs.some(q=>w.stmtRecv[`q${q}`]); }
+function stmtRunRecvNotSent(w){ return stmtRunRecv(w) && !stmtRunSent(w); }
+function auditComplete(w){ return !!w.auditCompleted; }
+
+function stmtPriority(w){
+  // 0 = received but not sent (red — action needed)
+  // 1 = not received and not sent (amber — not yet in)
+  if(stmtRunRecv(w) && !stmtRunSent(w)) return 0;
+  return 1;
+}
+function auditPriority(w){
+  // Returns 0 (worst/no audit) → 3 (ok/green)
+  const d = w.auditCompleted || w.auditSent;
+  if(!d) return 0;       // no audit
+  const m = mths(d);
+  if(m >= 12) return 1;  // overdue >12mo → red
+  if(m >= 6)  return 2;  // needs attention 6-12mo → amber
+  return 3;              // ok <6mo → green
+}
+
+
+// Sort a group of writers with toggle priority (floats matching to top)
+function applyToggleSort(arr){
+  // Build priority score per writer (lower = higher priority)
+  return [...arr].sort((a,b)=>{
+    let scoreA=0, scoreB=0;
+
+    // auditComplete toggle
+    if(toggleState.auditComplete===1){  // recent first, grey stale — all shown
+      // priority 3=<6mo→0, priority 2=6-12mo→5, priority 1/>12mo or no audit→20 (greyed)
+      const pA=auditPriority(a), pB=auditPriority(b);
+      scoreA += pA===3?0:pA===2?5:20; scoreB += pB===3?0:pB===2?5:20;
+    } else if(toggleState.auditComplete===-1){ // no audit → overdue → needs attn
+      scoreA += auditPriority(a); scoreB += auditPriority(b);
+    }
+
+    // auditSent toggle
+    if(toggleState.auditSent===1){ // recently sent on top
+      const ga=(auditSt(a.auditSent)==='green'), gb=(auditSt(b.auditSent)==='green');
+      const ba=a.auditSent&&a.auditCompleted&&new Date(a.auditSent)<new Date(a.auditCompleted);
+      const bb=b.auditSent&&b.auditCompleted&&new Date(b.auditSent)<new Date(b.auditCompleted);
+      scoreA += (ga&&!ba)?0:10; scoreB += (gb&&!bb)?0:10;
+    } else if(toggleState.auditSent===-1){ // pri 3 (red, <6mo) first, then pri 2 (amber, 6-12mo)
+      const pa=auditPriority(a), pb=auditPriority(b);
+      scoreA += pa===3?0:5; scoreB += pb===3?0:5;
+    }
+
+    // stmtRecv priority
+    if(toggleState.stmtRecv===1){
+      // forward: recv+not sent first, then recv+sent, then not recv
+      const pa = stmtRunRecvNotSent(a)?0 : stmtRunRecv(a)?5 : 10;
+      const pb = stmtRunRecvNotSent(b)?0 : stmtRunRecv(b)?5 : 10;
+      scoreA+=pa; scoreB+=pb;
+    } else if(toggleState.stmtRecv===-1){
+      // backwards: NOT received on top
+      scoreA += stmtRunRecv(a)?10:0; scoreB += stmtRunRecv(b)?10:0;
+    }
+
+    // stmtSent toggle
+    if(toggleState.stmtSent===1){ // sent on top
+      scoreA += stmtRunSent(a)?0:10; scoreB += stmtRunSent(b)?0:10;
+    } else if(toggleState.stmtSent===-1){ // not sent on top
+      scoreA += stmtRunSent(a)?10:0; scoreB += stmtRunSent(b)?10:0;
+    }
+
+    if(scoreA!==scoreB) return scoreA-scoreB;
+    return a.name.localeCompare(b.name);
+  });
+}
+
+// Get compact dot indicators for a writer based on active toggles
+function getCompactDots(w){
+  const dots=[];
+  if(toggleState.auditComplete!==0){
+    const hasAudit = !!(w.auditCompleted||w.auditSent);
+    const priority = auditPriority(w);
+    if(toggleState.auditComplete===1){
+      // Forward: highlight <12mo audits, grey >12mo or none
+      const fresh = priority>=2; // priority 2=amber(6-12mo), 3=green(<6mo)
+      const color = priority===3?'pip-green':priority===2?'pip-amber':'pip-gray';
+      dots.push({color: fresh?color:'pip-gray', show:fresh});
+    } else {
+      // Backward: grey writers with fresh audit (<6mo), highlight overdue/missing
+      const overdue = priority<3; // priority 0=never, 1=>12mo, 2=6-12mo all need attention
+      const color = priority===0?'pip-red':priority===1?'pip-red':priority===2?'pip-amber':'pip-gray';
+      dots.push({color: overdue?color:'pip-gray', show:overdue});
+    }
+  }
+  if(toggleState.auditSent!==0){
+    const sentGreen = auditSt(w.auditSent)==='green';
+    const auditPri = auditPriority(w);
+    // sentBeforeAudit: sent date is older than audit completed date
+    const sentDate = w.auditSent ? new Date(w.auditSent) : null;
+    const auditDate = w.auditCompleted ? new Date(w.auditCompleted) : null;
+    const sentBeforeAudit = sentDate && auditDate && sentDate < auditDate;
+    const needsSend = !sentGreen || sentBeforeAudit; // needs a (re)send
+
+    if(toggleState.auditSent===1){
+      // Forward: highlight recently sent, grey those that need sending
+      dots.push({color: sentGreen && !sentBeforeAudit ? 'pip-green' : 'pip-gray', show: sentGreen && !sentBeforeAudit});
+    } else {
+      // Backward: hard-filtered to only writers needing send — flat red dot
+      dots.push({color:'pip-red', show:true});
+    }
+  }
+  if(toggleState.stmtRecv!==0){
+    const recv = stmtRunRecv(w);
+    if(toggleState.stmtRecv===1){
+      // Forward: highlight received, grey not-received
+      if(stmtRunRecvNotSent(w)) dots.push({color:'pip-blue', shape:'sq', show:true});
+      else if(recv)             dots.push({color:'pip-green', shape:'sq', show:true});
+      else                      dots.push({color:'pip-gray', shape:'sq', show:false});
+    } else if(toggleState.stmtRecv===-1){
+      // Backward: hard-filtered to only non-received — flat red dot
+      dots.push({color:'pip-red', shape:'sq', show:true});
+    }
+  }
+  if(toggleState.stmtSent!==0){
+    const sent=stmtRunSent(w);
+    if(toggleState.stmtSent===1){
+      // Forward: highlight sent, grey not-sent
+      dots.push({color: sent?'pip-green':'pip-gray', shape:'sq', show:sent});
+    } else {
+      // Backward: highlight not-sent (needs action), grey sent
+      dots.push({color: !sent?'pip-red':'pip-gray', shape:'sq', show:!sent});
+    }
+  }
+  return dots;
+}
+
+function populateDropdowns(){
+  const cos=[...new Set(writers.map(w=>w.company))].sort();
+  const adms=[...new Set(writers.map(w=>w.admin))].sort();
+  const coEl=document.getElementById('filter-company'); const cv=coEl.value;
+  coEl.innerHTML='<option value="">All Companies</option>'+cos.map(c=>`<option value="${c}"${c===cv?' selected':''}>${c}</option>`).join('');
+  const adEl=document.getElementById('filter-admin'); const av=adEl.value;
+  adEl.innerHTML='<option value="">All Administrators</option>'+adms.map(a=>`<option value="${a}"${a===av?' selected':''}>${a}</option>`).join('');
+}
+
+let sortField='name', sortDir=1;
+function sortBy(field){
+  if(sortField===field){ sortDir*=-1; } else{ sortField=field; sortDir=1; }
+  document.querySelectorAll('thead th').forEach(th=>{
+    th.classList.remove('sort-asc','sort-desc');
+    if(th.getAttribute('onclick')===`sortBy('${field}')`) th.classList.add(sortDir===1?'sort-asc':'sort-desc');
+  });
+  renderTable(); renderCards();
+}
+function getSorted(data){
+  return [...data].sort((a,b)=>{
+    let av=a[sortField]??'', bv=b[sortField]??'';
+    if(['scheduleA','auditSent','auditCompleted','monthlyCheck'].includes(sortField)){
+      av=av?new Date(av).getTime():0; bv=bv?new Date(bv).getTime():0;
+    } else if(sortField==='stmtRecv'){
+      av=a.stmtRecv[`q${CQ}`]?1:0; bv=b.stmtRecv[`q${CQ}`]?1:0;
+    } else { av=String(av).toLowerCase(); bv=String(bv).toLowerCase(); }
+    return av<bv?-sortDir:av>bv?sortDir:0;
+  });
+}
+
+function schedAStale(d){ return mths(d) > 6; }  // >6 months = needs new music update
+function auditPending(w){ // audit completed but not yet sent to company
+  if(!w.auditCompleted) return false;
+  return new Date(w.auditCompleted) > new Date(w.auditSent);
+}
+function rowFlags(w){
+  const stale = schedAStale(w.scheduleA);
+  const pending = auditPending(w);
+  const splits = w.splitsMissing;
+  const kobalt = w.admin==='Kobalt' && !stale && !pending && !splits;
+  return {stale, pending, splits, kobalt};
+}
+
+function renderTable(){
+  document.getElementById('cq-label').textContent=Q_NAMES[CQ];
+  const anyToggleOn = Object.values(toggleState).some(v=>v!==0);
+  const filtered = getFiltered();
+  const data = anyToggleOn ? applyToggleSort(filtered) : getSorted(filtered);
+  const tb=document.getElementById('tbody');
+  if(!data.length){ tb.innerHTML=`<tr class="empty-row"><td colspan="11">No writers match your filters.</td></tr>`; return; }
+  tb.innerHTML=data.map((w,i)=>{
+    const sa=schedASt(w.scheduleA), as=auditSt(w.auditSent);
+    const flags=rowFlags(w);
+    const stTag=w.status==='retention'?`<span class="tag tag-retention">RETENTION</span>`:w.status==='active'?`<span class="tag tag-active">ACTIVE</span>`:`<span class="tag tag-inactive">INACTIVE</span>`;
+    const saChipCls = flags.stale ? 'chip-amber' : `chip-${sa}`;
+    const saC=`<span class="chip ${saChipCls}"><span class="chip-dot"></span>${fmtD(w.scheduleA)}</span><span class="chip-sub">${ago(w.scheduleA)}</span>`;
+    const acDate = w.auditCompleted||w.auditSent;
+    const acChipCls = flags.pending ? 'chip-pending' : `chip-${schedASt(acDate)}`;
+    const acLabel = flags.pending ? '⚡ Unsent' : '';
+    const acC=`<span class="chip ${acChipCls}"><span class="chip-dot"></span>${fmtD(acDate)}${acLabel?` <span style="font-size:7px;margin-left:2px">${acLabel}</span>`:''}</span><span class="chip-sub">${ago(acDate)}</span>`;
+    const asC=`<span class="chip chip-${as}"><span class="chip-dot"></span>${fmtD(w.auditSent)}</span><span class="chip-sub">${ago(w.auditSent)}</span>`;
+    const splC=w.splitsMissing
+      ?`<span class="bool-n">⚠ Missing</span><br><span class="outreach-badge ${w.splitsOutreach?'outreach-y':'outreach-n'}">${w.splitsOutreach?'✉ Sent':'✗ No contact'}</span>`
+      :`<span class="bool-y">✓ OK</span>`;
+    const recvC=w.stmtRecv[`q${CQ}`]?`<span class="bool-y">✓ Received</span>`:`<span class="bool-n">✗ Pending</span>`;
+    const run1Sent = w.stmtSent.q4 && w.stmtSent.q1;
+    const run2Sent = w.stmtSent.q2 && w.stmtSent.q3;
+    const run1Recv = w.stmtRecv.q4 && w.stmtRecv.q1;
+    const run2Recv = w.stmtRecv.q2 && w.stmtRecv.q3;
+    const runBadges=
+      `<span class="qb ${run1Sent?'qb-sent':run1Recv?'qb-recv':'qb-miss'}" title="Q4-Q1: ${run1Sent?'Sent':run1Recv?'Recv':'Pending'}">Q4-Q1</span>`+
+      `<span class="qb ${run2Sent?'qb-sent':run2Recv?'qb-recv':'qb-miss'}" title="Q2-Q3: ${run2Sent?'Sent':run2Recv?'Recv':'Pending'}">Q2-Q3</span>`;
+    const admCls = w.admin==='Empire'?'adm-empire':w.admin==='Kobalt'?'adm-kobalt':'adm-songsplits';
+    const _tDots = anyToggleOn ? getCompactDots(w) : [];
+    const _tHighlight = _tDots.length ? _tDots.some(d=>d.show) : true;
+    const rowCls=[
+      admCls,
+      flags.stale?'flag-stale':'',
+      flags.pending&&!flags.stale?'flag-pending':'',
+      flags.splits&&!flags.stale&&!flags.pending?'flag-splits':'',
+      anyToggleOn&&!_tHighlight?'c-no-highlight':'',
+    ].filter(Boolean).join(' ');
+    return `<tr class="${rowCls}" onclick="openDetail(${w.id})">
+      <td class="td-num">${i+1}</td>
+      <td>
+        <div class="wname">${w.name}</div>
+        ${w.alias?`<div class="walias">pka ${w.alias}</div>`:''}
+      </td>
+      <td><span class="pro-badge">${w.pro||'—'}</span></td>
+      <td><div class="cname">${w.company}</div><div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-top:2px">${w.genre}</div></td>
+      <td><div class="aname"><span class="adm-dot"></span>${w.admin}</div></td>
+      <td>${saC}</td>
+      <td>${acC}</td>
+      <td>${asC}</td>
+      <td>${splC}</td>
+      <td>${recvC}</td>
+      <td><div class="q-row">${runBadges}</div></td>
+    </tr>`;
+  }).join('');
+}
+
+function renderStats(){
+  const cos = new Set(writers.map(w=>w.company)).size;
+  const recvCount = writers.filter(w=>stmtRunRecv(w)).length;
+  const sentCount = writers.filter(w=>stmtRunSent(w)).length;
+  document.getElementById('stat-total').textContent=writers.length;
+  document.getElementById('stat-companies').textContent=cos;
+  document.getElementById('stat-stmtrecv').textContent=recvCount;
+  document.getElementById('stat-stmtsent').textContent=sentCount;
+  document.getElementById('stat-audit').textContent=writers.filter(w=>auditPriority(w)<=1).length;
+}
+
+// ── ALERT PRIORITY CONFIG ─────────────────────────────────────────────
+const ALERT_CATS = [
+  {id:'missing',    label:'Missing Schedule / Audit',      ico:'🚨'},
+  {id:'old',        label:'Schedule / Audit over 12mo',    ico:'📅'},
+  {id:'splits',     label:'Missing Splits',                ico:'⚠'},
+  {id:'catalog',    label:'Catalog Check flagged',         ico:'🗂'},
+  {id:'unsent',     label:'Audit done, not sent',          ico:'⚡'},
+  {id:'stmtunsent', label:'Statement recv, not sent',      ico:'📬'},
+];
+function getAlertPriority(){
+  try{
+    const saved = localStorage.getItem('alertPriority');
+    if(saved){
+      const arr = JSON.parse(saved);
+      // Ensure all cats present (in case new ones added)
+      const ids = arr.filter(id => ALERT_CATS.find(c=>c.id===id));
+      ALERT_CATS.forEach(c=>{ if(!ids.includes(c.id)) ids.push(c.id); });
+      return ids;
+    }
+  }catch(e){}
+  return ALERT_CATS.map(c=>c.id);
+}
+function saveAlertPriority(order){ localStorage.setItem('alertPriority', JSON.stringify(order)); }
+
+function renderAlerts(){
+  // Pending advance unsent list
+  if(pendingAdvanceUnsent && pendingAdvanceUnsent.length>0){
+    const al=document.getElementById('alerts-list');
+    const unsentWriters = writers.filter(w=>pendingAdvanceUnsent.includes(w.id));
+    const unsentHtml = `<div style="margin-bottom:8px;font-family:var(--mono);font-size:8.5px;color:var(--amber);background:var(--amber-bg);border:1px solid #f0c070;padding:6px 8px">
+      ⚡ ${unsentWriters.length} not sent this period — advance pending
+    </div>`+unsentWriters.map(w=>`<div class="alert-item" onclick="openDetail(${w.id})" style="cursor:pointer">
+      <div class="alert-writer">${w.name}${w.alias?` <span style="color:var(--ink4)">(${w.alias})</span>`:''}</div>
+      <div class="alert-msg" style="color:var(--amber)">⚠ ${STMT_RUN.label} not sent</div>
+    </div>`).join('');
+    if(al){ al.innerHTML=unsentHtml+(al.innerHTML||''); }
+    return;
+  }
+
+  const priority = getAlertPriority();
+
+  // Build all alerts tagged by category
+  const alerts=[];
+  writers.forEach(w=>{
+    const f=rowFlags(w);
+    const noAudit  = !w.auditCompleted && !w.auditSent;
+    const noSched  = !w.scheduleA;
+    const oldAudit = w.auditCompleted && mths(w.auditCompleted)>=12;
+    const oldSched = w.scheduleA && mths(w.scheduleA)>=12;
+
+    if(noAudit||noSched){
+      const what = noAudit&&noSched?'Schedule A & Audit':noAudit?'Audit':'Schedule A';
+      alerts.push({cat:'missing',ico:'🚨',id:w.id,name:w.name,msg:`${what} never completed`});
+    }
+    if((oldAudit||oldSched)&&!(noAudit&&noSched)){
+      const what = oldAudit&&oldSched?'Schedule A & Audit':oldAudit?'Audit':'Schedule A';
+      alerts.push({cat:'old',ico:'📅',id:w.id,name:w.name,msg:`${what} over 12 months old`});
+    }
+    if(w.splitsMissing){
+      alerts.push({cat:'splits',ico:'⚠',id:w.id,name:w.name,msg:w.splitsOutreach?'Splits missing — outreach sent':'Splits missing — not yet contacted'});
+    }
+    if(w.catalogNeedsUpdate){
+      alerts.push({cat:'catalog',ico:'🗂',id:w.id,name:w.name,msg:'Catalog flagged for update'});
+    }
+    if(f.pending){
+      alerts.push({cat:'unsent',ico:'⚡',id:w.id,name:w.name,msg:'Audit completed but not sent'});
+    }
+    if(stmtRunRecv(w)&&!stmtRunSent(w)){
+      alerts.push({cat:'stmtunsent',ico:'📬',id:w.id,name:w.name,msg:`Statement received but not sent (${STMT_RUN.label})`});
+    }
+  });
+
+  // Sort by priority order
+  alerts.sort((a,b)=>priority.indexOf(a.cat)-priority.indexOf(b.cat));
+
+  document.getElementById('alert-badge').textContent=alerts.length||'';
+  const el=document.getElementById('alerts-list');
+  if(!alerts.length){ el.innerHTML=`<div style="font-family:var(--mono);font-size:10px;color:var(--ink4);padding:6px 0">No active alerts.</div>`; return; }
+  el.innerHTML=alerts.map(a=>`<div class="alert-item" onclick="openDetail(${a.id})" style="cursor:pointer;" title="Open ${a.name}">
+    <div class="alert-ico ${a.cat}">${a.ico}</div>
+    <div><div class="alert-n">${a.name}</div><div class="alert-d">${a.msg}</div></div>
+  </div>`).join('');
+}
+
+// ── ALERT PRIORITY MODAL ───────────────────────────────────────────────
+function openAlertPriority(){
+  const priority = getAlertPriority();
+  const cats = priority.map(id=>ALERT_CATS.find(c=>c.id===id)).filter(Boolean);
+  document.getElementById('alert-priority-list').innerHTML = cats.map((c,i)=>`
+    <div class="apr-item" draggable="true" data-id="${c.id}" ondragstart="aprDragStart(event)" ondragover="aprDragOver(event)" ondrop="aprDrop(event)" ondragend="aprDragEnd(event)">
+      <span class="apr-handle">⠿</span>
+      <span class="apr-num">${i+1}</span>
+      <span class="apr-ico">${c.ico}</span>
+      <span class="apr-lbl">${c.label}</span>
+    </div>`).join('');
+  document.getElementById('alert-priority-modal').style.display='flex';
+}
+function closeAlertPriority(){ document.getElementById('alert-priority-modal').style.display='none'; }
+function saveAlertPriorityModal(){
+  const items = document.querySelectorAll('#alert-priority-list .apr-item');
+  const order = [...items].map(el=>el.dataset.id);
+  saveAlertPriority(order);
+  closeAlertPriority();
+  renderAlerts();
+}
+
+let _aprDragSrc = null;
+function aprDragStart(e){ _aprDragSrc=e.currentTarget; e.currentTarget.classList.add('apr-dragging'); }
+function aprDragEnd(e){ e.currentTarget.classList.remove('apr-dragging'); document.querySelectorAll('.apr-item').forEach(el=>el.classList.remove('apr-over')); }
+function aprDragOver(e){ e.preventDefault(); e.currentTarget.classList.add('apr-over'); }
+function aprDrop(e){
+  e.preventDefault();
+  e.currentTarget.classList.remove('apr-over');
+  if(_aprDragSrc===e.currentTarget) return;
+  const list = document.getElementById('alert-priority-list');
+  const items = [...list.querySelectorAll('.apr-item')];
+  const srcIdx = items.indexOf(_aprDragSrc);
+  const tgtIdx = items.indexOf(e.currentTarget);
+  if(srcIdx<tgtIdx) e.currentTarget.after(_aprDragSrc);
+  else e.currentTarget.before(_aprDragSrc);
+  // Update numbers
+  [...list.querySelectorAll('.apr-item')].forEach((el,i)=>{ el.querySelector('.apr-num').textContent=i+1; });
+}
+
+function renderPRO(){
+  const counts={BMI:0,ASCAP:0,SESAC:0,PRS:0};
+  writers.forEach(w=>{ if(counts[w.pro]!==undefined) counts[w.pro]++; });
+  const max=Math.max(...Object.values(counts));
+  const colors={BMI:'bar-bmi',ASCAP:'bar-ascap',SESAC:'bar-sesac',PRS:'bar-prs'};
+  document.getElementById('pro-breakdown').innerHTML=Object.entries(counts).map(([p,n])=>`
+    <div class="pro-row">
+      <div class="pro-label">${p}</div>
+      <div class="pro-bar-wrap"><div class="pro-bar ${colors[p]}" style="width:${max?Math.round(n/max*100):0}%"></div></div>
+      <div class="pro-count">${n}</div>
+    </div>`).join('');
+}
+
+function renderAdmins(){
+  const counts={};
+  writers.forEach(w=>{ counts[w.admin]=(counts[w.admin]||0)+1; });
+  const max=Math.max(...Object.values(counts));
+  document.getElementById('admin-breakdown').innerHTML=Object.entries(counts).sort((a,b)=>b[1]-a[1]).map(([a,n])=>`
+    <div class="pro-row">
+      <div class="pro-label" style="width:80px;font-size:9px">${a}</div>
+      <div class="pro-bar-wrap"><div class="pro-bar" style="background:var(--ink3);width:${Math.round(n/max*100)}%"></div></div>
+      <div class="pro-count">${n}</div>
+    </div>`).join('');
+}
+
+function renderAll(){ populateDropdowns(); renderTable(); renderCards(); renderStats(); renderAlerts(); renderPRO(); renderAdmins(); renderKeyPeriod(); renderUnsentCount(); }
+function renderKeyPeriod(){
+  const sel = document.getElementById('key-period-label');
+  if(!sel) return;
+  const yr = TODAY.getFullYear();
+  const periodStr = runPeriodStr(STMT_RUN.label, STMT_RUN.year||yr);
+  const noneLbl = document.getElementById('key-none-label');
+  if(noneLbl) noneLbl.textContent = 'Not due';
+
+  const hist = getRunHistory();
+  // Build options: current run first, then past runs newest-first
+  let opts = `<option value="current">Current: ${periodStr}</option>`;
+  if(hist.length > 0){
+    opts += `<option disabled>── Past Periods ──</option>`;
+    [...hist].reverse().forEach((run, i) => {
+      const realIdx = hist.length - 1 - i;
+      const sentCount = run.writers.filter(w=>w.sent).length;
+      const totalCount = run.writers.length;
+      opts += `<option value="hist:${realIdx}">${run.periodStr||run.label} — saved ${run.savedAt||run.date||""} (${sentCount}/${totalCount} sent)</option>`;
+    });
+  }
+  sel.innerHTML = opts;
+  sel.value = 'current'; // always reset to current after render
+}
+function handlePeriodSelect(sel){
+  const val = sel.value;
+  if(val === 'current') return;
+  if(val.startsWith('hist:')){
+    const idx = parseInt(val.split(':')[1]);
+    viewPastRun(idx);
+    // Reset dropdown back to "current" after showing
+    setTimeout(() => { sel.value = 'current'; }, 100);
+  }
+}
+function toggleKeyGroup(group){
+  const auditKeys=['auditComp','auditAttn','auditOver','auditUnsent'];
+  const stmtKeys=['stmtRecv','stmtSent','stmtMiss','stmtNone'];
+  const keys = group==='audit' ? auditKeys : stmtKeys;
+  // If any are on, turn all off; if all off, turn all on
+  const anyOn = keys.some(k=>keyFilter[k]);
+  keys.forEach(k=>{
+    keyFilter[k]=!anyOn;
+    const btn=document.getElementById('kbtn-'+k);
+    if(btn) btn.classList.toggle('off', !keyFilter[k]);
+  });
+  const grpBtn=document.getElementById('kgrp-'+group);
+  if(grpBtn) grpBtn.classList.toggle('off', anyOn);
+  renderAll();
+}
+function toggleKeyFilter(key){
+  keyFilter[key]=!keyFilter[key];
+  const btn=document.getElementById('kbtn-'+key);
+  if(btn) btn.classList.toggle('off', !keyFilter[key]);
+  renderAll();
+}
+
+// ── FILTERS & VIEW TOGGLE ─────────────────────────────────────────────
+function onSearch(v){
+  searchQ=v;
+  const btn=document.getElementById('srch-clear');
+  if(btn) btn.classList.toggle('visible', v.length>0);
+  renderAll();
+}
+function clearSearch(){
+  searchQ='';
+  const inp=document.getElementById('search');
+  if(inp) inp.value='';
+  const btn=document.getElementById('srch-clear');
+  if(btn) btn.classList.remove('visible');
+  renderAll();
+}
+function resetAllTogglePills(){
+  Object.keys(toggleState).forEach(k=>{
+    toggleState[k]=0;
+    const arrow=document.getElementById(`arrow-${k}`); if(arrow) arrow.textContent='';
+    const pill=document.getElementById(`pill-${k}`); if(pill) pill.classList.remove('on');
+  });
+}
+function syncSimplePills(){
+  document.querySelectorAll('.pill:not(.toggle-pill)').forEach(p=>p.classList.remove('on'));
+  const el=document.getElementById(`pill-${currentFilter}`); if(el) el.classList.add('on');
+}
+function setFilter(f){
+  if(f==='all'){
+    currentFilter='all';
+    resetAllTogglePills();
+    // Clear all dropdown filters
+    document.getElementById('filter-company').value='';
+    document.getElementById('filter-admin').value='';
+    document.getElementById('filter-pro').value='';
+  } else {
+    currentFilter = (currentFilter===f) ? 'all' : f;
+    resetAllTogglePills();
+  }
+  syncSimplePills();
+  renderAll();
+}
+function cycleToggle(key){
+  // When activating a toggle pill, clear simple filter
+  if(toggleState[key]===0){ currentFilter='all'; syncSimplePills(); }
+  // cycle: 0 → 1 → -1 → 0
+  toggleState[key] = toggleState[key]===0 ? 1 : toggleState[key]===1 ? -1 : 0;
+  const arrow=document.getElementById(`arrow-${key}`);
+  const pill=document.getElementById(`pill-${key}`);
+  if(toggleState[key]===0){
+    arrow.textContent=''; pill.classList.remove('on');
+  } else {
+    arrow.textContent=toggleState[key]===1?'↑':'↓';
+    pill.classList.add('on');
+  }
+  renderAll();
+}
+function setView(v){
+  currentView=v;
+  document.getElementById('view-table').classList.toggle('hidden',v!=='table');
+  document.getElementById('view-cards').classList.toggle('hidden',v!=='cards');
+  document.getElementById('vtb-table').classList.toggle('on',v==='table');
+  document.getElementById('vtb-cards').classList.toggle('on',v==='cards');
+  if(v!=='cards'){ compactMode=false; const bc=document.getElementById('btn-compact'); if(bc) bc.classList.remove('on'); }
+}
+
+// ── COLLAPSE STATE ────────────────────────────────────────────────────
+const collapsedAdmins = new Set();   // e.g. 'Empire'
+const collapsedCos    = new Set();   // e.g. 'Empire::PAQ'
+
+function toggleAdmin(admin){
+  collapsedAdmins.has(admin) ? collapsedAdmins.delete(admin) : collapsedAdmins.add(admin);
+  renderCards();
+}
+function toggleCo(admin, co){
+  const key=`${admin}::${co}`;
+  collapsedCos.has(key) ? collapsedCos.delete(key) : collapsedCos.add(key);
+  renderCards();
+}
+
+function renderCards(){
+  const data=getFiltered();
+  const wrap=document.getElementById('cards-wrap');
+  if(!data.length){ wrap.innerHTML=`<div style="font-family:var(--mono);font-size:11px;color:var(--ink4);padding:24px">No writers match your filters.</div>`; return; }
+
+  const ADMIN_ORDER=['Empire','Kobalt','SongSplits'];
+  const ADMIN_CSS={Empire:'empire',Kobalt:'kobalt',SongSplits:'songsplits'};
+  const anyToggleOn = Object.values(toggleState).some(v=>v!==0);
+
+  const tree={};
+  ADMIN_ORDER.forEach(a=>tree[a]={});
+  data.forEach(w=>{
+    if(!tree[w.admin]) tree[w.admin]={};
+    if(!tree[w.admin][w.company]) tree[w.admin][w.company]=[];
+    tree[w.admin][w.company].push(w);
+  });
+
+  function makeCard(w){
+    try {
+    const flags=rowFlags(w);
+    const flagCls=[flags.stale||flags.pending?'flag-stale':'', flags.splits&&!flags.stale&&!flags.pending?'flag-splits':''].filter(Boolean).join(' ');
+
+    if(compactMode){
+      // Compact: name + alias + colored dots based on active toggles
+      const dots = getCompactDots(w);
+      const hasHighlight = dots.some(d=>d.show);
+      const highlightCls = hasHighlight ? '' : (anyToggleOn ? 'c-no-highlight' : '');
+      const visibleDots = dots.filter(d=>d.show);
+      const dotHtml = visibleDots.length ? `<div class="compact-dots">${visibleDots.map(d=>`<div class="cdot ${d.color}${d.shape==='sq'?' pip-sq':''}"></div>`).join('')}</div>` : '';
+      return `<div class="wcard compact-card ${flagCls} ${highlightCls}" onclick="openDetail(${w.id})">
+        <div class="wcard-name" title="${w.name}">${w.name}</div>
+        ${w.alias?`<div class="wcard-alias">${w.alias}</div>`:''}
+        ${dotHtml}
+      </div>`;
+    }
+
+    // Expanded mode — same highlight/grey logic as compact
+    const eDots = getCompactDots(w);
+    const hasHighlight = eDots.some(d=>d.show);
+    const highlightCls = hasHighlight ? '' : (anyToggleOn ? 'c-no-highlight' : '');
+
+    // Audit completed dot
+    const auditCompSt=auditSt(w.auditCompleted||w.auditSent);
+    const auditCompPip=auditCompSt==='green'?'pip-green':auditCompSt==='amber'?'pip-amber':'pip-red';
+    const auditCompLbl=w.auditCompleted||w.auditSent?`Done ${fmtD(w.auditCompleted||w.auditSent)}`:'Not done';
+    // Audit sent dot
+    const auditSentSt=auditSt(w.auditSent);
+    const _sentDate = w.auditSent ? new Date(w.auditSent) : null;
+    const _auditDate = w.auditCompleted ? new Date(w.auditCompleted) : null;
+    const _sentBeforeAudit = _sentDate && _auditDate && _sentDate < _auditDate;
+    const _auditPri = auditPriority(w);
+    let auditSentPip;
+    if(toggleState.auditSent===-1){
+      // Backward toggle: flat red — needs send
+      auditSentPip = 'pip-red';
+    } else {
+      auditSentPip = flags.pending?'pip-yellow':auditSentSt==='green'&&!_sentBeforeAudit?'pip-green':auditSentSt==='amber'?'pip-amber':'pip-red';
+    }
+    const auditSentLbl=w.auditSent?`Sent ${fmtD(w.auditSent)}`:(flags.pending?'⚡ unsent':'Not sent');
+    // Stmt dots
+    // Stmt recv: show run label (Q4-Q1 or Q2-Q3 only)
+    const run1Recv=w.stmtRecv.q4&&w.stmtRecv.q1;
+    const run2Recv=w.stmtRecv.q2&&w.stmtRecv.q3;
+    const stmtRecvPip=(run1Recv||run2Recv)?'pip-blue':'pip-gray';
+    // Dates for current run
+    const activeRecvDate = STMT_RUN.qs[0]===4 ? (w.stmtRecvDate1||'') : (w.stmtRecvDate2||'');
+    const activeSentDate = STMT_RUN.qs[0]===4 ? (w.stmtSentDate1||w.stmtSentDate||'') : (w.stmtSentDate2||'');
+    const activeRecvRunRecv = STMT_RUN.qs[0]===4 ? run1Recv : run2Recv;
+    const stmtRecvLbl = activeRecvRunRecv
+      ? (activeRecvDate ? `Recv ${fmtD(activeRecvDate)}` : (STMT_RUN.qs[0]===4?'Recv Q4-Q1':'Recv Q2-Q3'))
+      : (run1Recv&&run2Recv ? 'Recv both' : run1Recv ? 'Recv Q4-Q1' : run2Recv ? 'Recv Q2-Q3' : 'None recv');
+    // Stmt sent pip
+    const lastSentQ=[4,3,2,1].find(q=>w.stmtSent[`q${q}`]);
+    const stmtSentPip=lastSentQ?'pip-green':'pip-red';
+    const stmtSentLbl = activeSentDate ? `Sent ${fmtD(activeSentDate)}`
+      : stmtRunSent(w) ? `Sent ${STMT_RUN.label}`
+      : ([4,1].some(q=>w.stmtSent[`q${q}`])?'Sent Q4-Q1':[2,3].some(q=>w.stmtSent[`q${q}`])?'Sent Q2-Q3':'Not sent');
+    const cardHtml = `<div class="wcard ${flagCls} ${highlightCls}" onclick="openDetail(${w.id})">
+      <div class="wcard-name" title="${w.name}">${w.name}</div>
+      ${w.alias?`<div class="wcard-alias">${w.alias}</div>`:'<div style="margin-bottom:7px"></div>'}
+      <div class="wcard-dots">
+        ${(()=>{ try {
+          // Audit row: show based on which pip color matches active key filters
+          const showAuditComp = (auditCompPip==='pip-green'&&keyFilter.auditComp)||(auditCompPip==='pip-amber'&&keyFilter.auditAttn)||(auditCompPip==='pip-red'&&keyFilter.auditOver)||(auditCompPip==='pip-yellow'&&keyFilter.auditUnsent);
+          const showAuditSent = (auditSentPip==='pip-green'&&keyFilter.auditComp)||(auditSentPip==='pip-amber'&&keyFilter.auditAttn)||(auditSentPip==='pip-red'&&keyFilter.auditOver)||(auditSentPip==='pip-yellow'&&keyFilter.auditUnsent);
+          const showRecv = (stmtRecvPip==='pip-blue'&&keyFilter.stmtRecv)||(stmtRecvPip==='pip-gray'&&keyFilter.stmtNone);
+          const showSent = (stmtSentPip==='pip-green'&&keyFilter.stmtSent)||(stmtSentPip==='pip-red'&&keyFilter.stmtMiss);
+          const auditRow = (showAuditComp||showAuditSent)?`<div class="wdot-row">${showAuditComp?`<div class="wdot" title="Audit completed: ${fmtD(w.auditCompleted||w.auditSent)}"><div class="wdot-pip ${auditCompPip}"></div>${auditCompLbl}</div>`:''} ${showAuditSent?`<div class="wdot" title="Audit sent: ${fmtD(w.auditSent)}${flags.pending?' (unsent)':''}"><div class="wdot-pip ${auditSentPip}"></div>${auditSentLbl}</div>`:''}</div>`:'';
+          const stmtRow = (showRecv||showSent)?`<div class="wdot-row">${showRecv?`<div class="wdot" title="Stmt received from company"><div class="wdot-pip pip-sq ${stmtRecvPip}"></div>${stmtRecvLbl}</div>`:''} ${showSent?`<div class="wdot" title="Stmt sent to client"><div class="wdot-pip pip-sq ${stmtSentPip}"></div>${stmtSentLbl}</div>`:''}</div>`:'';
+          return auditRow+stmtRow;
+        } catch(e){ return ''; } })()}
+      </div>
+    </div>`;
+    return cardHtml;
+    } catch(e) {
+      console.error('makeCard ERROR id=' + w?.id + ' name=' + w?.name + ' err=' + e.message + ' stack=' + e.stack?.split('\n').slice(0,2).join('|'));
+      return `<div class="wcard" onclick="openDetail(${w?.id||0})"><div class="wcard-name">${w?.name||'?'}</div></div>`;
+    }
+  }
+
+  // ── Audit backward toggle: admin→company structure, priority sort, exclude <6mo ──
+  if(toggleState.auditComplete===-1){
+    const ADMIN_COLORS={Empire:'#c9931a',Kobalt:'#4a72b8',SongSplits:'#8da800'};
+    const cardGridCls = compactMode ? 'co-cards compact' : 'co-cards';
+
+    // Build a makeCard variant that colors pka in admin color and wraps with priority
+    function makeAuditCard(w){
+      const p = auditPriority(w);
+      const adminColor = ADMIN_COLORS[w.admin] || 'var(--ink3)';
+      const card = makeCard(w).replace(/ c-no-highlight/g,'').replace(/c-no-highlight/g,'');
+      return `<div class="audit-priority-wrap" data-priority="${p}"
+        style="--audit-alias-color:${adminColor}">${card}</div>`;
+    }
+
+    const html = ADMIN_ORDER.filter(admin=>Object.keys(tree[admin]).length>0).map(admin=>{
+      const adminColor = ADMIN_COLORS[admin] || '#888';
+      const adminCls = ADMIN_CSS[admin];
+      const adminCollapsed = collapsedAdmins.has(admin);
+      const cos = Object.keys(tree[admin]).sort((a,b)=>a.localeCompare(b));
+
+      const coGroups = cos.map(co=>{
+        // Show all writers; grey out <6mo (priority 3), sort amber(2) before red(0,1)
+        const ws = tree[admin][co];
+        if(!ws.length) return '';
+        ws.sort((a,b)=>{
+          const pa=auditPriority(a), pb=auditPriority(b);
+          // Priority 3 (done <6mo) floats to bottom; within shown: 2 (amber) before 0,1 (red)
+          const rankA = pa===3 ? 10 : pa===2 ? 1 : 0;
+          const rankB = pb===3 ? 10 : pb===2 ? 1 : 0;
+          return rankA!==rankB ? rankA-rankB : a.name.localeCompare(b.name);
+        });
+        const coKey=`${admin}::${co}`;
+        const coCollapsed=collapsedCos.has(coKey);
+        // Admin color square next to company name
+        const adminSquare=`<span style="display:inline-block;width:8px;height:8px;background:${adminColor};margin-right:5px;flex-shrink:0"></span>`;
+        return `<div class="co-group">
+          <div class="co-group-hdr co-toggle" onclick="event.stopPropagation();toggleCo('${admin}','${co}')">
+            <span class="chevron ${coCollapsed?'':'open'}">›</span>
+            ${adminSquare}<div class="co-group-name">${co}</div>
+            <div class="co-group-count">${ws.length} writer${ws.length!==1?'s':''}</div>
+          </div>
+          ${coCollapsed?'':`<div class="${cardGridCls}">${ws.map(w=>makeAuditCard(w)).join('')}</div>`}
+        </div>`;
+      }).filter(Boolean).join('');
+
+      if(!coGroups) return '';
+      return `<div class="admin-section ${adminCls}">
+        <div class="admin-section-hdr ${adminCls} admin-toggle" onclick="toggleAdmin('${admin}')">
+          <span class="admin-chevron ${adminCollapsed?'':'open'}">›</span>
+          <span class="admin-section-name">${admin}</span>
+          <span class="admin-section-label">${admin}</span>
+        </div>
+        ${adminCollapsed?'':`<div class="admin-body">${coGroups}</div>`}
+      </div>`;
+    }).filter(Boolean).join('');
+
+    wrap.innerHTML = html || `<div style="font-family:var(--mono);font-size:11px;color:var(--ink4);padding:24px">No writers with outstanding audits.</div>`;
+    return;
+  }
+
+  // ── StmtSent backward toggle: admin→company structure, with admin squares ──
+  if(toggleState.stmtSent===-1){
+    const ADMIN_COLORS_S={Empire:'#c9931a',Kobalt:'#4a72b8',SongSplits:'#8da800'};
+    const cardGridCls = compactMode ? 'co-cards compact' : 'co-cards';
+
+    const html = ADMIN_ORDER.filter(admin=>Object.keys(tree[admin]).length>0).map(admin=>{
+      const adminColor = ADMIN_COLORS_S[admin] || '#888';
+      const adminCls = ADMIN_CSS[admin];
+      const adminCollapsed = collapsedAdmins.has(admin);
+      const cos = Object.keys(tree[admin]).sort((a,b)=>a.localeCompare(b));
+
+      const coGroups = cos.map(co=>{
+        // Only unsent writers
+        const ws = tree[admin][co].filter(w=>!stmtRunSent(w));
+        if(!ws.length) return '';
+        // Sort: recv-not-sent (red) first, then not-recv (amber), then alpha
+        ws.sort((a,b)=>{
+          const pd=stmtPriority(a)-stmtPriority(b);
+          return pd!==0?pd:a.name.localeCompare(b.name);
+        });
+        const coKey=`${admin}::${co}`;
+        const coCollapsed=collapsedCos.has(coKey);
+        const adminSquare=`<span style="display:inline-block;width:8px;height:8px;background:${adminColor};margin-right:5px;flex-shrink:0"></span>`;
+        const cards = ws.map(w=>{
+          const p=stmtPriority(w);
+          const card = makeCard(w).replace(/ c-no-highlight/g,'').replace(/c-no-highlight/g,'');
+          return `<div class="stmt-priority-wrap" data-priority="${p}" style="--audit-alias-color:${adminColor}">${card}</div>`;
+        }).join('');
+        return `<div class="co-group">
+          <div class="co-group-hdr co-toggle" onclick="event.stopPropagation();toggleCo('${admin}','${co}')">
+            <span class="chevron ${coCollapsed?'':'open'}">›</span>
+            ${adminSquare}<div class="co-group-name">${co}</div>
+            <div class="co-group-count">${ws.length} writer${ws.length!==1?'s':''}</div>
+          </div>
+          ${coCollapsed?'':`<div class="${cardGridCls}">${cards}</div>`}
+        </div>`;
+      }).filter(Boolean).join('');
+
+      if(!coGroups) return '';
+      return `<div class="admin-section ${adminCls}">
+        <div class="admin-section-hdr ${adminCls} admin-toggle" onclick="toggleAdmin('${admin}')">
+          <span class="admin-chevron ${adminCollapsed?'':'open'}">›</span>
+          <span class="admin-section-name">${admin}</span>
+          <span class="admin-section-label">${admin}</span>
+        </div>
+        ${adminCollapsed?'':`<div class="admin-body">${coGroups}</div>`}
+      </div>`;
+    }).filter(Boolean).join('');
+
+    wrap.innerHTML = html || `<div style="font-family:var(--mono);font-size:11px;color:var(--ink4);padding:24px">All statements sent for this period.</div>`;
+    return;
+  }
+
+  wrap.innerHTML=ADMIN_ORDER.filter(admin=>Object.keys(tree[admin]).length>0).map(admin=>{
+    const adminCls=ADMIN_CSS[admin];
+    const cos=Object.keys(tree[admin]).sort((a,b)=>a.localeCompare(b));
+    const totalWriters=cos.reduce((s,c)=>s+tree[admin][c].length,0);
+    const adminCollapsed=collapsedAdmins.has(admin);
+
+    const coGroups=cos.map(co=>{
+      // Sort within company by toggle priority, then alpha
+      const ws = anyToggleOn
+        ? applyToggleSort(tree[admin][co])
+        : [...tree[admin][co]].sort((a,b)=>a.name.localeCompare(b.name));
+      const coKey=`${admin}::${co}`;
+      const coCollapsed=collapsedCos.has(coKey);
+      const cardGridCls = compactMode ? 'co-cards compact' : 'co-cards';
+      return `<div class="co-group">
+        <div class="co-group-hdr co-toggle" onclick="event.stopPropagation();toggleCo('${admin}','${co}')">
+          <span class="chevron ${coCollapsed?'':'open'}">›</span>
+          <div class="co-group-name">${co}</div>
+          <div class="co-group-count">${ws.length} writer${ws.length!==1?'s':''}</div>
+        </div>
+        ${coCollapsed?'':`<div class="${cardGridCls}">${ws.map(w=>makeCard(w)).join('')}</div>`}
+      </div>`;
+    }).join('');
+
+    return `<div class="admin-section ${adminCls}">
+      <div class="admin-section-hdr ${adminCls} admin-toggle" onclick="toggleAdmin('${admin}')">
+        <span class="admin-chevron ${adminCollapsed?'':'open'}">›</span>
+        <span class="admin-section-name">${admin}</span>
+        <span class="admin-section-label">${admin}</span>
+        <span class="admin-section-count">${totalWriters} writer${totalWriters!==1?'s':''}</span>
+      </div>
+      ${adminCollapsed?'':`<div class="admin-body">${coGroups}</div>`}
+    </div>`;
+  }).join('');
+}
+
+// ── RESIZABLE COLUMNS ─────────────────────────────────────────────────
+function initResizableCols(){
+  const ths=document.querySelectorAll('thead th');
+  ths.forEach(th=>{
+    const handle=document.createElement('div');
+    handle.className='col-resize-handle';
+    th.appendChild(handle);
+    let startX, startW;
+    handle.addEventListener('mousedown',e=>{
+      e.preventDefault();
+      startX=e.clientX; startW=th.offsetWidth;
+      handle.classList.add('dragging');
+      const onMove=e2=>{ th.style.minWidth=(Math.max(60,startW+(e2.clientX-startX)))+'px'; };
+      const onUp=()=>{ handle.classList.remove('dragging'); document.removeEventListener('mousemove',onMove); document.removeEventListener('mouseup',onUp); };
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onUp);
+    });
+  });
+}
+
+// ── MODAL ─────────────────────────────────────────────────────────────
+function clearForm(){
+  ['f-name','f-alias','f-ipi','f-company','f-admin','f-scheduleA','f-auditCompleted','f-auditSent','f-genius','f-muso'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('f-pro').value='';
+  document.getElementById('f-genre').value='Hip-Hop / Rap';
+  document.getElementById('f-status').value='active';
+  ['f-splits-missing','f-splits-outreach'].forEach(id=>document.getElementById(id).checked=false);
+  [1,2,3,4].forEach(q=>{ document.getElementById(`f-stmt-recv-q${q}`).checked=false; document.getElementById(`f-stmt-sent-q${q}`).checked=false; });
+}
+function openAddModal(){ editingId=null; clearForm(); document.getElementById('modal-title').textContent='Add Writer'; document.getElementById('modal-del-btn').style.display='none'; document.getElementById('modal-overlay').classList.add('open'); document.querySelector('.modal').scrollTop=0; }
+function openEdit(id){
+  editingId=id; const w=writers.find(x=>x.id===id);
+  document.getElementById('modal-title').textContent='Edit Writer';
+  const delBtn=document.getElementById('modal-del-btn'); delBtn.style.display='inline-block'; delBtn.onclick=()=>{ closeModal(); delWriter(id); };
+  document.getElementById('f-name').value=w.name;
+  document.getElementById('f-alias').value=w.alias||'';
+  document.getElementById('f-pro').value=w.pro||'';
+  document.getElementById('f-company').value=w.company;
+  document.getElementById('f-admin').value=w.admin;
+  document.getElementById('f-genre').value=w.genre;
+  document.getElementById('f-status').value=w.status;
+  document.getElementById('f-scheduleA').value=w.scheduleA||'';
+  document.getElementById('f-auditCompleted').value=w.auditCompleted||'';
+  document.getElementById('f-auditSent').value=w.auditSent||'';
+  document.getElementById('f-ipi').value=w.ipi||'';
+  document.getElementById('f-genius').value=w.geniusUrl||'';
+  document.getElementById('f-muso').value=w.musoUrl||'';
+  document.getElementById('f-splits-missing').checked=w.splitsMissing||false;
+  document.getElementById('f-splits-outreach').checked=w.splitsOutreach||false;
+  [1,2,3,4].forEach(q=>{ document.getElementById(`f-stmt-recv-q${q}`).checked=w.stmtRecv[`q${q}`]||false; document.getElementById(`f-stmt-sent-q${q}`).checked=w.stmtSent[`q${q}`]||false; });
+  document.getElementById('modal-overlay').classList.add('open');
+  document.querySelector('.modal').scrollTop=0;
+}
+function closeModal(){ document.getElementById('modal-overlay').classList.remove('open'); }
+async function saveWriter(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){ alert('Writer name is required.'); return; }
+  const sR={},sS={};
+  [1,2,3,4].forEach(q=>{ sR[`q${q}`]=document.getElementById(`f-stmt-recv-q${q}`).checked; sS[`q${q}`]=document.getElementById(`f-stmt-sent-q${q}`).checked; });
+  const data={name,alias:document.getElementById('f-alias').value.trim(),ipi:document.getElementById('f-ipi').value.trim(),pro:document.getElementById('f-pro').value,company:document.getElementById('f-company').value.trim()||'Unassigned',admin:document.getElementById('f-admin').value.trim()||'Unassigned',genre:document.getElementById('f-genre').value,status:document.getElementById('f-status').value,scheduleA:document.getElementById('f-scheduleA').value||'',auditCompleted:document.getElementById('f-auditCompleted').value||'',auditSent:document.getElementById('f-auditSent').value||'',splitsMissing:document.getElementById('f-splits-missing').checked,splitsOutreach:document.getElementById('f-splits-outreach').checked,stmtRecv:sR,stmtSent:sS,geniusUrl:document.getElementById('f-genius').value.trim(),musoUrl:document.getElementById('f-muso').value.trim()};
+  let saved;
+  if(editingId){ const i=writers.findIndex(w=>w.id===editingId); writers[i]={...writers[i],...data}; saved=writers[i]; toast('Writer Updated',`${name} has been updated.`); }
+  else{ const w={id:nextId++,...data}; writers.push(w); saved=w; toast('Writer Added',`${name} added to the roster.`); }
+  closeModal(); renderAll();
+  await dbSave(saved);
+}
+async function delWriter(id){ const w=writers.find(x=>x.id===id); if(!confirm(`Remove ${w.name} from the roster?`)) return; writers=writers.filter(x=>x.id!==id); closeDetail(); renderAll(); await dbDelete(id); }
+
+// ── DETAIL PANEL ──────────────────────────────────────────────────────
+let currentDetailId = null;
+let _suppressDetailClose = false;
+function openDetail(id){
+  // Toggle: clicking the same card again closes the panel
+  if(currentDetailId===id && document.getElementById('detail-panel').classList.contains('open')){
+    closeDetail(); return;
+  }
+  currentDetailId = id;
+  document.getElementById('detail-panel').scrollTop = 0;
+  const w=writers.find(x=>x.id===id);
+  if(!w){ console.error('openDetail: writer not found for id='+id+' writers.length='+writers.length); return; }
+  // Set header accent color based on admin
+  const _adminAccents={Empire:'#c9931a',Kobalt:'#4a72b8',SongSplits:'#8da800'};
+  const hdr=document.getElementById('detail-panel').querySelector('.detail-hdr');
+  if(hdr){
+    hdr.style.background='#141414';
+    hdr.style.borderBottomColor=_adminAccents[w.admin]||'var(--gold-border)';
+  }
+  document.getElementById('d-name').textContent=w.name;
+  const aliasEl=document.getElementById('d-alias');
+  aliasEl.textContent=w.alias?`pka ${w.alias}`:'';
+  aliasEl.style.color=_adminAccents[w.admin]||'var(--gold-border)';
+  document.getElementById('d-edit-btn').onclick=()=>{ closeDetail(); openEdit(id); };
+  const delBtn=document.getElementById('d-del-btn'); if(delBtn) delBtn.onclick=()=>delWriter(id);
+  const flags=rowFlags(w);
+  const sa=schedASt(w.scheduleA), as=auditSt(w.auditSent);
+  const clr={green:'var(--green)',amber:'var(--amber)',red:'var(--red)'};
+  document.getElementById('d-body').innerHTML=`
+    <div class="d-sec">
+      <div class="d-sec-title">Identity & Contract</div>
+      <div class="d-kv">
+        <div><div class="d-k">PRO</div><div class="d-v"><span class="pro-badge pro-${w.pro||'none'}">${w.pro||'—'}</span></div></div>
+        <div><div class="d-k">Status</div><div class="d-v">${w.status.charAt(0).toUpperCase()+w.status.slice(1)}</div></div>
+        <div><div class="d-k">IPI #</div><div class="d-v" style="font-family:var(--mono);font-size:11px">${w.ipi||'—'}</div></div>
+        <div><div class="d-k">Company</div><div class="d-v">${w.company}</div></div>
+        <div><div class="d-k">Administrator</div><div class="d-v"><span style="display:inline-block;padding:2px 8px;background:${_adminAccents[w.admin]||'#888'};color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;font-weight:700">${(w.admin||'').toUpperCase()}</span></div></div>
+        <div><div class="d-k">Genre</div><div class="d-v">${w.genre}</div></div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px">
+        <a class="muso-check-btn" href="${w.musoUrl||musoUrl(w.name)}" target="_blank">♫ muso.ai →</a>
+        ${w.geniusUrl?`<a class="genius-btn" href="${w.geniusUrl}" target="_blank">✦ Genius →</a>`:''}
+      </div>
+    </div>
+    <div class="d-sec${!w.scheduleA||mths(w.scheduleA)>=6?' needs-action':''}">
+      <div class="d-sec-title">Schedule A${!w.scheduleA||mths(w.scheduleA)>=6?' ⚡':''}</div>
+      <div class="toggle-row"><span>Last Completed</span><label class="tck"><input type="checkbox" ${w.scheduleA&&mths(w.scheduleA)<6?'checked':''} onchange="toggleDetailDate(${id},'scheduleA',this.checked)"><span class="tck-circle">✓</span></label></div>
+      ${w.scheduleA?`<div style="margin-left:4px;margin-top:4px">
+        <div style="font-family:var(--mono);font-size:9px;color:${mths(w.scheduleA)<6?'var(--green)':mths(w.scheduleA)<12?'var(--amber)':'var(--red)'};margin-bottom:4px">
+          ✓ Done ${fmtD(w.scheduleA)} — ${ago(w.scheduleA)}
+        </div>
+        ${mths(w.scheduleA)<6?`<div class="d-date-row">
+          <input class="d-date-input" type="date" id="d-schedA-date-${id}" value="${w.scheduleA||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveDetailDate(${id},'scheduleA','d-schedA-date-${id}')">Save</button>
+        </div>`:''}
+      </div>`:''}
+    </div>
+    <div class="d-sec${!w.auditCompleted||mths(w.auditCompleted)>=6?' needs-action':''}">
+      <div class="d-sec-title">Audit${!w.auditCompleted||mths(w.auditCompleted)>=6?' ⚡':''}</div>
+      <div class="toggle-row"><span>Audit Completed</span><label class="tck"><input type="checkbox" ${w.auditCompleted&&mths(w.auditCompleted)<6?'checked':''} onchange="toggleDetailDate(${id},'auditCompleted',this.checked)"><span class="tck-circle">✓</span></label></div>
+      ${w.auditCompleted?`<div style="margin-left:4px;margin-top:4px">
+        <div style="font-family:var(--mono);font-size:9px;color:${mths(w.auditCompleted)<6?'var(--green)':mths(w.auditCompleted)<12?'var(--amber)':'var(--red)'};margin-bottom:4px">
+          ✓ Done ${fmtD(w.auditCompleted)} — ${ago(w.auditCompleted)}
+        </div>
+        ${mths(w.auditCompleted)<6?`<div class="d-date-row">
+          <input class="d-date-input" type="date" id="d-auditComp-date-${id}" value="${w.auditCompleted||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveDetailDate(${id},'auditCompleted','d-auditComp-date-${id}')">Save</button>
+        </div>`:''}
+      </div>`:''}
+      <div class="toggle-row" style="margin-top:10px"><span>Sent to Company</span><label class="tck"><input type="checkbox" ${w.auditSent&&mths(w.auditSent)<6?'checked':''} onchange="toggleDetailDate(${id},'auditSent',this.checked)"><span class="tck-circle">✓</span></label></div>
+      ${w.auditSent?`<div style="margin-left:4px;margin-top:4px">
+        <div style="font-family:var(--mono);font-size:9px;color:${mths(w.auditSent)<6?'var(--green)':mths(w.auditSent)<12?'var(--amber)':'var(--red)'};margin-bottom:4px">
+          ✓ Sent ${fmtD(w.auditSent)} — ${ago(w.auditSent)}
+        </div>
+        ${mths(w.auditSent)<6?`<div class="d-date-row">
+          <input class="d-date-input" type="date" id="d-auditSent-date-${id}" value="${w.auditSent||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveDetailDate(${id},'auditSent','d-auditSent-date-${id}')">Save</button>
+        </div>`:''}
+      </div>`:''}
+    </div>
+    <div class="d-sec">
+      <div class="d-sec-title">Splits</div>
+      <div class="toggle-row"><span style="font-family:var(--mono);font-size:11px">Splits missing?</span>
+        <label class="tck"><input type="checkbox" ${w.splitsMissing?'checked':''} onchange="toggleSplits(${id},this.checked)"><span class="tck-circle">✓</span></label></div>
+      ${w.splitsMissing?`
+      <div style="margin-top:6px;background:var(--amber-bg);border:1px solid #f0c070;border-radius:0;padding:9px 10px">
+        <div style="font-family:var(--mono);font-size:8.5px;color:var(--amber);margin-bottom:8px">⚠ Splits flagged — have you contacted the writer?</div>
+        <div class="toggle-row"><span>Outreach sent?</span>
+          <label class="tck"><input type="checkbox" ${w.splitsOutreach?'checked':''} onchange="toggleOutreach(${id},this.checked)"><span class="tck-circle">✓</span></label></div>
+        <div style="margin-top:6px">${w.splitsOutreach
+          ?`<span style="font-family:var(--mono);font-size:8.5px;color:var(--green);background:var(--green-bg);border:1px solid #a7d9bb;padding:2px 8px;border-radius:0">✉ Outreach sent — awaiting updated splits</span>`
+          :`<span style="font-family:var(--mono);font-size:8.5px;color:var(--red);background:var(--red-bg);border:1px solid #e8a8a0;padding:2px 8px;border-radius:0">✗ Client not yet contacted</span>`}
+        </div>
+      </div>`:''
+      }
+    </div>
+    ${w.status==='active'?`<div class="d-sec">
+      <div class="d-sec-title">Catalog Check</div>
+      <div class="toggle-row">
+        <span style="font-family:var(--mono);font-size:11px;color:${w.catalogNeedsUpdate?'var(--amber)':'var(--ink2)'}">Catalog needs update?</span>
+        <label class="tck"><input type="checkbox" ${w.catalogNeedsUpdate?'checked':''} onchange="toggleCatalogUpdate(${id},this.checked)"><span class="tck-circle">✓</span></label>
+      </div>
+      ${w.catalogNeedsUpdate?`<div style="margin-top:7px;background:var(--amber-bg);border:1px solid #f0c070;padding:8px 10px;font-family:var(--mono);font-size:8.5px;color:var(--amber);line-height:1.6">⚡ Update needed — check muso.ai and Genius in the Edit tab.</div>`:''}
+    </div>`:''}
+    <div class="d-sec">
+      <div class="d-sec-title">Statement Tracking</div>
+      <div class="q-item">
+        <div class="q-item-lbl">Q4-Q1 (Oct – Mar)</div>
+        <div class="toggle-row"><span>Received from company</span><label class="tck"><input type="checkbox" ${(w.stmtRecv.q4&&w.stmtRecv.q1)?'checked':''} onchange="toggleRun(${id},'recv','run1',this.checked)"><span class="tck-circle">✓</span></label></div>
+        ${(w.stmtRecv.q4&&w.stmtRecv.q1)?`<div class="d-date-row" style="margin-left:4px">
+          <input class="d-date-input" type="date" id="d-recv1-date-${id}" value="${w.stmtRecvDate1||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveStmtDate(${id},'stmtRecvDate1','d-recv1-date-${id}')">Save</button>
+        </div>`:''}
+        <div class="toggle-row"><span>Sent to client</span><label class="tck"><input type="checkbox" ${(w.stmtSent.q4&&w.stmtSent.q1)?'checked':''} onchange="toggleRun(${id},'sent','run1',this.checked)"><span class="tck-circle">✓</span></label></div>
+        ${(w.stmtSent.q4&&w.stmtSent.q1)?`<div class="d-date-row" style="margin-left:4px">
+          <input class="d-date-input" type="date" id="d-sent1-date-${id}" value="${w.stmtSentDate1||w.stmtSentDate||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveStmtDate(${id},'stmtSentDate1','d-sent1-date-${id}')">Save</button>
+        </div>`:''}
+      </div>
+      <div class="q-item">
+        <div class="q-item-lbl">Q2-Q3 (Apr – Sep)</div>
+        <div class="toggle-row"><span>Received from company</span><label class="tck"><input type="checkbox" ${(w.stmtRecv.q2&&w.stmtRecv.q3)?'checked':''} onchange="toggleRun(${id},'recv','run2',this.checked)"><span class="tck-circle">✓</span></label></div>
+        ${(w.stmtRecv.q2&&w.stmtRecv.q3)?`<div class="d-date-row" style="margin-left:4px">
+          <input class="d-date-input" type="date" id="d-recv2-date-${id}" value="${w.stmtRecvDate2||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveStmtDate(${id},'stmtRecvDate2','d-recv2-date-${id}')">Save</button>
+        </div>`:''}
+        <div class="toggle-row"><span>Sent to client</span><label class="tck"><input type="checkbox" ${(w.stmtSent.q2&&w.stmtSent.q3)?'checked':''} onchange="toggleRun(${id},'sent','run2',this.checked)"><span class="tck-circle">✓</span></label></div>
+        ${(w.stmtSent.q2&&w.stmtSent.q3)?`<div class="d-date-row" style="margin-left:4px">
+          <input class="d-date-input" type="date" id="d-sent2-date-${id}" value="${w.stmtSentDate2||''}" max="${TODAY_STR}">
+          <button class="d-date-save" onclick="saveStmtDate(${id},'stmtSentDate2','d-sent2-date-${id}')">Save</button>
+        </div>`:''}
+      </div>
+    </div>`;
+  document.getElementById('detail-panel').classList.add('open');
+}
+function closeDetail(){ document.getElementById('detail-panel').classList.remove('open'); currentDetailId=null; }
+
+// Re-render the detail panel in place without toggling open/close
+function refreshDetail(id){
+  const panel = document.getElementById('detail-panel');
+  const wasOpen = panel.classList.contains('open');
+  const scrollTop = panel.scrollTop;
+  _suppressDetailClose = true;
+  renderAll();
+  currentDetailId = null;
+  openDetail(id);
+  if(!wasOpen) closeDetail();
+  panel.scrollTop = scrollTop;
+  requestAnimationFrame(() => { _suppressDetailClose = false; });
+}
+
+async function toggleDetailDate(id, field, checked){
+  const w = writers.find(x=>x.id===id);
+  w[field] = checked ? TODAY_STR : '';
+  toast('Updated', `${field==='scheduleA'?'Schedule A':field==='auditCompleted'?'Audit completed':'Audit sent'} ${checked?'marked today':'cleared'} for ${w.name}.`);
+  refreshDetail(id); await dbSave(w);
+}
+async function saveDetailDate(id, field, inputId){
+  const val = document.getElementById(inputId)?.value;
+  if(!val){ toast('No Date','Please pick a date first.'); return; }
+  const w = writers.find(x=>x.id===id);
+  w[field] = val;
+  toast('Date Saved', `${field==='scheduleA'?'Schedule A':field==='auditCompleted'?'Audit completed':field==='auditSent'?'Audit sent':'Catalog check'} updated for ${w.name}.`);
+  refreshDetail(id); await dbSave(w);
+}
+
+async function saveDetailLink(id, field, inputId){
+  const val = document.getElementById(inputId)?.value.trim();
+  const w = writers.find(x=>x.id===id);
+  w[field] = val;
+  toast('Link Saved', `${field==='musoUrl'?'muso.ai':'Genius'} URL updated for ${w.name}.`);
+  refreshDetail(id); await dbSave(w);
+}
+async function toggleSplits(id,val){ const w=writers.find(x=>x.id===id); w.splitsMissing=val; if(!val) w.splitsOutreach=false; toast('Splits Updated',`${val?'Flagged missing':'Marked OK'} for ${w.name}.`); refreshDetail(id); await dbSave(w); }
+async function toggleOutreach(id,val){ const w=writers.find(x=>x.id===id); w.splitsOutreach=val; toast('Outreach Updated',`${val?'Outreach marked sent':'Outreach cleared'} for ${w.name}.`); refreshDetail(id); await dbSave(w); }
+async function toggleCatalogUpdate(id,val){ const w=writers.find(x=>x.id===id); w.catalogNeedsUpdate=val; toast('Catalog Flag',`${val?'Flagged for update':'Cleared'} for ${w.name}.`); refreshDetail(id); await dbSave(w); }
+async function toggleRun(id,type,run,val){
+  const w=writers.find(x=>x.id===id);
+  const runNum = run==='run1' ? 1 : 2;
+  if(type==='recv'){
+    if(val && !w[`stmtRecvDate${runNum}`]) w[`stmtRecvDate${runNum}`]=TODAY_STR;
+    if(!val) w[`stmtRecvDate${runNum}`]='';
+  }
+  if(type==='sent'){
+    if(val && !w[`stmtSentDate${runNum}`]) w[`stmtSentDate${runNum}`]=TODAY_STR;
+    if(!val) w[`stmtSentDate${runNum}`]='';
+    // legacy flat field
+    if(val && !w.stmtSentDate) w.stmtSentDate=TODAY_STR;
+  }
+  const qs = run==='run1' ? [4,1] : [2,3];
+  qs.forEach(q=>{ if(type==='recv') w.stmtRecv[`q${q}`]=val; else w.stmtSent[`q${q}`]=val; });
+  refreshDetail(id); await dbSave(w);
+}
+async function saveStmtDate(id,field,inputId){
+  const val=document.getElementById(inputId)?.value;
+  if(!val){ toast('No Date','Pick a date first.'); return; }
+  const w=writers.find(x=>x.id===id);
+  w[field]=val;
+  // legacy sync
+  if(field==='stmtSentDate1'||field==='stmtSentDate2') w.stmtSentDate=val;
+  toast('Date Saved',`Statement date updated for ${w.name}.`);
+  refreshDetail(id); await dbSave(w);
+}
+
+// ── SUPABASE ───────────────────────────────────────────────────────────
+const SB_URL = 'https://jbcqoxiygkdxoaulrhbk.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3FveGl5Z2tkeG9hdWxyaGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTA1MDQsImV4cCI6MjA4ODg2NjUwNH0.IPB_7u7hU53aUI6wS-fYXLOe3_7uCAjMhDwXxQZR4s8';
+const SB_HEADERS = { 'Content-Type':'application/json', 'apikey': SB_KEY, 'Authorization': `Bearer ${SB_KEY}` };
+
+async function sbFetch(path, opts={}){
+  const res = await fetch(`${SB_URL}/rest/v1/${path}`, { headers: SB_HEADERS, ...opts });
+  if(!res.ok){ const e = await res.text(); throw new Error(e); }
+  return res.status === 204 ? null : res.json();
+}
+
+async function dbLoad(){
+  showLoader(true);
+  try {
+    const rows = await sbFetch('writers?select=id,data&order=id');
+    if(rows && rows.length > 0){
+      writers = rows.map(r => {
+        const w = { id: r.id, ...r.data };
+        // Ensure all required fields exist
+        if(!w.stmtRecv) w.stmtRecv = {q1:false,q2:false,q3:false,q4:false};
+        if(!w.stmtSent) w.stmtSent = {q1:false,q2:false,q3:false,q4:false};
+        if(!w.stmtRecvDate1) w.stmtRecvDate1 = '';
+        if(!w.stmtRecvDate2) w.stmtRecvDate2 = '';
+        if(!w.stmtSentDate1) w.stmtSentDate1 = '';
+        if(!w.stmtSentDate2) w.stmtSentDate2 = '';
+        return w;
+      });
+      nextId = Math.max(...writers.map(w=>w.id)) + 1;
+      // Patch alias and URL updates that may be stale in DB
+      const aliasPatches = {
+        43: 'Yousseff Ali [Syft Inc]',
+        44: 'Nebu Kiniza [Open On Sunday]',
+        47: '[The Loopholes]',
+        48: 'Bobby Keyz [The Loopholes]',
+        49: 'Stonii [The Loopholes]',
+        58: '[Dream Addix]',
+        59: '[Dream Addix]'
+      };
+      const urlPatches = {
+        1:  {g:'https://genius.com/artists/india-arie',m:'https://www.muso.ai/music/india-arie'},
+        2:  {g:'https://genius.com/artists/kim-jaehyun',m:'https://www.muso.ai/music/kim-jaehyun'},
+        3:  {g:'https://genius.com/artists/daiki-ishii',m:'https://www.muso.ai/music/daiki-ishii'},
+        4:  {g:'https://genius.com/artists/dennis-jose-rios-soto',m:'https://www.muso.ai/music/dennis-jose-rios-soto'},
+        5:  {g:'https://genius.com/artists/matthew-davis-bosley',m:'https://www.muso.ai/music/matthew-davis-bosley'},
+        6:  {g:'https://genius.com/artists/kevon-jordan-lewis',m:'https://www.muso.ai/music/kevon-jordan-lewis'},
+        7:  {g:'https://genius.com/artists/elijah-gull',m:'https://www.muso.ai/music/elijah-gull'},
+        8:  {g:'https://genius.com/artists/ricardo-tussaint',m:'https://www.muso.ai/music/ricardo-tussaint'},
+        9:  {g:'https://genius.com/artists/marcus-j-gotch',m:'https://www.muso.ai/music/marcus-j-gotch'},
+        10: {g:'https://genius.com/artists/amanda-j-jones',m:'https://www.muso.ai/music/amanda-j-jones'},
+        11: {g:'https://genius.com/artists/antwon-hicks',m:'https://www.muso.ai/music/antwon-hicks'},
+        12: {g:'https://genius.com/artists/adrian-mckinnon',m:'https://www.muso.ai/music/adrian-mckinnon'},
+        13: {g:'https://genius.com/artists/solomon-naar',m:'https://www.muso.ai/music/solomon-naar'},
+        14: {g:'https://genius.com/artists/jack-richmeier',m:'https://www.muso.ai/music/jack-richmeier'},
+        15: {g:'https://genius.com/artists/matthias-ringleb',m:'https://www.muso.ai/music/matthias-ringleb'},
+        16: {g:'https://genius.com/artists/damion-deron-williams',m:'https://www.muso.ai/music/damion-deron-williams'},
+        17: {g:'https://genius.com/artists/omir-bernard',m:'https://www.muso.ai/music/omir-bernard'},
+        18: {g:'https://genius.com/artists/denzel-ayuk',m:'https://www.muso.ai/music/denzel-ayuk'},
+        19: {g:'https://genius.com/artists/sebastian-julien-graux',m:'https://www.muso.ai/music/sebastian-julien-graux'},
+        20: {g:'https://genius.com/artists/oliver-nazemi',m:'https://www.muso.ai/music/oliver-nazemi'},
+        21: {g:'https://genius.com/artists/mahir-karaosmanovic',m:'https://www.muso.ai/music/mahir-karaosmanovic'},
+        22: {g:'https://genius.com/artists/tzurel-halfon',m:'https://www.muso.ai/music/tzurel-halfon'},
+        23: {g:'https://genius.com/artists/tchakalla-anthony-romeo',m:'https://www.muso.ai/music/tchakalla-anthony-romeo'},
+        24: {g:'https://genius.com/artists/gregory-sanders-jr',m:'https://www.muso.ai/music/gregory-sanders-jr'},
+        25: {g:'https://genius.com/artists/bryan-fleurimond',m:'https://www.muso.ai/music/bryan-fleurimond'},
+        26: {g:'https://genius.com/artists/sekai-santiago-paz-hayward',m:'https://www.muso.ai/music/sekai-santiago-paz-hayward'},
+        27: {g:'https://genius.com/artists/kevin-christopher-earl',m:'https://www.muso.ai/music/kevin-christopher-earl'},
+        28: {g:'https://genius.com/artists/taylor-watson',m:'https://www.muso.ai/music/taylor-watson'},
+        29: {g:'https://genius.com/artists/truman-rogers-ii',m:'https://www.muso.ai/music/truman-rogers-ii'},
+        30: {g:'https://genius.com/artists/balwinder-singh',m:'https://www.muso.ai/music/balwinder-singh'},
+        31: {g:'https://genius.com/artists/adnan-khan',m:'https://www.muso.ai/music/adnan-khan'},
+        32: {g:'https://genius.com/artists/goldiie',m:'https://www.muso.ai/music/goldiie'},
+        33: {g:'https://genius.com/artists/mook',m:'https://www.muso.ai/music/mook'},
+        34: {g:'https://genius.com/artists/kronix-magical',m:'https://www.muso.ai/music/kronix-magical'},
+        35: {g:'https://genius.com/artists/sharon-ramirez',m:'https://www.muso.ai/music/sharon-ramirez'},
+        36: {g:'https://genius.com/artists/oreoo-beatz',m:'https://www.muso.ai/music/oreoo-beatz'},
+        37: {g:'https://genius.com/artists/jonniel',m:'https://www.muso.ai/music/jonniel'},
+        38: {g:'https://genius.com/artists/kendo-kaponi',m:'https://www.muso.ai/music/kendo-kaponi'},
+        39: {g:'https://genius.com/artists/juhn',m:'https://www.muso.ai/music/juhn'},
+        40: {g:'https://genius.com/artists/mate-traxx',m:'https://www.muso.ai/music/mate-traxx'},
+        41: {g:'https://genius.com/artists/benny-wond3r',m:'https://www.muso.ai/music/benny-wond3r'},
+        42: {g:'https://genius.com/artists/baby-winsch',m:'https://www.muso.ai/music/baby-winsch'},
+        43: {g:'https://genius.com/artists/yousseff-ali',m:'https://www.muso.ai/music/yousseff-ali'},
+        44: {g:'https://genius.com/artists/nebu-kiniza',m:'https://www.muso.ai/music/nebu-kiniza'},
+        45: {g:'https://genius.com/artists/natra-average',m:'https://www.muso.ai/music/natra-average'},
+        46: {g:'https://genius.com/artists/dk-the-punisher',m:'https://www.muso.ai/music/dk-the-punisher'},
+        47: {g:'https://genius.com/artists/javar-rockamore',m:'https://www.muso.ai/music/javar-rockamore'},
+        48: {g:'https://genius.com/artists/bobby-keyz',m:'https://www.muso.ai/music/bobby-keyz'},
+        49: {g:'https://genius.com/artists/stonii',m:'https://www.muso.ai/music/stonii'},
+        50: {g:'https://genius.com/artists/sticks',m:'https://www.muso.ai/music/sticks'},
+        51: {g:'https://genius.com/artists/stoopid-beats',m:'https://www.muso.ai/music/stoopid-beats'},
+        52: {g:'https://genius.com/artists/hazel',m:'https://www.muso.ai/music/hazel'},
+        53: {g:'https://genius.com/artists/triple-a',m:'https://www.muso.ai/music/triple-a'},
+        54: {g:'https://genius.com/artists/ayo-jay',m:'https://www.muso.ai/music/ayo-jay'},
+        55: {g:'https://genius.com/artists/calvin-tarvin',m:'https://www.muso.ai/music/calvin-tarvin'},
+        56: {g:'https://genius.com/artists/ives-lemos',m:'https://www.muso.ai/music/ives-lemos'},
+        57: {g:'https://genius.com/artists/yusef-ali-el',m:'https://www.muso.ai/music/yusef-ali-el'},
+        58: {g:'https://genius.com/artists/dream-addix',m:'https://www.muso.ai/music/dream-addix'},
+        59: {g:'https://genius.com/artists/dream-addix',m:'https://www.muso.ai/music/dream-addix'},
+        60: {g:'https://genius.com/artists/mr-217',m:'https://www.muso.ai/music/mr-217'},
+        61: {g:'https://genius.com/artists/critacal',m:'https://www.muso.ai/music/critacal'},
+        62: {g:'https://genius.com/artists/dmactoobangin',m:'https://www.muso.ai/music/dmactoobangin'},
+        63: {g:'https://genius.com/artists/sauce-lord',m:'https://www.muso.ai/music/sauce-lord'},
+        64: {g:'https://genius.com/artists/youngstarr',m:'https://www.muso.ai/music/youngstarr'},
+        65: {g:'https://genius.com/artists/dis',m:'https://www.muso.ai/music/dis'},
+        66: {g:'https://genius.com/artists/spax',m:'https://www.muso.ai/music/spax'},
+        67: {g:'https://genius.com/artists/otee-beats',m:'https://www.muso.ai/music/otee-beats'},
+        68: {g:'https://genius.com/artists/mayorkun',m:'https://www.muso.ai/music/mayorkun'},
+        69: {g:'https://genius.com/artists/ice-prince',m:'https://www.muso.ai/music/ice-prince'},
+        70: {g:'https://genius.com/artists/lyrica-anderson',m:'https://www.muso.ai/music/lyrica-anderson'},
+        71: {g:'https://genius.com/artists/karriem-hicks',m:'https://www.muso.ai/music/karriem-hicks'},
+        72: {g:'https://genius.com/artists/sou-el-flotador',m:'https://www.muso.ai/music/sou-el-flotador'},
+        73: {g:'https://genius.com/artists/neil-gang',m:'https://www.muso.ai/music/neil-gang'},
+        74: {g:'https://genius.com/artists/say-terrelle',m:'https://www.muso.ai/music/say-terrelle'},
+        75: {g:'https://genius.com/artists/orteez',m:'https://www.muso.ai/music/orteez'},
+      };
+      writers.forEach(w => {
+        let changed = false;
+        if(aliasPatches[w.id] !== undefined && w.alias !== aliasPatches[w.id]){ w.alias = aliasPatches[w.id]; changed = true; }
+        if(urlPatches[w.id] && !w.geniusUrl){ w.geniusUrl = urlPatches[w.id].g; changed = true; }
+        if(urlPatches[w.id] && !w.musoUrl){ w.musoUrl = urlPatches[w.id].m; changed = true; }
+        // Fix Bisbo and Doomsday company field
+        if((w.id===76||w.id===77) && w.company!=='PAQ'){ w.company='PAQ'; changed=true; }
+        if(changed) dbSave(w);
+      });
+    } else {
+      // First time — seed the database with the built-in roster
+      await dbSeedAll();
+    }
+  } catch(e){
+    console.error('Load failed:', e);
+    toast('Connection Error', 'Could not load from database. Working offline.');
+  }
+  showLoader(false);
+  renderAll();
+  initResizableCols();
+}
+
+async function dbSeedAll(){
+  // Push all default writers to Supabase on first run
+  const body = writers.map(w => ({ id: w.id, data: w }));
+  await sbFetch('writers', {
+    method: 'POST',
+    headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+    body: JSON.stringify(body)
+  });
+}
+
+async function dbSave(w){
+  try {
+    await sbFetch('writers', {
+      method: 'POST',
+      headers: { ...SB_HEADERS, 'Prefer': 'resolution=merge-duplicates' },
+      body: JSON.stringify({ id: w.id, data: w })
+    });
+  } catch(e){ toast('Save Error', 'Change may not have saved. Check connection.'); }
+}
+
+async function dbDelete(id){
+  try {
+    await sbFetch(`writers?id=eq.${id}`, { method: 'DELETE' });
+  } catch(e){ toast('Delete Error', 'Could not delete from database.'); }
+}
+
+function showLoader(on){
+  let el = document.getElementById('db-loader');
+  if(!el){
+    el = document.createElement('div');
+    el.id = 'db-loader';
+    el.style.cssText = 'position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#c9931a,#4a72b8,#8da800);z-index:999;transition:opacity .3s';
+    document.body.prepend(el);
+  }
+  el.style.opacity = on ? '1' : '0';
+}
+
+// ── TOAST ──────────────────────────────────────────────────────────────
+function toast(title,msg){
+  const el=document.createElement('div'); el.className='toast';
+  el.innerHTML=`<div class="toast-ico">✓</div><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
+  document.getElementById('toast-wrap').appendChild(el);
+  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),350); },4000);
+}
+
+// ── CLOCK ──────────────────────────────────────────────────────────────
+function tick(){ document.getElementById('live-time').textContent=new Date().toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',second:'2-digit'}); }
+setInterval(tick,1000); tick();
+
+document.getElementById('modal-overlay').addEventListener('click',function(e){ if(e.target===this) closeModal(); });
+document.getElementById('modal-overlay').addEventListener('keydown',function(e){
+  if(e.key==='Enter' && !e.shiftKey && e.target.tagName!=='TEXTAREA'){
+    e.preventDefault();
+    saveWriter();
+  }
+});
+
+// Click outside detail panel to close
+document.addEventListener('click', function(e) {
+  if(_suppressDetailClose) return;
+  const panel = document.getElementById('detail-panel');
+  if (panel.classList.contains('open') && !panel.contains(e.target) && !e.target.closest('.wcard') && !e.target.closest('tbody tr') && !e.target.closest('.alert-item')) {
+    closeDetail();
+  }
+});
+
+// Start
+dbLoad();
+</script>
+<!-- Alert Priority Modal -->
+<div id="alert-priority-modal" style="display:none;position:fixed;inset:0;z-index:300;background:rgba(0,0,0,0.5);align-items:center;justify-content:center">
+  <div style="background:var(--paper);border:1px solid var(--rule2);width:340px;max-width:95vw;padding:20px;font-family:var(--mono)">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink3)">Alert Priority Order</div>
+      <button onclick="closeAlertPriority()" style="background:none;border:none;font-size:16px;cursor:pointer;color:var(--ink3)">✕</button>
+    </div>
+    <div style="font-size:8.5px;color:var(--ink4);margin-bottom:12px">Drag to reorder. Top = highest priority in alerts list.</div>
+    <div id="alert-priority-list" style="display:flex;flex-direction:column;gap:4px"></div>
+    <div style="display:flex;gap:8px;margin-top:16px;justify-content:flex-end">
+      <button onclick="closeAlertPriority()" style="font-family:var(--mono);font-size:9px;padding:5px 12px;background:none;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer">Cancel</button>
+      <button onclick="saveAlertPriorityModal()" style="font-family:var(--mono);font-size:9px;padding:5px 14px;background:var(--ink);color:var(--paper);border:none;cursor:pointer">Save Order</button>
+    </div>
+  </div>
+</div>
+</body>
+</html>
