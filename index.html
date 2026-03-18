@@ -309,7 +309,8 @@ body.dark input[type="checkbox"] { accent-color: var(--gold-border); }
 body.dark .co-group-name { color: var(--ink); }
 body.dark .admin-section-name { color: var(--ink); }
 *{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;}
+html{overflow-x:hidden;}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;overflow-x:hidden;}
 
 /* ── HEADER ─────────────────────────────── */
 header {
@@ -755,7 +756,23 @@ td:last-child{border-right:none;}
 .wdot-pip{
   width:7px;height:7px;border-radius:50%;flex-shrink:0;
 }
-.wdot-pip.pip-sq{ border-radius:1px; } /* square — for stmt received/sent */
+.wdot-pip.pip-sq{ border-radius:1px; }
+.wdot-pip.pip-tri{
+  width:0;height:0;border-radius:0;background:transparent !important;
+  border-left:4px solid transparent;
+  border-right:4px solid transparent;
+  border-bottom:7px solid var(--tri-color,#888);
+}
+.key-custom-section{margin-top:8px;border-top:1px solid var(--rule);padding-top:8px;}
+.key-custom-row{display:flex;align-items:center;gap:6px;margin-bottom:4px;}
+.key-custom-tri{width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:9px solid var(--tri-color,#888);flex-shrink:0;}
+.key-add-tracker{font-family:var(--mono);font-size:8px;letter-spacing:0.5px;background:none;border:1px dashed var(--rule2);color:var(--ink4);cursor:pointer;padding:3px 8px;width:100%;margin-top:4px;}
+.key-add-tracker:hover{border-color:var(--ink3);color:var(--ink2);}
+.key-tracker-btn{flex:1;font-family:var(--mono);font-size:8px;background:none;border:none;cursor:pointer;color:var(--ink3);text-align:left;padding:1px 0;}
+.key-tracker-btn.on{color:var(--ink);}
+.key-tracker-del{background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 2px;line-height:1;}
+.key-tracker-del:hover{color:var(--red);}
+/* ──* square — for stmt received/sent */
 .pip-green{background:var(--green);}
 .pip-amber{background:var(--amber);}
 .pip-red{background:var(--red);}
@@ -798,6 +815,7 @@ td:last-child{border-right:none;}
 .wcard.compact-card .wcard-name  { font-size:11.5px; }
 .compact-dots { display:flex; gap:4px; margin-top:5px; flex-wrap:wrap; pointer-events:none; }
 .cdot { width:7px; height:7px; border-radius:50%; flex-shrink:0; }
+.cdot.pip-tri { width:0; height:0; background:transparent !important; border-radius:0; border-left:4px solid transparent; border-right:4px solid transparent; border-bottom:7px solid var(--tri-color,#888); }
 .cdot.pip-sq { border-radius:1px; }
 
 /* Compact view — flagged highlights */
@@ -1114,6 +1132,37 @@ body.dark .genius-btn:hover{background:#3a3a00;}
 .paq-nav-btn.active svg{ opacity:1 !important; }
 .paq-nav-ico{display:flex;align-items:center;justify-content:center;}
 .paq-nav-btn svg{ opacity:0.55; transition:opacity 0.15s; }
+
+/* ── MOBILE ─────────────────────────────── */
+@media (max-width: 768px) {
+  header { padding: 0 16px; }
+  .toolbar { padding: 0 16px; }
+  .toolbar-row1 { gap: 6px; flex-wrap: wrap; }
+  .layout {
+    grid-template-columns: 1fr;
+    padding: 16px 16px 48px;
+    gap: 0;
+  }
+  .sidebar { display: none; } /* hide sidebar on mobile — too narrow */
+  .hdr-stats { gap: 0; }
+  .hstat { padding: 10px 12px; }
+  .hstat-n { font-size: 22px; }
+  .hdr-top { padding: 12px 0 10px; }
+  .srch { min-width: 120px; }
+  .add-btn span { display: none; } /* hide "+ Add Writer" text, keep + */
+  .toolbar-row1 > select { font-size: 10px; padding: 5px 6px; max-width: 110px; }
+  .paq-nav { height: 44px; }
+  .paq-nav-btn { padding: 0 16px; }
+  .wcard { padding: 10px 12px; }
+  .detail { width: 100% !important; right: -100% !important; }
+  .detail.open { right: 0 !important; }
+}
+@media (max-width: 480px) {
+  .hdr-stats { flex-wrap: wrap; }
+  .hstat { min-width: 80px; border-right: none; border-bottom: 1px solid rgba(255,255,255,0.08); }
+  .toolbar-row1 { gap: 4px; }
+  .toolbar-row1 > select { max-width: 90px; font-size: 9px; }
+}
 </style>
 <nav class="paq-nav">
   <a href="index.html" class="paq-nav-btn active" title="Roster">
@@ -1248,6 +1297,8 @@ body.dark .genius-btn:hover{background:#3a3a00;}
       <button class="key-btn" id="kbtn-stmtNone" onclick="toggleKeyFilter('stmtNone')">
         <div class="leg-dot" style="background:var(--ink5);border-radius:1px"></div><span id="key-none-label">Not due</span>
       </button>
+      <div id="custom-tracker-key"></div>
+      <button class="key-section-btn" onclick="addCustomTracker()" style="color:var(--ink4);cursor:pointer">+ Add Custom Tracker</button>
       <div style="margin-top:8px;font-family:var(--mono);font-size:7.5px;color:var(--ink5);line-height:1.8;border-top:1px solid var(--rule);padding-top:7px;">
         ● &lt;6mo green · 6–12mo amber · &gt;12mo red
       </div>
@@ -1375,8 +1426,9 @@ body.dark .genius-btn:hover{background:#3a3a00;}
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <script>
-const TODAY = new Date('2026-03-11');
-const TODAY_STR = '2026-03-11';
+const TODAY = new Date();
+TODAY.setHours(0,0,0,0);
+const TODAY_STR = TODAY.toLocaleDateString('en-CA');
 
 // ── SOLAR AUTO DARK MODE ─────────────────────────────────────────────
 // Latitude/longitude for Chicago, IL
@@ -1443,9 +1495,9 @@ function toggleDark(){
 }
 
 if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', applyAutoTheme);
+  document.addEventListener('DOMContentLoaded', ()=>{ applyAutoTheme(); renderCustomTrackerKey(); initTrackerPills(); });
 } else {
-  applyAutoTheme();
+  applyAutoTheme(); renderCustomTrackerKey(); initTrackerPills();
 }
 setInterval(applyAutoTheme, 60000);
 const CQ = Math.ceil((TODAY.getMonth()+1)/3);
@@ -1563,6 +1615,165 @@ let writers = [
 let nextId=78, currentFilter='all', searchQ='', editingId=null;
 let currentView='cards';
 let compactMode=false;
+
+// ── CUSTOM TRACKERS ──────────────────────────────────────────────────
+// Each tracker: {id, name}
+// Each writer stores customTags[trackerId] = 0 (not done) | 1 (needs attention) | 2 (done)
+let customTrackers = JSON.parse(localStorage.getItem('paq-custom-trackers')||'[]');
+// trackerVisible: whether a custom tracker's dots are shown on cards (true=visible, default true)
+let trackerVisible = {};
+
+// Shape helpers — triangle, diamond, hexagon cycling by tracker index
+function trackerShapeSvg(shapeIdx, color, size){
+  size = size || 9;
+  const s = size;
+  if(shapeIdx % 3 === 0){
+    // Triangle
+    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 10 10" style="flex-shrink:0"><polygon points="5,0 10,10 0,10" fill="'+color+'"/></svg>';
+  } else if(shapeIdx % 3 === 1){
+    // Diamond
+    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 10 10" style="flex-shrink:0"><polygon points="5,0 10,5 5,10 0,5" fill="'+color+'"/></svg>';
+  } else {
+    // Hexagon
+    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 10 10" style="flex-shrink:0"><polygon points="5,0 9.3,2.5 9.3,7.5 5,10 0.7,7.5 0.7,2.5" fill="'+color+'"/></svg>';
+  }
+}
+// Section header symbol
+function trackerShapeChar(shapeIdx){
+  if(shapeIdx % 3 === 0) return '▲';
+  if(shapeIdx % 3 === 1) return '◆';
+  return '⬡';
+}
+
+function saveTrackers(){ localStorage.setItem('paq-custom-trackers', JSON.stringify(customTrackers)); }
+
+function addCustomTracker(){
+  const name = prompt('Tracker name (e.g. "Priority", "Sync Ready"):');
+  if(!name || !name.trim()) return;
+  const id = 'ct_' + Date.now();
+  customTrackers.push({id, name: name.trim()});
+  saveTrackers();
+  // Add keyFilter entries for the 3 states
+  keyFilter[id+'_done'] = true;
+  keyFilter[id+'_attn'] = true;
+  keyFilter[id+'_none'] = true;
+  trackerVisible[id] = true;
+  renderAll();
+  renderCustomTrackerKey();
+}
+
+function initTrackerPills(){
+  // Init keyFilter and trackerVisible entries for existing trackers
+  customTrackers.forEach(t => {
+    if(keyFilter[t.id+'_done'] === undefined) keyFilter[t.id+'_done'] = true;
+    if(keyFilter[t.id+'_attn'] === undefined) keyFilter[t.id+'_attn'] = true;
+    if(keyFilter[t.id+'_none'] === undefined) keyFilter[t.id+'_none'] = true;
+    if(trackerVisible[t.id] === undefined) trackerVisible[t.id] = true;
+  });
+}
+
+function deleteCustomTracker(id){
+  if(!confirm('Remove this tracker? It will be cleared from all writers.')) return;
+  customTrackers = customTrackers.filter(t=>t.id!==id);
+  writers.forEach(w=>{ if(w.customTags) delete w.customTags[id]; });
+  writers.forEach(w=>dbSave(w));
+  saveTrackers();
+  delete keyFilter[id+'_done'];
+  delete keyFilter[id+'_attn'];
+  delete keyFilter[id+'_none'];
+  delete trackerVisible[id];
+  renderAll();
+  renderCustomTrackerKey();
+}
+
+// Cycle through 0→1→2→0 on each click
+function cycleWriterTracker(writerId, trackerId){
+  const w = writers.find(x=>x.id===writerId);
+  if(!w) return;
+  if(!w.customTags) w.customTags = {};
+  const cur = w.customTags[trackerId] || 0;
+  w.customTags[trackerId] = (cur + 1) % 3;
+  dbSave(w);
+  refreshDetail(writerId);
+  renderAll();
+}
+
+// Set tracker to explicit state (0=not done, 1=needs attention, 2=done)
+function setWriterTracker(writerId, trackerId, state){
+  const w = writers.find(x=>x.id===writerId);
+  if(!w) return;
+  if(!w.customTags) w.customTags = {};
+  w.customTags[trackerId] = state;
+  dbSave(w);
+  refreshDetail(writerId);
+  renderAll();
+}
+
+// Get triangle color for a tracker state
+function trackerColor(state){
+  if(state === 2) return 'var(--green)';
+  if(state === 1) return 'var(--amber)';
+  return 'var(--red)';
+}
+function trackerLabel(state){
+  if(state === 2) return 'Done';
+  if(state === 1) return 'Needs Attention';
+  return 'Not Done';
+}
+
+function renderCustomTrackerDetail(w, id){
+  if(!customTrackers.length) return '';
+  const circleBtn = (writerId, trackerId, state, targetState, color, symbol) => {
+    const active = state === targetState;
+    const bg = active ? color : 'transparent';
+    const border = active ? color : 'var(--rule2)';
+    const textColor = active ? '#fff' : 'var(--ink4)';
+    return '<button onclick="setWriterTracker('+writerId+',\''+trackerId+'\','+targetState+')" '
+      + 'style="width:20px;height:20px;border-radius:50%;border:1.5px solid '+border+';background:'+bg+';color:'+textColor+';font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0">'
+      + symbol + '</button>';
+  };
+  const rows = customTrackers.map((t, idx) => {
+    const state = (w.customTags && w.customTags[t.id]) || 0;
+    const color = trackerColor(state);
+    const label = ' — ' + trackerLabel(state);
+    const svg = trackerShapeSvg(idx, color, 9);
+    return '<div style="display:flex;align-items:center;gap:8px;padding:5px 0">'
+      + svg
+      + '<span style="font-family:var(--mono);font-size:10px;flex:1;color:'+color+'">'+t.name+'<span style="opacity:0.7">'+label+'</span></span>'
+      + '<div style="display:flex;gap:4px">'
+      + circleBtn(id, t.id, state, 2, 'var(--green)', '✓')
+      + circleBtn(id, t.id, state, 1, 'var(--amber)', '●')
+      + circleBtn(id, t.id, state, 0, 'var(--red)',   '✕')
+      + '</div></div>';
+  }).join('');
+  return '<div class="d-sec"><div class="d-sec-title">Custom Tracking</div><div style="display:flex;flex-direction:column;gap:2px;margin-top:4px">'+rows+'</div></div>';
+}
+
+function renderCustomTrackerKey(){
+  const el = document.getElementById('custom-tracker-key');
+  if(!el) return;
+  if(customTrackers.length === 0){ el.innerHTML = ''; return; }
+  el.innerHTML = customTrackers.map((t, idx) => {
+    const sym = trackerShapeChar(idx);
+    const svgDone = trackerShapeSvg(idx, 'var(--green)', 8);
+    const svgAttn = trackerShapeSvg(idx, 'var(--amber)', 8);
+    const svgNone = trackerShapeSvg(idx, 'var(--red)',   8);
+    const offDone = keyFilter[t.id+'_done'] === false ? ' off' : '';
+    const offAttn = keyFilter[t.id+'_attn'] === false ? ' off' : '';
+    const offNone = keyFilter[t.id+'_none'] === false ? ' off' : '';
+    const isVisible = trackerVisible[t.id] !== false;
+    const offGrp = isVisible ? '' : ' off';
+    return `<div style="margin-top:6px">
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <button class="key-section-btn${offGrp}" id="kgrp-ct-${t.id}" style="margin:0" onclick="toggleKeyGroup('${t.id}')">${sym} ${t.name}</button>
+        <button onclick="deleteCustomTracker('${t.id}')" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:11px;padding:0 4px" title="Remove">×</button>
+      </div>
+      <button class="key-btn${offDone}" id="kbtn-${t.id}_done" onclick="toggleKeyFilter('${t.id}_done')">${svgDone}Done</button>
+      <button class="key-btn${offAttn}" id="kbtn-${t.id}_attn" onclick="toggleKeyFilter('${t.id}_attn')">${svgAttn}Needs Attention</button>
+      <button class="key-btn${offNone}" id="kbtn-${t.id}_none" onclick="toggleKeyFilter('${t.id}_none')">${svgNone}Not Done</button>
+    </div>`;
+  }).join('');
+}
 
 // Statement run: Q4-Q1 (Oct–Mar) vs Q2-Q3 (Apr–Sep) — manually set, persisted
 const _autoRun = (TODAY.getMonth()+1 >= 10 || TODAY.getMonth()+1 <= 3)
@@ -1777,6 +1988,21 @@ function getFiltered(){
       return !sentGreen || sentBefore; // keep only unsent or sent-before-audit
     });
   }
+  // Custom tracker key filters
+  customTrackers.forEach(t => {
+    const doneOff = keyFilter[t.id+'_done'] === false;
+    const attnOff = keyFilter[t.id+'_attn'] === false;
+    const noneOff = keyFilter[t.id+'_none'] === false;
+    if(doneOff || attnOff || noneOff){
+      d = d.filter(w => {
+        const state = (w.customTags && w.customTags[t.id]) || 0;
+        if(state === 2 && doneOff) return false;
+        if(state === 1 && attnOff) return false;
+        if(state === 0 && noneOff) return false;
+        return true;
+      });
+    }
+  });
   return d;
 }
 
@@ -1909,6 +2135,14 @@ function getCompactDots(w){
       dots.push({color: !sent?'pip-red':'pip-gray', shape:'sq', show:!sent});
     }
   }
+  // Custom tracker dots — 3-state, shape by index, only if visible
+  customTrackers.forEach((t, idx) => {
+    if(trackerVisible[t.id] === false) return;
+    const state = (w.customTags && w.customTags[t.id]) || 0;
+    const triColor = state===2?'var(--green)':state===1?'var(--amber)':'var(--red)';
+    const pipColor = state===2?'pip-green':state===1?'pip-amber':'pip-red';
+    dots.push({color:pipColor, shape:'tri', triColor, trackerIdx:idx, show:true, label:t.name});
+  });
   return dots;
 }
 
@@ -2210,7 +2444,22 @@ function handlePeriodSelect(sel){
 function toggleKeyGroup(group){
   const auditKeys=['auditComp','auditAttn','auditOver','auditUnsent'];
   const stmtKeys=['stmtRecv','stmtSent','stmtMiss','stmtNone'];
-  const keys = group==='audit' ? auditKeys : stmtKeys;
+  let keys;
+  if(group==='audit') keys=auditKeys;
+  else if(group==='stmt') keys=stmtKeys;
+  else {
+    // Custom tracker group — toggle visibility of dots on cards, no filtering
+    trackerVisible[group] = !trackerVisible[group];
+    const grpBtn = document.getElementById('kgrp-ct-'+group);
+    if(grpBtn) grpBtn.classList.toggle('off', !trackerVisible[group]);
+    // also dim/undim the 3 sub-buttons
+    ['_done','_attn','_none'].forEach(s => {
+      const btn = document.getElementById('kbtn-'+group+s);
+      if(btn) btn.classList.toggle('off', !trackerVisible[group]);
+    });
+    renderAll();
+    return;
+  }
   // If any are on, turn all off; if all off, turn all on
   const anyOn = keys.some(k=>keyFilter[k]);
   keys.forEach(k=>{
@@ -2336,7 +2585,7 @@ function renderCards(){
       const hasHighlight = dots.some(d=>d.show);
       const highlightCls = hasHighlight ? '' : (anyToggleOn ? 'c-no-highlight' : '');
       const visibleDots = dots.filter(d=>d.show);
-      const dotHtml = visibleDots.length ? `<div class="compact-dots">${visibleDots.map(d=>`<div class="cdot ${d.color}${d.shape==='sq'?' pip-sq':''}"></div>`).join('')}</div>` : '';
+      const dotHtml = visibleDots.length ? '<div class="compact-dots">'+visibleDots.map(d=>{ if(d.shape==='tri') return trackerShapeSvg(d.trackerIdx||0, d.triColor||'#888', 7); return '<div class="cdot '+d.color+(d.shape==='sq'?' pip-sq':'')+'"></div>'; }).join('')+'</div>' : '';
       return `<div class="wcard compact-card ${flagCls} ${highlightCls}" onclick="openDetail(${w.id})">
         <div class="wcard-name" title="${w.name}">${w.name}</div>
         ${w.alias?`<div class="wcard-alias">${w.alias}</div>`:''}
@@ -2397,7 +2646,9 @@ function renderCards(){
           const showSent = (stmtSentPip==='pip-green'&&keyFilter.stmtSent)||(stmtSentPip==='pip-red'&&keyFilter.stmtMiss);
           const auditRow = (showAuditComp||showAuditSent)?`<div class="wdot-row">${showAuditComp?`<div class="wdot" title="Audit completed: ${fmtD(w.auditCompleted||w.auditSent)}"><div class="wdot-pip ${auditCompPip}"></div>${auditCompLbl}</div>`:''} ${showAuditSent?`<div class="wdot" title="Audit sent: ${fmtD(w.auditSent)}${flags.pending?' (unsent)':''}"><div class="wdot-pip ${auditSentPip}"></div>${auditSentLbl}</div>`:''}</div>`:'';
           const stmtRow = (showRecv||showSent)?`<div class="wdot-row">${showRecv?`<div class="wdot" title="Stmt received from company"><div class="wdot-pip pip-sq ${stmtRecvPip}"></div>${stmtRecvLbl}</div>`:''} ${showSent?`<div class="wdot" title="Stmt sent to client"><div class="wdot-pip pip-sq ${stmtSentPip}"></div>${stmtSentLbl}</div>`:''}</div>`:'';
-          return auditRow+stmtRow;
+          const ctRow = customTrackers.length ? customTrackers.map((t,idx)=>{ if(trackerVisible[t.id]===false) return ''; const st=(w.customTags&&w.customTags[t.id])||0; const col=st===2?'var(--green)':st===1?'var(--amber)':'var(--red)'; return '<div class="wdot" title="'+t.name+': '+trackerLabel(st)+'">'+trackerShapeSvg(idx,col,7)+'</div>'; }).join('') : '';
+          const ctRowWrap = ctRow ? '<div class="wdot-row">'+ctRow+'</div>' : '';
+          return auditRow+stmtRow+ctRowWrap;
         } catch(e){ return ''; } })()}
       </div>
     </div>`;
@@ -2661,7 +2912,7 @@ function openDetail(id){
         <div><div class="d-k">Status</div><div class="d-v">${w.status.charAt(0).toUpperCase()+w.status.slice(1)}</div></div>
         <div><div class="d-k">IPI #</div><div class="d-v" style="font-family:var(--mono);font-size:11px">${w.ipi||'—'}</div></div>
         <div><div class="d-k">Company</div><div class="d-v">${w.company}</div></div>
-        <div><div class="d-k">Administrator</div><div class="d-v"><span style="display:inline-block;padding:2px 8px;background:${_adminAccents[w.admin]||'#888'};color:#fff;font-family:var(--mono);font-size:9px;letter-spacing:1.5px;font-weight:700">${(w.admin||'').toUpperCase()}</span></div></div>
+        <div><div class="d-k">Administrator</div><div class="d-v"><span style="display:inline-block;padding:3px 10px;background:transparent;color:${_adminAccents[w.admin]||'#888'};font-family:var(--mono);font-size:9px;letter-spacing:3px;font-weight:700;text-transform:uppercase;border:1px solid ${_adminAccents[w.admin]||'#888'};border-left:3px solid ${_adminAccents[w.admin]||'#888'}">${w.admin||'—'}</span></div></div>
         <div><div class="d-k">Genre</div><div class="d-v">${w.genre}</div></div>
       </div>
       <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:2px">
@@ -2669,6 +2920,7 @@ function openDetail(id){
         ${w.geniusUrl?`<a class="genius-btn" href="${w.geniusUrl}" target="_blank">✦ Genius →</a>`:''}
       </div>
     </div>
+    ${renderCustomTrackerDetail(w, id)}
     <div class="d-sec${!w.scheduleA||mths(w.scheduleA)>=6?' needs-action':''}">
       <div class="d-sec-title">Schedule A${!w.scheduleA||mths(w.scheduleA)>=6?' ⚡':''}</div>
       <div class="toggle-row"><span>Last Completed</span><label class="tck"><input type="checkbox" ${w.scheduleA&&mths(w.scheduleA)<6?'checked':''} onchange="toggleDetailDate(${id},'scheduleA',this.checked)"><span class="tck-circle">✓</span></label></div>
@@ -2779,15 +3031,21 @@ function refreshDetail(id){
 async function toggleDetailDate(id, field, checked){
   const w = writers.find(x=>x.id===id);
   w[field] = checked ? TODAY_STR : '';
-  toast('Updated', `${field==='scheduleA'?'Schedule A':field==='auditCompleted'?'Audit completed':'Audit sent'} ${checked?'marked today':'cleared'} for ${w.name}.`);
+  // When audit is marked done, reset auditSent
+  if(field === 'auditCompleted' && checked){
+    w.auditSent = '';
+  }
   refreshDetail(id); await dbSave(w);
 }
 async function saveDetailDate(id, field, inputId){
   const val = document.getElementById(inputId)?.value;
-  if(!val){ toast('No Date','Please pick a date first.'); return; }
+  if(!val){ return; }
   const w = writers.find(x=>x.id===id);
   w[field] = val;
-  toast('Date Saved', `${field==='scheduleA'?'Schedule A':field==='auditCompleted'?'Audit completed':field==='auditSent'?'Audit sent':'Catalog check'} updated for ${w.name}.`);
+  // When audit completed date is set, clear auditSent
+  if(field === 'auditCompleted'){
+    w.auditSent = '';
+  }
   refreshDetail(id); await dbSave(w);
 }
 
@@ -3005,10 +3263,7 @@ function showLoader(on){
 
 // ── TOAST ──────────────────────────────────────────────────────────────
 function toast(title,msg){
-  const el=document.createElement('div'); el.className='toast';
-  el.innerHTML=`<div class="toast-ico">✓</div><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
-  document.getElementById('toast-wrap').appendChild(el);
-  setTimeout(()=>{ el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),350); },4000);
+  // notifications disabled
 }
 
 // ── CLOCK ──────────────────────────────────────────────────────────────
