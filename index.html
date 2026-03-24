@@ -1973,20 +1973,28 @@ function getFiltered(){
       return true;
     });
   }
-  // Toggle filters
-  // stmtRecv===-1: hard-filter — keep only writers who have NOT received a statement this run
+  // Toggle hard-filters — backward (===-1) removes non-matching writers entirely
+  // auditComplete===-1: keep only writers with overdue/missing audit
+  if(toggleState.auditComplete===-1){
+    d=d.filter(w=>auditPriority(w)<3); // priority 3=fresh(<6mo), remove those
+  }
+  // auditSent===-1: keep only writers needing a send
+  if(toggleState.auditSent===-1){
+    d=d.filter(w=>{
+      const pri=auditPriority(w);
+      if(pri<2) return false;
+      const sentGreen=auditSt(w.auditSent)==='green';
+      const sentBefore=w.auditSent&&w.auditCompleted&&new Date(w.auditSent)<new Date(w.auditCompleted);
+      return !sentGreen||sentBefore;
+    });
+  }
+  // stmtRecv===-1: keep only writers who have NOT received a statement this run
   if(toggleState.stmtRecv===-1){
     d=d.filter(w=>!stmtRunRecv(w));
   }
-  // auditSent===-1: hard-filter — keep only writers needing a send (audit done <12mo, not sent/sent before audit)
-  if(toggleState.auditSent===-1){
-    d=d.filter(w=>{
-      const pri = auditPriority(w);
-      if(pri<2) return false; // >12mo or no audit — remove
-      const sentGreen = auditSt(w.auditSent)==='green';
-      const sentBefore = w.auditSent && w.auditCompleted && new Date(w.auditSent) < new Date(w.auditCompleted);
-      return !sentGreen || sentBefore; // keep only unsent or sent-before-audit
-    });
+  // stmtSent===-1: keep only writers who have NOT been sent a statement this run
+  if(toggleState.stmtSent===-1){
+    d=d.filter(w=>!stmtRunSent(w));
   }
   // Custom tracker key filters
   customTrackers.forEach(t => {
@@ -2693,11 +2701,10 @@ function renderCards(){
         const coKey=`${admin}::${co}`;
         const coCollapsed=collapsedCos.has(coKey);
         // Admin color square next to company name
-        const adminSquare=`<span style="display:inline-block;width:8px;height:8px;background:${adminColor};margin-right:5px;flex-shrink:0"></span>`;
-        return `<div class="co-group">
+            return `<div class="co-group">
           <div class="co-group-hdr co-toggle" onclick="event.stopPropagation();toggleCo('${admin}','${co}')">
             <span class="chevron ${coCollapsed?'':'open'}">›</span>
-            ${adminSquare}<div class="co-group-name">${co}</div>
+            <div class="co-group-name">${co}</div>
             <div class="co-group-count">${ws.length} writer${ws.length!==1?'s':''}</div>
           </div>
           ${coCollapsed?'':`<div class="${cardGridCls}">${ws.map(w=>makeAuditCard(w)).join('')}</div>`}
@@ -2741,8 +2748,7 @@ function renderCards(){
         });
         const coKey=`${admin}::${co}`;
         const coCollapsed=collapsedCos.has(coKey);
-        const adminSquare=`<span style="display:inline-block;width:8px;height:8px;background:${adminColor};margin-right:5px;flex-shrink:0"></span>`;
-        const cards = ws.map(w=>{
+            const cards = ws.map(w=>{
           const p=stmtPriority(w);
           const card = makeCard(w).replace(/ c-no-highlight/g,'').replace(/c-no-highlight/g,'');
           return `<div class="stmt-priority-wrap" data-priority="${p}" style="--audit-alias-color:${adminColor}">${card}</div>`;
@@ -2750,7 +2756,7 @@ function renderCards(){
         return `<div class="co-group">
           <div class="co-group-hdr co-toggle" onclick="event.stopPropagation();toggleCo('${admin}','${co}')">
             <span class="chevron ${coCollapsed?'':'open'}">›</span>
-            ${adminSquare}<div class="co-group-name">${co}</div>
+            <div class="co-group-name">${co}</div>
             <div class="co-group-count">${ws.length} writer${ws.length!==1?'s':''}</div>
           </div>
           ${coCollapsed?'':`<div class="${cardGridCls}">${cards}</div>`}
