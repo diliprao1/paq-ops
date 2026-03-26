@@ -947,17 +947,6 @@ async function saveSongEdit(pid, songIdx){
   await dbSave(p);
   renderDetail(pid);
 }
-
-
-  const p=prospects.find(x=>x.id===id);
-  if(!p) return;
-  document.getElementById('d-name').textContent=p.name;
-  document.getElementById('d-alias').textContent=p.alias?`pka ${p.alias}`:'';
-  document.getElementById('d-edit-btn').onclick=()=>{closeDetail();openEditModal(id);};
-  document.getElementById('d-del-btn').onclick=()=>delProspect(id);
-  document.getElementById('d-convert-btn').onclick=()=>convertToRoster(id);
-
-
 function closeDetail(){
   document.getElementById('detail-panel').classList.remove('open');
   currentDetailId=null;
