@@ -3006,7 +3006,208 @@ function renderDetailBio(id, w){
         ${w.contractStart?`<div style="margin-top:4px;font-family:var(--mono);font-size:9px;color:var(--ink4)">${contractDuration(w)}</div>`:''}
       </div>
     </div>
+    <div class="d-sec">
+      <div class="d-sec-title">Accolades
+        <button onclick="openAddAccolade(${id})" style="font-family:var(--mono);font-size:8px;padding:2px 8px;background:none;border:1px solid var(--rule2);color:var(--ink4);cursor:pointer;margin-left:8px">+ Add</button>
+      </div>
+      ${renderAccolades(w, id)}
+    </div>
     ${renderCustomTrackerDetail(w, id)}`;
+}
+
+
+function renderAccolades(w, id){
+  const accolades = w.accolades || [];
+  if(!accolades.length) return '<div style="font-family:var(--mono);font-size:9px;color:var(--ink5);padding:4px 0">No accolades yet.</div>';
+  const grammys = accolades.filter(a=>a.type==='grammy');
+  const pro     = accolades.filter(a=>a.type==='pro');
+  const riaa    = accolades.filter(a=>a.type==='riaa');
+  const RIAA_ORDER = ['Diamond','5x Platinum','4x Platinum','3x Platinum','2x Platinum','Platinum','Gold'];
+  const riaaColor = l => l==='Diamond'?'#4ab8ff':l.includes('Platinum')?'#aaa':'#c9931a';
+  const riaaBorder = l => l==='Diamond'?'#a0d8ff':l.includes('Platinum')?'#c8c8c8':'#d4af5a';
+  const riaaLevel = l => `<span style="font-family:var(--mono);font-size:8px;padding:1px 6px;border:1px solid ${riaaBorder(l)};color:${riaaColor(l)}">${l}</span>`;
+  const row = (a, realIdx) => `<div style="display:flex;align-items:baseline;gap:8px;padding:4px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:9.5px">
+    <span style="color:var(--ink4);min-width:36px;flex-shrink:0">${a.year||'—'}</span>
+    <span style="flex:1;color:var(--ink2)">${a.title||'—'}${a.category?`<span style="color:var(--ink5);font-size:8px"> · ${a.category}</span>`:''}</span>
+    ${a.type==='grammy'?`<span style="font-family:var(--mono);font-size:8px;padding:1px 6px;border:1px solid ${a.win?'#d4af5a':'var(--rule2)'};color:${a.win?'#c9931a':'var(--ink4)'}">${a.win?'WIN':'NOM'}</span>`:''}
+    ${a.type==='riaa'?riaaLevel(a.level||'Gold'):''}
+    <button onclick="removeAccolade(${id},${realIdx})" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 2px;flex-shrink:0">x</button>
+  </div>`;
+  let html = '';
+  if(grammys.length) html += '<div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--ink4);margin:8px 0 4px;text-transform:uppercase">Grammy</div>' + grammys.map(a=>row(a,accolades.indexOf(a))).join('');
+  if(pro.length)     html += '<div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--ink4);margin:8px 0 4px;text-transform:uppercase">PRO Awards</div>' + pro.map(a=>row(a,accolades.indexOf(a))).join('');
+  if(riaa.length)    html += '<div style="font-family:var(--mono);font-size:8px;letter-spacing:1.5px;color:var(--ink4);margin:8px 0 4px;text-transform:uppercase">RIAA Certifications</div>' + riaa.sort((a,b)=>RIAA_ORDER.indexOf(a.level)-RIAA_ORDER.indexOf(b.level)).map(a=>row(a,accolades.indexOf(a))).join('');
+  return html;
+}
+
+function openAddAccolade(id){
+  document.getElementById('accolade-modal')?.remove();
+  const ov = document.createElement('div');
+  ov.id = 'accolade-modal';
+  ov.style.cssText = 'position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,0.55);z-index:9999;display:flex;align-items:center;justify-content:center';
+
+  function modal(inner){
+    ov.innerHTML = `<div style="background:var(--paper);border:1px solid var(--rule);width:320px;max-width:94vw;padding:24px;font-family:var(--mono)">
+      <div style="font-size:9px;letter-spacing:2px;color:var(--ink4);margin-bottom:18px;text-transform:uppercase">Add Accolade</div>
+      ${inner}
+    </div>`;
+    document.body.appendChild(ov);
+    ov.addEventListener('click', e=>{ if(e.target===ov) ov.remove(); });
+  }
+
+  function btnStyle(active){ return `padding:9px 0;flex:1;font-family:var(--mono);font-size:9px;letter-spacing:1px;border:1px solid var(--rule2);background:none;color:var(--ink3);cursor:pointer;text-transform:uppercase`; }
+
+  // ── STEP 1 — type picker ────────────────────────────────────────────
+  function step1(){
+    modal(`
+      <div style="font-size:11px;color:var(--ink3);margin-bottom:14px">Select type:</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        <button onclick="acStep2('grammy')" style="${btnStyle()}">🏆 Grammy</button>
+        <button onclick="acStep2('riaa')"   style="${btnStyle()}">💿 RIAA Certification</button>
+        <button onclick="acStep2('pro')"    style="${btnStyle()}">🎵 PRO Award</button>
+      </div>
+      <button onclick="document.getElementById('accolade-modal').remove()" style="margin-top:14px;width:100%;padding:7px;background:none;border:1px solid var(--rule);color:var(--ink5);font-family:var(--mono);font-size:9px;cursor:pointer">Cancel</button>
+    `);
+  }
+
+  // ── STEP 2 — type-specific form ─────────────────────────────────────
+  window.acStep1 = step1;
+
+  window.acStep2 = function(type){
+    const grammy = type === 'grammy';
+    const riaa   = type === 'riaa';
+    const pro    = type === 'pro';
+
+    const RIAA_LEVELS = ['Gold','Platinum','2x Platinum','3x Platinum','4x Platinum','5x Platinum','Diamond','Custom...'];
+    const GRAMMY_CATS = ['Record of the Year','Album of the Year','Song of the Year','Best New Artist','Best Pop Vocal Album','Best Rap Album','Best R&B Album','Best Melodic Rap Performance','Best Rap Song','Best R&B Song','Best R&B Performance','Best Progressive R&B Album','Best Pop Solo Performance','Producer of the Year, Non-Classical','Songwriter of the Year, Non-Classical','Other'];
+
+    modal(`
+      <div style="font-size:9px;letter-spacing:1.5px;color:var(--ink4);margin-bottom:16px;text-transform:uppercase">
+        ${grammy?'🏆 Grammy':riaa?'💿 RIAA Certification':'🎵 PRO Award'}
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase">Year</label>
+          <input id="ac-year" type="number" placeholder="${new Date().getFullYear()}" style="width:100%;padding:7px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:11px;box-sizing:border-box">
+        </div>
+
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase">${riaa?'Song / Album':'Song / Album'}</label>
+          <input id="ac-title" type="text" placeholder="${riaa?'e.g. Blinding Lights':grammy?'e.g. Bad Guy':'e.g. God\'s Plan'}" style="width:100%;padding:7px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:11px;box-sizing:border-box">
+        </div>
+
+        ${grammy ? `
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase">Category</label>
+          <select id="ac-cat" style="width:100%;padding:7px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:11px">
+            ${GRAMMY_CATS.map(c=>`<option value="${c}">${c}</option>`).join('')}
+          </select>
+        </div>
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:6px;text-transform:uppercase">Result</label>
+          <div style="display:flex;gap:8px">
+            <button id="ac-nom-btn" onclick="acToggleWin(false)" style="flex:1;padding:8px;font-family:var(--mono);font-size:9px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);cursor:pointer">Nomination</button>
+            <button id="ac-win-btn" onclick="acToggleWin(true)"  style="flex:1;padding:8px;font-family:var(--mono);font-size:9px;border:1px solid var(--rule2);background:none;color:var(--ink4);cursor:pointer">Win</button>
+          </div>
+        </div>` : ''}
+
+        ${riaa ? `
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase">Certification Level</label>
+          <div style="display:flex;flex-wrap:wrap;gap:6px" id="ac-riaa-btns">
+            ${RIAA_LEVELS.map(l=>`<button onclick="acSelectRiaa('${l}')" id="ac-riaa-${l.replace(/ /g,'-')}" style="padding:5px 10px;font-family:var(--mono);font-size:8.5px;border:1px solid var(--rule2);background:none;color:var(--ink4);cursor:pointer">${l}</button>`).join('')}<input id="ac-riaa-custom" type="text" placeholder="e.g. 6x Platinum" style="display:none;margin-top:8px;width:100%;padding:6px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:11px;box-sizing:border-box">
+          </div>
+        </div>` : ''}
+
+        ${pro ? `
+        <div>
+          <label style="font-size:8px;color:var(--ink4);letter-spacing:1px;display:block;margin-bottom:4px;text-transform:uppercase">Award Name</label>
+          <input id="ac-cat" type="text" placeholder="e.g. ASCAP Pop Music Award" style="width:100%;padding:7px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);font-family:var(--mono);font-size:11px;box-sizing:border-box">
+        </div>` : ''}
+      </div>
+
+      <div style="display:flex;gap:8px;margin-top:18px">
+        <button onclick="acStep1()" style="padding:8px 14px;font-family:var(--mono);font-size:9px;border:1px solid var(--rule);background:none;color:var(--ink4);cursor:pointer">← Back</button>
+        <button onclick="acSave(${id},'${type}')" style="flex:1;padding:8px;font-family:var(--mono);font-size:9px;border:none;background:var(--ink);color:var(--paper);cursor:pointer;letter-spacing:1px">Save</button>
+      </div>
+    `);
+
+    // Default state
+    window._acWin = false;
+    window._acRiaaLevel = null;
+  };
+
+  window.acToggleWin = function(win){
+    window._acWin = win;
+    const nomBtn = document.getElementById('ac-nom-btn');
+    const winBtn = document.getElementById('ac-win-btn');
+    if(nomBtn && winBtn){
+      nomBtn.style.background = win ? 'none' : 'var(--ink)';
+      nomBtn.style.color      = win ? 'var(--ink4)' : 'var(--paper)';
+      nomBtn.style.borderColor= win ? 'var(--rule2)' : 'var(--ink)';
+      winBtn.style.background = win ? '#c9931a' : 'none';
+      winBtn.style.color      = win ? '#fff' : 'var(--ink4)';
+      winBtn.style.borderColor= win ? '#c9931a' : 'var(--rule2)';
+    }
+  };
+
+  window.acSelectRiaa = function(level){
+    window._acRiaaLevel = level === 'Custom...' ? null : level;
+    document.querySelectorAll('[id^="ac-riaa-"]').forEach(b=>{
+      if(b.tagName !== 'BUTTON') return;
+      const active = b.textContent.trim() === level;
+      b.style.background  = active ? 'var(--ink)' : 'none';
+      b.style.color       = active ? 'var(--paper)' : 'var(--ink4)';
+      b.style.borderColor = active ? 'var(--ink)' : 'var(--rule2)';
+    });
+    const customInput = document.getElementById('ac-riaa-custom');
+    if(customInput){
+      if(level === 'Custom...'){
+        customInput.style.display = 'block';
+        customInput.focus();
+        customInput.oninput = () => { window._acRiaaLevel = customInput.value.trim()||null; };
+      } else {
+        customInput.style.display = 'none';
+      }
+    }
+  };
+
+  window.acSave = async function(id, type){
+    const year  = parseInt(document.getElementById('ac-year')?.value)||0;
+    const title = document.getElementById('ac-title')?.value.trim();
+    if(!title){ alert('Please enter a song or album name.'); return; }
+
+    const entry = {type, year, title};
+    if(type==='grammy'){
+      entry.category = document.getElementById('ac-cat')?.value||'';
+      entry.win = window._acWin||false;
+    } else if(type==='riaa'){
+      if(!window._acRiaaLevel){ alert('Please select a certification level.'); return; }
+      entry.level = window._acRiaaLevel;
+    } else if(type==='pro'){
+      entry.category = document.getElementById('ac-cat')?.value.trim()||'';
+    }
+
+    const w = writers.find(x=>x.id===id); if(!w) return;
+    if(!w.accolades) w.accolades = [];
+    w.accolades.push(entry);
+    w.accolades.sort((a,b)=>b.year-a.year);
+    await dbSave(w);
+    document.getElementById('accolade-modal')?.remove();
+    renderDetailBody(id);
+  };
+
+  step1();
+}
+
+
+async function removeAccolade(id, idx){
+  const w = writers.find(x=>x.id===id); if(!w||!w.accolades) return;
+  if(!confirm('Remove this accolade?')) return;
+  w.accolades.splice(idx, 1);
+  await dbSave(w);
+  renderDetailBody(id);
 }
 
 function contractDuration(w){
