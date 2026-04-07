@@ -2942,7 +2942,7 @@ function openDetail(id){
   if(!w) return;
   document.getElementById('d-name').textContent = w.name;
   document.getElementById('d-alias').textContent = w.alias ? `pka ${w.alias}` : '';
-  document.getElementById('d-edit-btn').onclick = () => openEditModal(id);
+  document.getElementById('d-edit-btn').onclick = () => openEdit(id);
   // Reset to bio tab
   currentDetailTab = 'bio';
   document.querySelectorAll('.d-tab').forEach(b=>b.classList.remove('on'));
