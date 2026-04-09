@@ -3015,34 +3015,33 @@ function renderDetailBio(id, w){
     </div>
     <div class="d-sec">
       <div class="d-sec-title">Contract</div>
-      <div class="d-kv" style="margin-bottom:10px">
-        <div>
-          <div class="d-k">Status</div>
-          <div class="d-v">
-            <span style="font-family:var(--mono);font-size:10px;color:${w.status==='active'?'var(--green)':w.status==='terminated'?'var(--red)':'var(--amber)'}">${w.status==='active'?'● Active':w.status==='terminated'?'● Terminated':'● Retention'}</span>
-          </div>
+      <div style="margin-top:6px">
+        <!-- Header row -->
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;margin-bottom:6px">
+          <div class="d-k" style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase">Status</div>
+          <div class="d-k" style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase">Start Date</div>
+          <div class="d-k" style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase">End Date</div>
         </div>
-        <div style="display:flex;flex-direction:column;gap:0;margin-top:8px">
-          <!-- Header row -->
-          <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;margin-bottom:8px">
-            <div></div>
-            <div class="d-k" style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase">Start Date</div>
-            <div class="d-k" style="font-size:8px;letter-spacing:1.5px;text-transform:uppercase">End Date</div>
-          </div>
-          <!-- Active / Term row -->
-          <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;padding:6px 0;${w.status==='retention'?'opacity:0.4':''}">
-            <div class="d-k" style="padding-top:1px">${w.status==='retention'?'Term':'Active'}</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--ink)">${w.contractStart?fmtDate(w.contractStart):'—'}</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--ink)">${w.contractEnd?fmtDate(w.contractEnd):autoRenew&&w.status!=='retention'?'<span style=\'color:var(--green)\'>↻ Auto-renews</span>':'—'}</div>
-          </div>
-          <!-- Retention row -->
-          <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;padding:6px 0;${w.status!=='retention'?'opacity:0.3':''}">
-            <div class="d-k" style="padding-top:1px;color:${w.status==='retention'?'var(--amber)':'var(--ink4)'}">Retention</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--ink)">${w.status==='retention'&&w.retentionStart?fmtDate(w.retentionStart):'—'}</div>
-            <div style="font-family:var(--mono);font-size:11px;color:var(--ink)">${w.status==='retention'?(w.retentionAutoRenew?'<span style=\'color:var(--green)\'>↻ Auto-renews</span>':w.retentionEnd?fmtDate(w.retentionEnd):'—'):'—'}</div>
-          </div>
-          ${w.contractStart?`<div style="margin-top:4px;font-family:var(--mono);font-size:9px;color:var(--ink4)">${contractDuration(w)}</div>`:''}
+        <!-- Term row -->
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;padding:7px 0;opacity:${w.status==='active'?'1':'0.35'}">
+          <div class="d-k" style="padding-top:2px">Term</div>
+          <div style="font-family:var(--mono);font-size:11px">${w.contractStart?fmtD(w.contractStart):'—'}</div>
+          <div style="font-family:var(--mono);font-size:11px">${w.contractEnd?fmtD(w.contractEnd):w.contractAutoRenew&&w.status==='active'?'<span style=\'color:var(--green)\'>↻ Auto-renews</span>':'—'}</div>
         </div>
+        <!-- Retention row -->
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;padding:7px 0;opacity:${w.status==='retention'?'1':'0.35'}">
+          <div class="d-k" style="padding-top:2px">Retention</div>
+          <div style="font-family:var(--mono);font-size:11px">${w.status==='retention'&&w.retentionStart?fmtD(w.retentionStart):'—'}</div>
+          <div style="font-family:var(--mono);font-size:11px">${w.status==='retention'?(w.retentionAutoRenew?'<span style=\'color:var(--green)\'>↻ Auto-renews</span>':w.retentionEnd?fmtD(w.retentionEnd):'—'):'—'}</div>
+        </div>
+        <!-- Terminated row (only when terminated) -->
+        ${w.status==='terminated'?`
+        <div style="display:grid;grid-template-columns:90px 1fr 1fr;gap:0;padding:7px 0">
+          <div class="d-k" style="padding-top:2px">Terminated</div>
+          <div style="font-family:var(--mono);font-size:11px">${w.contractEnd?fmtD(w.contractEnd):'—'}</div>
+          <div style="font-family:var(--mono);font-size:11px">—</div>
+        </div>`:''}
+        ${w.contractStart?`<div style="margin-top:4px;font-family:var(--mono);font-size:9px;color:var(--ink4)">${contractDuration(w)}</div>`:''}
       </div>
     </div>
     <div class="d-sec">
