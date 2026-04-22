@@ -3514,7 +3514,7 @@ function buildContractDetail(w, id){
   var h = '<div style="display:flex;flex-direction:column;font-family:var(--mono);font-size:10px">';
   h += row('Start date', d2s(w.contractStart));
   h += row('Term end', termType==='postRecoup' ? (recoupDate && termEnd ? d2s(termEnd)+' <span style="color:var(--ink5)"> ('+termYrs+'yr post-recoup)</span>' : '— (awaiting recoupment)') : termEnd ? d2s(termEnd) : w.contractAutoRenew && !w.unrecouped ? col('&#8635; Auto-renews','var(--green)') : w.unrecouped ? col('Open — Un-recouped','var(--amber)') : '—');
-  h += row('Initial term', termYrs ? termYrs+'yr' : '—');
+  h += row('Initial term', termYrs ? termYrs+'yr'+(termType==='postRecoup'?' post-recoupment':'') : '—');
   h += row('Retention length', retYrs ? retYrs+'yr' : '—');
   // Only show auto-renews row when un-recouped (term end already shows it otherwise)
   if(w.contractAutoRenew && w.unrecouped){
