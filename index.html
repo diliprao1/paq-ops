@@ -1399,8 +1399,12 @@ body.dark .d-tab.on{border-bottom-color:var(--gold-border);color:var(--gold-bord
         <input style="font-family:var(--mono);font-size:11px;padding:4px 0;border:none;border-bottom:1px solid var(--rule2);background:none;color:var(--ink);width:110px;outline:none" type="date" id="f-contract-start">
       </div>
       <div>
-        <div style="font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:var(--ink4);margin-bottom:5px">Term Length <span style="letter-spacing:0;text-transform:none">(yrs)</span></div>
+        <div style="margin-bottom:5px;display:flex;align-items:center;gap:6px">
+          <button id="f-term-type-btn" onclick="toggleTermType()" style="font-family:var(--mono);font-size:7.5px;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink4);background:none;border:1px solid var(--rule2);padding:1px 6px;cursor:pointer;outline:none" title="Click to switch term type"></button>
+          <span style="font-family:var(--mono);font-size:8px;letter-spacing:0;color:var(--ink5);text-transform:none">(yrs)</span>
+        </div>
         <input style="font-family:var(--mono);font-size:11px;padding:4px 0;border:none;border-bottom:1px solid var(--rule2);background:none;color:var(--ink);width:60px;outline:none" type="number" step="0.5" min="0" placeholder="3" id="f-term-length">
+        <input type="hidden" id="f-term-type" value="fixed">
       </div>
       <div style="display:flex;align-items:center;gap:7px;padding-bottom:2px">
         <label class="tck"><input type="checkbox" id="f-contract-autorenew" onchange="toggleUnrecouped()"><span class="tck-circle">&#10003;</span></label>
@@ -2937,6 +2941,29 @@ function clearForm(){
   ['f-splits-missing','f-splits-outreach'].forEach(id=>document.getElementById(id).checked=false);
   [1,2,3,4].forEach(q=>{ document.getElementById(`f-stmt-recv-q${q}`).checked=false; document.getElementById(`f-stmt-sent-q${q}`).checked=false; });
 }
+function updateTermTypeBtn(){
+  const btn = document.getElementById('f-term-type-btn');
+  const val = document.getElementById('f-term-type')?.value || 'fixed';
+  if(!btn) return;
+  if(val === 'fixed'){
+    btn.textContent = 'Fixed Term';
+    btn.style.color = 'var(--ink3)';
+    btn.style.borderColor = 'var(--rule2)';
+  } else {
+    btn.textContent = 'Post-Recoupment';
+    btn.style.color = 'var(--blue)';
+    btn.style.borderColor = 'var(--blue)';
+  }
+}
+
+function toggleTermType(){
+  const inp = document.getElementById('f-term-type');
+  if(!inp) return;
+  inp.value = inp.value === 'fixed' ? 'postRecoup' : 'fixed';
+  updateTermTypeBtn();
+}
+
+
 function toggleRetentionFields(status){}
 
 function toggleUnrecouped(){
@@ -2973,6 +3000,8 @@ function promptOptionEndDate(){
 }
 
 function openAddModal(){ editingId=null; clearForm();
+  if(document.getElementById('f-term-type')) document.getElementById('f-term-type').value='fixed';
+  updateTermTypeBtn();
   const _mcf=document.getElementById('modal-contract-fields');
   const _mcl=document.getElementById('modal-contract-lock');
   const _mcp=document.getElementById('modal-contract-pw');
@@ -2994,6 +3023,8 @@ function openEdit(id){
   if(document.getElementById('f-contract-start')) document.getElementById('f-contract-start').value=w.contractStart||'';
   if(document.getElementById('f-contract-autorenew')) document.getElementById('f-contract-autorenew').checked=w.contractAutoRenew||false;
   if(document.getElementById('f-term-length')) document.getElementById('f-term-length').value=w.termLength||'';
+  if(document.getElementById('f-term-type')) document.getElementById('f-term-type').value=w.termType||'fixed';
+  updateTermTypeBtn();
   if(document.getElementById('f-unrecouped')) document.getElementById('f-unrecouped').checked=w.unrecouped||false;
   if(document.getElementById('f-buyout-pct')) document.getElementById('f-buyout-pct').value=w.buyoutPct||'';
   const _br=document.getElementById('buyout-row'); if(_br) _br.style.display=(w.unrecouped)?'':'none';
@@ -3028,7 +3059,7 @@ async function saveWriter(){
       const d=new Date(s); d.setFullYear(d.getFullYear()+Math.floor(t)); d.setDate(d.getDate()+Math.round((t%1)*365));
       return d.toISOString().split('T')[0];
     })(),
-    termLength:parseFloat(document.getElementById('f-term-length')?.value||'0')||0,
+    termLength:parseFloat(document.getElementById('f-term-length')?.value||'0')||0,termType:document.getElementById('f-term-type')?.value||'fixed',
     contractAutoRenew:document.getElementById('f-contract-autorenew')?.checked||false,
     unrecouped:document.getElementById('f-unrecouped')?.checked||false,buyoutPct:parseFloat(document.getElementById('f-buyout-pct')?.value||'0')||0,scheduleA:document.getElementById('f-scheduleA').value||'',auditCompleted:document.getElementById('f-auditCompleted').value||'',auditSent:document.getElementById('f-auditSent').value||'',splitsMissing:document.getElementById('f-splits-missing').checked,splitsOutreach:document.getElementById('f-splits-outreach').checked,stmtRecv:sR,stmtSent:sS,geniusUrl:document.getElementById('f-genius').value.trim(),musoUrl:document.getElementById('f-muso').value.trim(),retentionLength:parseFloat(document.getElementById('f-retention-length')?.value||'0')||0,
     retentionStart:(()=>{
@@ -3446,11 +3477,23 @@ function buildContractDetail(w, id){
   var now = new Date();
   var start = w.contractStart ? new Date(w.contractStart) : null;
   var termYrs = parseFloat(w.termLength)||0;
+  var termType = w.termType || 'fixed';
   var termEnd = null;
-  if(start && termYrs){
-    termEnd = new Date(start);
-    termEnd.setFullYear(termEnd.getFullYear()+Math.floor(termYrs));
-    termEnd.setDate(termEnd.getDate()+Math.round((termYrs%1)*365));
+  var recoupDate = w.recoupDate ? new Date(w.recoupDate) : null;
+  if(termType === 'postRecoup'){
+    // Term ends X years after recoupment date
+    if(recoupDate && termYrs){
+      termEnd = new Date(recoupDate);
+      termEnd.setFullYear(termEnd.getFullYear()+Math.floor(termYrs));
+      termEnd.setDate(termEnd.getDate()+Math.round((termYrs%1)*365));
+    }
+  } else {
+    // Fixed: term ends X years from start
+    if(start && termYrs){
+      termEnd = new Date(start);
+      termEnd.setFullYear(termEnd.getFullYear()+Math.floor(termYrs));
+      termEnd.setDate(termEnd.getDate()+Math.round((termYrs%1)*365));
+    }
   }
   var pastTerm = termEnd && now > termEnd;
   // Auto-detect option period: past initial term, auto-renews, recouped
@@ -3470,13 +3513,7 @@ function buildContractDetail(w, id){
 
   var h = '<div style="display:flex;flex-direction:column;font-family:var(--mono);font-size:10px">';
   h += row('Start date', d2s(w.contractStart));
-  // Term end: show Auto-renews if auto-renewing, open if unrecouped, else date
-  var termEndVal = w.contractAutoRenew && !w.unrecouped
-    ? col('&#8635; Auto-renews','var(--green)')
-    : w.unrecouped
-      ? col('Open — Un-recouped','var(--amber)')
-      : termEnd ? d2s(termEnd) : '—';
-  h += row('Term end', termEndVal);
+  h += row('Term end', termType==='postRecoup' ? (recoupDate && termEnd ? d2s(termEnd)+' <span style="color:var(--ink5)"> ('+termYrs+'yr post-recoup)</span>' : '— (awaiting recoupment)') : termEnd ? d2s(termEnd) : w.contractAutoRenew && !w.unrecouped ? col('&#8635; Auto-renews','var(--green)') : w.unrecouped ? col('Open — Un-recouped','var(--amber)') : '—');
   h += row('Initial term', termYrs ? termYrs+'yr' : '—');
   h += row('Retention length', retYrs ? retYrs+'yr' : '—');
   // Only show auto-renews row when un-recouped (term end already shows it otherwise)
