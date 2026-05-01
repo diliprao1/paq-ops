@@ -3,620 +3,238 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PAQ Publishing — Prospects</title>
+<title>PAQ Publishing — CRM</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
+/* ── RESET & TOKENS ──────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *:focus { outline: none !important; }
+input, textarea, select, button { font-family: inherit; outline: none !important; border: none; box-shadow: none !important; -webkit-appearance: none; appearance: none; }
+
 :root {
-  --ink: #141414; --ink2: #2d2d2d; --ink3: #555; --ink4: #888; --ink5: #bbb;
-  --paper: #f4f1eb; --paper2: #ede9e1; --paper3: #e5e0d7;
-  --rule: #d8d2c8; --rule2: #c8c1b5;
-  --gold: #8b6914; --gold-bg: #f7f0de; --gold-border: #5aab78;
-  --red: #c0392b; --red-bg: #fdf0ee;
-  --amber: #a0570a; --amber-bg: #fdf4e7;
-  --green: #1a5c35; --green-bg: #e8f5ee;
-  --blue: #1a3d7b; --blue-bg: #e8eef8;
-  --purple: #5a2d8a; --purple-bg: #f0eaf8;
+  --ink:  #141414; --ink2: #2a2a2a; --ink3: #555; --ink4: #888; --ink5: #bbb;
+  --paper: #f4f1eb; --paper2: #ede9e0; --paper3: #e6e1d6;
+  --rule: #d8d3c8; --rule2: #ccc7ba;
+  --gold: #c9931a; --gold-bg: rgba(201,147,26,0.1);
+  --blue: #1a5fa8; --blue-bg: rgba(26,95,168,0.08);
+  --green: #2d7a4f; --green-bg: rgba(45,122,79,0.08);
+  --amber: #b87314; --amber-bg: rgba(184,115,20,0.08);
+  --red: #c0392b; --red-bg: rgba(192,57,43,0.08);
   --serif: 'DM Serif Display', serif;
-  --mono: 'DM Mono', monospace;
-  --sans: 'DM Sans', sans-serif;
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
-  --shadow: 0 2px 8px rgba(0,0,0,0.08);
+  --sans:  'DM Sans', sans-serif;
+  --mono:  'DM Mono', monospace;
 }
-body.dark {
-  --ink:#f0ece4; --ink2:#d8d2c8; --ink3:#b0a898; --ink4:#908880; --ink5:#706860;
-  --paper:#1c1c1c; --paper2:#242424; --paper3:#2c2c2c;
-  --rule:#383838; --rule2:#484848;
-  --gold:#d4b060; --gold-bg:#2a2210; --gold-border:#6abf88;
-  --red:#f08070; --red-bg:#2c1a1a;
-  --amber:#e09840; --amber-bg:#2c2010;
-  --green:#60b880; --green-bg:#102818;
-  --blue:#78a0e8; --blue-bg:#101828;
-  --purple:#a880e8; --purple-bg:#1c1430;
-}
-*{box-sizing:border-box;margin:0;padding:0;}
-body{background:var(--paper);color:var(--ink);font-family:var(--sans);min-height:100vh;}
 
-/* ── NAV ── */
-nav {
-  background:#141414;
-  border-bottom: 2px solid var(--gold-border);
-  display:flex; align-items:center; gap:0;
-  padding:0; height:38px; position:sticky; top:0; z-index:100;
-}
-.nav-logo {
-  font-family:var(--serif); font-size:13px; color:#f0ead8;
-  padding:0 18px; border-right:1px solid rgba(255,255,255,0.1);
-  height:100%; display:flex; align-items:center; white-space:nowrap;
-  letter-spacing:0.3px;
-}
-.nav-links { display:flex; height:100%; }
-.nav-link {
-  font-family:var(--mono); font-size:9px; letter-spacing:1.2px; text-transform:uppercase;
-  color:rgba(255,255,255,0.4); text-decoration:none;
-  padding:0 16px; height:100%; display:flex; align-items:center;
-  border-right:1px solid rgba(255,255,255,0.06);
-  transition:color 0.15s, background 0.15s;
-}
-.nav-link:hover{color:rgba(255,255,255,0.8); background:rgba(255,255,255,0.04);}
-.nav-link.active{color:var(--gold-border); border-bottom:2px solid var(--gold-border); margin-bottom:-2px;}
-.nav-right{margin-left:auto; padding:0 14px; display:flex; align-items:center; gap:10px;}
-.dark-toggle{
-  background:none; border:1px solid rgba(255,255,255,0.18); color:rgba(255,255,255,0.45);
-  font-family:var(--mono); font-size:9px; letter-spacing:1px; padding:4px 10px; cursor:pointer;
-}
-.dark-toggle:hover{border-color:rgba(255,255,255,0.4);color:rgba(255,255,255,0.8);}
-body.dark .dark-toggle{border-color:rgba(90,171,120,0.4);color:var(--gold-border);}
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 13px; min-height: 100vh; }
 
-/* ── HEADER ── */
-header {
-  background:#141414; color:#f0ead8;
-  border-bottom:1px solid rgba(255,255,255,0.08);
-  padding:20px 28px 16px;
-}
-.hdr-top{display:flex;align-items:center;justify-content:space-between;}
-.logo-main{font-family:var(--serif);font-size:22px;letter-spacing:-0.3px;}
-.logo-sub{font-family:var(--mono);font-size:10px;color:var(--gold-border);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
-.hdr-stats{display:flex;gap:0;margin-top:14px;border-top:1px solid rgba(255,255,255,0.06);padding-top:12px;}
-.hstat{padding:0 22px 0 0;margin-right:22px;border-right:1px solid rgba(255,255,255,0.08);}
-.hstat:last-child{border-right:none;}
-.hstat-n{font-family:var(--mono);font-size:20px;font-weight:500;color:#f0ead8;line-height:1;}
-.hstat-l{font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;color:rgba(255,255,255,0.3);margin-top:3px;}
-.hstat-n.amber{color:#fbbf24;} .hstat-n.green{color:#4ade80;} .hstat-n.red{color:#f87171;}
+/* ── NAV ─────────────────────────────────────────────────────── */
+.paq-nav { background: #141414; border-bottom: 2px solid #c9931a; display: flex; align-items: center; height: 38px; position: sticky; top: 0; z-index: 200; padding: 0 6px; }
+.paq-nav-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; padding: 0 13px; height: 100%; border: none; background: none; cursor: pointer; }
+.paq-nav:hover .paq-nav-btn svg { opacity: 0.25; }
+.paq-nav-btn:hover svg, .paq-nav-btn.active svg { opacity: 1 !important; }
+.paq-nav-btn svg { opacity: 0.55; transition: opacity 0.15s; }
 
-/* ── TOOLBAR ── */
-.toolbar{
-  background:var(--paper2); border-bottom:1px solid var(--rule);
-  padding:10px 28px; position:sticky; top:38px; z-index:90;
-  display:flex; align-items:center; gap:10px; flex-wrap:wrap;
-}
-body.dark .toolbar{background:#202020; border-bottom-color:#363636;}
-.srch{position:relative;display:flex;align-items:center;}
-.srch-icon{position:absolute;left:9px;font-size:14px;color:var(--ink4);pointer-events:none;}
-.srch input{
-  font-family:var(--mono);font-size:11px;padding:6px 28px 6px 28px;
-  border:1px solid var(--rule2);background:var(--paper);color:var(--ink);width:220px;
-  outline:none;
-}
-.srch input:focus{border-color:var(--gold-border);}
-body.dark .srch input{background:#2c2c2c;border-color:#404040;color:var(--ink);}
-.srch-clear{position:absolute;right:6px;background:none;border:none;cursor:pointer;color:var(--ink4);font-size:12px;padding:2px 4px;display:none;}
-.srch-clear.visible{display:block;}
-.tb-select{
-  font-family:var(--mono);font-size:10px;padding:6px 10px;
-  border:1px solid var(--rule2);background:var(--paper);color:var(--ink);cursor:pointer;
-}
-body.dark select{background:#2c2c2c;border-color:#404040;color:var(--ink2);}
-.add-btn{
-  font-family:var(--mono);font-size:10px;letter-spacing:0.5px;
-  background:var(--ink);color:var(--paper);border:none;padding:7px 16px;cursor:pointer;
-  margin-left:auto;
-}
-.add-btn:hover{background:var(--ink2);}
-body.dark .add-btn{background:#333;color:var(--gold-border);}
+/* ── TOOLBAR ─────────────────────────────────────────────────── */
+.toolbar { display: flex; align-items: center; gap: 14px; padding: 12px 24px; border-bottom: 1px solid var(--rule); background: var(--paper); }
+.toolbar-title { font-family: var(--serif); font-size: 20px; color: var(--ink); }
+.search-input { font-family: var(--mono); font-size: 11px; padding: 6px 10px; background: var(--paper2); color: var(--ink); width: 200px; border-radius: 4px; }
+.search-input::placeholder { color: var(--ink5); }
 
-/* ── LAYOUT ── */
-.layout{display:flex;min-height:calc(100vh - 38px - 74px - 57px);}
-.main-area{flex:1;padding:24px 28px;overflow-x:auto;}
+/* ── BOARD ───────────────────────────────────────────────────── */
+.board { display: flex; flex-direction: column; gap: 0; padding: 16px 24px; min-height: calc(100vh - 86px); }
+.main-cols { display: flex; gap: 12px; overflow-x: auto; margin-bottom: 12px; }
 
-/* ── PIPELINE VIEW ── */
-.pipeline{display:flex;gap:14px;align-items:flex-start;min-height:400px;}
-.stage-col{
-  flex:0 0 240px; background:var(--paper2); border:1px solid var(--rule);
-  border-top:3px solid var(--rule2);
-}
-body.dark .stage-col{background:#242424;border-color:#363636;}
-.stage-col.stage-new{border-top-color:#78a0e8;}
-.stage-col.stage-research{border-top-color:#a880e8;}
-.stage-col.stage-outreach{border-top-color:#e09840;}
-.stage-col.stage-negotiating{border-top-color:#f08070;}
-.stage-col.stage-signed{border-top-color:#60b880;}
-.stage-col.stage-passed{border-top-color:#606060;}
-.stage-hdr{
-  padding:10px 12px; display:flex; align-items:center; justify-content:space-between;
-  border-bottom:1px solid var(--rule);
-}
-body.dark .stage-hdr{border-bottom-color:#363636;}
-.stage-title{font-family:var(--mono);font-size:9px;letter-spacing:1.2px;text-transform:uppercase;color:var(--ink3);}
-.stage-count{font-family:var(--mono);font-size:9px;background:var(--paper3);color:var(--ink4);padding:2px 7px;border:1px solid var(--rule);}
-body.dark .stage-count{background:#303030;border-color:#484848;}
-.stage-cards{padding:10px;display:flex;flex-direction:column;gap:8px;min-height:60px;}
+/* ── STAGE COLUMNS ───────────────────────────────────────────── */
+.stage-col { flex: 0 0 250px; background: var(--paper2); border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; border: 1px solid var(--rule); }
+.stage-hdr { padding: 10px 12px; background: var(--paper3); border-bottom: 1px solid var(--rule); display: flex; align-items: center; gap: 6px; }
+.stage-hdr-name { font-family: var(--mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; flex: 1; }
+.stage-hdr-name.research    { color: #8b6914; }
+.stage-hdr-name.outreach    { color: var(--blue); }
+.stage-hdr-name.in-talks    { color: var(--green); }
+.stage-hdr-name.negotiation { color: var(--gold); }
+.stage-hdr-name.saved       { color: var(--ink4); }
+.stage-hdr-name.won         { color: var(--green); }
+.stage-hdr-name.lost        { color: var(--red); }
+.stage-hdr-name.other       { color: var(--ink4); }
+.stage-count { font-family: var(--mono); font-size: 9px; color: var(--ink5); }
+.stage-add-btn { background: none; border: none; cursor: pointer; color: var(--ink5); font-size: 14px; line-height: 1; padding: 0 2px; transition: color 0.15s; }
+.stage-add-btn:hover { color: var(--ink2); }
+.stage-cards { flex: 1; padding: 8px; display: flex; flex-direction: column; gap: 7px; }
 
-/* ── PROSPECT CARD ── */
-.pcard{
-  background:var(--paper);border:1px solid var(--rule);
-  padding:11px 12px; cursor:pointer; transition:all 0.12s;
-  border-left:3px solid transparent;
-}
-body.dark .pcard{background:#2a2a2a;border-color:#404040;}
-.pcard:hover{transform:translateY(-1px);box-shadow:var(--shadow);}
-.pcard.priority-high{border-left-color:var(--red);}
-.pcard.priority-med{border-left-color:var(--amber);}
-.pcard.priority-low{border-left-color:var(--green);}
-.pcard-name{font-family:var(--serif);font-size:13px;color:var(--ink);margin-bottom:2px;}
-body.dark .pcard-name{color:var(--ink);}
-.pcard-alias{font-family:var(--mono);font-size:9px;color:var(--gold);margin-bottom:6px;}
-.pcard-meta{display:flex;flex-wrap:wrap;gap:4px;margin-bottom:6px;}
-.ptag{
-  font-family:var(--mono);font-size:8px;padding:2px 6px;
-  border:1px solid var(--rule2);color:var(--ink3);background:var(--paper2);
-}
-body.dark .ptag{background:#333;border-color:#484848;color:var(--ink3);}
-.ptag.pro-bmi{background:var(--bmi-bg,#e8eef8);color:#1a4b8c;border-color:#93b0d8;}
-.ptag.pro-ascap{background:#f8ebe8;color:#7b2d2d;border-color:#d8a090;}
-.ptag.pro-sesac{background:#e8f3ec;color:#2d5c3f;border-color:#90c0a0;}
-.ptag.genre{background:var(--paper3);color:var(--ink3);}
-body.dark .ptag.genre{background:#303030;color:var(--ink3);}
-.pcard-streams{font-family:var(--mono);font-size:8px;color:var(--ink4);display:flex;gap:8px;margin-top:4px;}
-.stream-n{color:var(--ink3);font-weight:500;}
-.pcard-date{font-family:var(--mono);font-size:8px;color:var(--ink5);margin-top:4px;}
+/* ── BAND ROWS ───────────────────────────────────────────────── */
+.band-row { border: 1px solid var(--rule); border-radius: 8px; overflow: hidden; background: var(--paper2); margin-bottom: 12px; }
+.band-hdr { display: flex; align-items: center; gap: 8px; padding: 9px 14px; cursor: pointer; background: var(--paper3); border-bottom: 1px solid var(--rule); user-select: none; }
+.band-hdr:hover { background: var(--paper2); }
+.band-chevron { font-family: var(--mono); font-size: 14px; color: var(--ink4); width: 14px; }
+.band-label { font-family: var(--mono); font-size: 8.5px; letter-spacing: 2px; text-transform: uppercase; color: var(--ink3); flex: 1; }
+.band-count { font-family: var(--mono); font-size: 9px; color: var(--ink5); }
+.band-cards { display: flex; gap: 12px; padding: 10px 12px; flex-wrap: wrap; }
+.band-cards .stage-col { flex: 0 0 250px; }
 
-/* ── LIST VIEW ── */
-.list-view{display:none;}
-.list-view.active{display:block;}
-.pipeline-view.hidden{display:none;}
-.tbl-wrap{overflow-x:auto;border:1px solid var(--rule);background:var(--paper2);}
-body.dark .tbl-wrap{background:var(--paper2);border-color:#363636;}
-table{width:100%;border-collapse:collapse;font-size:11px;}
-thead tr{background:var(--paper3);border-bottom:2px solid var(--rule2);}
-th{
-  font-family:var(--mono);font-size:8px;letter-spacing:1px;text-transform:uppercase;
-  color:var(--ink3);padding:10px 12px;text-align:left;white-space:nowrap;
-  border-right:1px solid var(--rule);
-}
-body.dark thead tr{background:#1a1a1a;}
-body.dark th{color:rgba(255,255,255,0.4);border-right-color:rgba(255,255,255,0.05);}
-tbody tr{border-bottom:1px solid var(--rule);cursor:pointer;transition:background 0.1s;}
-tbody tr:hover{background:var(--gold-bg)!important;}
-body.dark tbody tr{background:var(--paper2);border-bottom-color:var(--rule);}
-body.dark tbody tr:hover{background:#343434!important;}
-td{padding:9px 12px;color:var(--ink2);border-right:1px solid var(--rule);vertical-align:middle;}
-body.dark td{color:var(--ink2);border-right-color:var(--rule);}
-.td-name{font-family:var(--serif);font-size:12px;color:var(--ink);}
-.td-alias{font-family:var(--mono);font-size:9px;color:var(--gold);}
+/* ── CARDS ───────────────────────────────────────────────────── */
+.p-card { background: var(--paper); border: 1px solid var(--rule); border-radius: 7px; padding: 11px 13px; cursor: pointer; transition: box-shadow 0.15s, border-color 0.15s; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+.p-card:hover { border-color: var(--ink4); box-shadow: 0 3px 10px rgba(0,0,0,0.09); }
+.p-card.followup-due  { border-left: 3px solid var(--amber); border-radius: 0 7px 7px 0; }
+.p-card.followup-overdue { border-left: 3px solid var(--red); border-radius: 0 7px 7px 0; }
+.p-card.dragging { opacity: 0.35; transform: scale(0.97); }
+.p-card[draggable="true"] { cursor: grab; }
+.p-card-name  { font-family: var(--sans); font-size: 13px; font-weight: 500; color: var(--ink); margin-bottom: 2px; }
+.p-card-alias { font-family: var(--mono); font-size: 9px; color: var(--ink4); margin-bottom: 7px; }
+.p-card-meta  { display: flex; gap: 5px; flex-wrap: wrap; align-items: center; margin-top: 5px; }
+.p-card-tag   { font-family: var(--mono); font-size: 8px; padding: 2px 7px; background: var(--paper2); border-radius: 10px; color: var(--ink4); }
+.p-card-followup { font-family: var(--mono); font-size: 8px; color: var(--amber); }
+.p-card-followup.overdue { color: var(--red); }
+.p-card-note  { font-family: var(--mono); font-size: 8.5px; color: var(--ink4); margin-top: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.stage-col.drag-over, .band-cards.drag-over { box-shadow: inset 0 0 0 2000px rgba(26,95,168,0.06); }
 
-/* Stage badge */
-.stage-badge{
-  font-family:var(--mono);font-size:8px;letter-spacing:0.8px;text-transform:uppercase;
-  padding:3px 8px;border:1px solid;white-space:nowrap;
-}
-.sb-new{color:#78a0e8;border-color:rgba(120,160,232,0.4);background:rgba(120,160,232,0.08);}
-.sb-research{color:#a880e8;border-color:rgba(168,128,232,0.4);background:rgba(168,128,232,0.08);}
-.sb-outreach{color:var(--amber);border-color:rgba(160,87,10,0.3);background:var(--amber-bg);}
-.sb-negotiating{color:var(--red);border-color:rgba(192,57,43,0.3);background:var(--red-bg);}
-.sb-signed{color:var(--green);border-color:rgba(26,92,53,0.3);background:var(--green-bg);}
-.sb-passed{color:var(--ink4);border-color:var(--rule2);background:var(--paper3);}
-body.dark .sb-new{color:#78a0e8;border-color:rgba(120,160,232,0.3);background:rgba(120,160,232,0.1);}
-body.dark .sb-research{color:#a880e8;border-color:rgba(168,128,232,0.3);background:rgba(168,128,232,0.1);}
-body.dark .sb-outreach{color:var(--amber);border-color:rgba(224,152,64,0.3);background:var(--amber-bg);}
-body.dark .sb-negotiating{color:var(--red);border-color:rgba(240,128,112,0.3);background:var(--red-bg);}
-body.dark .sb-signed{color:var(--green);border-color:rgba(96,184,128,0.3);background:var(--green-bg);}
-body.dark .sb-passed{color:var(--ink4);border-color:#484848;background:#2c2c2c;}
+/* ── INLINE ADD ──────────────────────────────────────────────── */
+.inline-form { background: var(--paper); border: 1px solid var(--rule); border-radius: 7px; padding: 12px 13px; margin-bottom: 7px; box-shadow: 0 1px 6px rgba(0,0,0,0.07); }
+.inline-form input { font-family: var(--sans); font-size: 13px; color: var(--ink); width: 100%; background: none; display: block; margin-bottom: 8px; padding: 2px 0; }
+.inline-form input::placeholder { color: var(--ink5); }
+.inline-form .btns { display: flex; gap: 6px; }
+.btn-add-confirm { flex: 1; font-family: var(--mono); font-size: 9px; letter-spacing: 1px; padding: 7px; background: var(--ink); color: var(--paper); border-radius: 5px; cursor: pointer; }
+.btn-cancel-sm { font-family: var(--mono); font-size: 9px; padding: 7px 10px; background: none; border: 1px solid var(--rule); border-radius: 5px; color: var(--ink4); cursor: pointer; }
 
-/* Priority dot */
-.pri-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:5px;}
-.pri-high{background:var(--red);}
-.pri-med{background:var(--amber);}
-.pri-low{background:var(--green);}
+/* ── DETAIL PANEL ────────────────────────────────────────────── */
+.detail { position: fixed; left: 0; right: 0; bottom: 0; height: 58vh; background: var(--paper); transform: translateY(100%); transition: transform 0.28s cubic-bezier(0.4,0,0.2,1); z-index: 100; display: flex; flex-direction: column; box-shadow: 0 -12px 48px rgba(0,0,0,0.13); border-radius: 14px 14px 0 0; overflow: hidden; }
+.detail.open { transform: translateY(0); }
+.detail-drag-handle { width: 40px; height: 4px; background: var(--rule2); border-radius: 2px; margin: 10px auto 0; flex-shrink: 0; }
+.detail-hdr { padding: 12px 22px 8px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-shrink: 0; }
+.detail-name  { font-family: var(--serif); font-size: 22px; color: var(--ink); cursor: pointer; }
+.detail-alias { font-family: var(--mono); font-size: 9px; color: var(--ink4); margin-top: 1px; cursor: pointer; }
+.detail-hdr-actions { display: flex; gap: 8px; align-items: center; flex-shrink: 0; }
+.btn-smart-paste { font-family: var(--mono); font-size: 8.5px; padding: 4px 10px; background: none; border: 1px solid var(--rule2); border-radius: 6px; color: var(--ink4); cursor: pointer; white-space: nowrap; }
+.btn-smart-paste:hover { border-color: var(--ink3); color: var(--ink2); }
+.btn-close-detail { font-family: var(--mono); font-size: 11px; background: var(--paper3); border-radius: 6px; cursor: pointer; color: var(--ink4); padding: 3px 9px; }
+.detail-body { flex: 1; overflow-y: auto; }
 
-/* View toggle */
-.view-toggle{display:flex;border:1px solid var(--rule2);overflow:hidden;margin-left:8px;}
-.vtb{
-  font-family:var(--mono);font-size:9px;letter-spacing:0.8px;padding:5px 12px;
-  background:none;border:none;cursor:pointer;color:var(--ink3);transition:all 0.1s;
-}
-.vtb.on{background:var(--ink);color:var(--paper);}
-body.dark .view-toggle{background:#2c2c2c;border-color:#404040;}
-body.dark .vtb{color:var(--ink3);}
-body.dark .vtb.on{background:#444;color:var(--gold-border);}
+/* Stage strip */
+.stage-strip { padding: 8px 18px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.stage-strip select { font-family: var(--mono); font-size: 9px; background: none; color: var(--ink4); cursor: pointer; margin-left: auto; border-radius: 4px; padding: 2px 4px; }
 
-/* ── DETAIL PANEL ── */
-.detail{
-  width:340px;flex-shrink:0;border-left:1px solid var(--rule);
-  background:var(--paper);overflow-y:auto;
-  position:sticky;top:calc(38px + 57px);height:calc(100vh - 38px - 57px - 74px);
-  transform:translateX(340px);transition:transform 0.2s;display:none;
-}
-body.dark .detail{background:#1e1e1e;border-left-color:#363636;}
-.detail.open{transform:translateX(0);display:block;}
-.detail-hdr{
-  background:#141414;padding:16px 18px 14px;
-  border-bottom:2px solid var(--gold-border);position:sticky;top:0;z-index:5;
-}
-#d-name{font-family:var(--serif);font-size:18px;color:#f0ead8;line-height:1.2;}
-#d-alias{font-family:var(--mono);font-size:9px;color:var(--gold-border);margin-top:3px;letter-spacing:0.5px;}
-.d-hdr-actions{display:flex;gap:6px;margin-top:10px;}
-.d-btn{
-  font-family:var(--mono);font-size:9px;letter-spacing:0.5px;padding:5px 12px;
-  border:1px solid;cursor:pointer;background:none;
-}
-.d-btn-edit{color:var(--gold-border);border-color:rgba(90,171,120,0.4);}
-.d-btn-edit:hover{background:rgba(90,171,120,0.1);}
-.d-btn-del{color:#f08070;border-color:rgba(240,128,112,0.3);}
-.d-btn-del:hover{background:rgba(240,128,112,0.1);}
-.d-btn-convert{color:#60b880;border-color:rgba(96,184,128,0.3);}
-.d-btn-convert:hover{background:rgba(96,184,128,0.1);}
-.d-body{padding:14px 16px;}
-.d-sec{padding:12px 0;border-bottom:1px solid var(--rule);}
-body.dark .d-sec{border-bottom-color:#363636;}
-.d-sec:last-child{border-bottom:none;}
-.d-sec-title{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px;}
-.d-kv{display:flex;flex-direction:column;gap:6px;}
-.d-k{font-family:var(--mono);font-size:9px;color:var(--ink4);}
-.d-v{font-family:var(--sans);font-size:11px;color:var(--ink2);margin-top:1px;}
-body.dark .d-k{color:var(--ink3);}
-body.dark .d-v{color:var(--ink);}
-.d-note{
-  font-family:var(--sans);font-size:11px;color:var(--ink2);
-  background:var(--paper2);border:1px solid var(--rule);padding:8px 10px;
-  margin-top:6px;line-height:1.5;
-}
-body.dark .d-note{background:#2c2c2c;border-color:#484848;color:var(--ink2);}
-.d-note-empty{color:var(--ink5);font-style:italic;}
-textarea.d-textarea{
-  width:100%;font-family:var(--sans);font-size:11px;color:var(--ink);
-  background:var(--paper);border:1px solid var(--rule2);padding:8px;
-  resize:vertical;min-height:80px;outline:none;margin-top:6px;
-}
-textarea.d-textarea:focus{border-color:var(--gold-border);}
-body.dark textarea.d-textarea{background:#2c2c2c;border-color:#484848;color:var(--ink);}
-.d-save-btn{
-  font-family:var(--mono);font-size:9px;padding:5px 12px;
-  background:var(--green-bg);color:var(--green);border:1px solid rgba(26,92,53,0.3);
-  cursor:pointer;margin-top:6px;
-}
-body.dark .d-save-btn{background:var(--green-bg);color:var(--green);border-color:rgba(96,184,128,0.3);}
-.outreach-list{display:flex;flex-direction:column;gap:6px;margin-top:6px;}
-.outreach-item{
-  background:var(--paper2);border:1px solid var(--rule);
-  padding:8px 10px;font-family:var(--sans);font-size:11px;
-}
-body.dark .outreach-item{background:#2c2c2c;border-color:#404040;}
-.outreach-date{font-family:var(--mono);font-size:8px;color:var(--ink4);margin-bottom:3px;}
-.outreach-text{color:var(--ink2);}
-body.dark .outreach-text{color:var(--ink2);}
-.add-outreach-area{margin-top:8px;}
-.add-outreach-area input[type="date"]{
-  font-family:var(--mono);font-size:10px;padding:5px 8px;
-  border:1px solid var(--rule2);background:var(--paper);color:var(--ink);
-  width:100%;margin-bottom:4px;outline:none;
-}
-body.dark .add-outreach-area input{background:#2c2c2c;border-color:#484848;color:var(--ink);}
+/* Detail cards */
+.dp-card { background: var(--paper2); border-radius: 10px; padding: 14px 16px; margin: 0 12px 8px; }
 
-/* ── MODAL ── */
-.modal-overlay{
-  position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:200;
-  display:none;align-items:center;justify-content:center;
-}
-.modal-overlay.open{display:flex;}
-body.dark .modal-overlay{background:rgba(0,0,0,0.7);}
-.modal{
-  background:var(--paper);width:580px;max-width:95vw;max-height:90vh;
-  overflow-y:auto;border:1px solid var(--rule);box-shadow:0 8px 40px rgba(0,0,0,0.2);
-}
-body.dark .modal{background:#242424;border:none;}
-.modal-title{
-  font-family:var(--serif);font-size:18px;padding:18px 22px 14px;
-  border-bottom:1px solid var(--rule);
-}
-body.dark .modal-title{color:var(--ink);border-bottom-color:#363636;}
-.modal-body{padding:18px 22px;}
-.form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-.form-row.full{grid-template-columns:1fr;}
-.form-field{display:flex;flex-direction:column;gap:4px;}
-.form-label{font-family:var(--mono);font-size:9px;letter-spacing:0.8px;text-transform:uppercase;color:var(--ink3);}
-body.dark .form-label{color:var(--ink2);}
-.form-input,.form-select,.form-textarea{
-  font-family:var(--sans);font-size:12px;padding:7px 9px;
-  border:1px solid var(--rule2);background:var(--paper);color:var(--ink);outline:none;
-}
-.form-textarea{resize:vertical;min-height:70px;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--gold-border);}
-body.dark .form-input,body.dark .form-select,body.dark .form-textarea{background:#2c2c2c;border-color:#484848;color:var(--ink);}
-.form-sec{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);padding:10px 0 6px;border-bottom:1px solid var(--rule);margin-bottom:12px;}
-body.dark .form-sec{border-bottom-color:#363636;}
-.modal-actions{
-  display:flex;justify-content:flex-end;gap:8px;padding:14px 22px;
-  border-top:1px solid var(--rule);
-}
-body.dark .modal-actions{border-top-color:#363636;}
-.btn-cancel{font-family:var(--mono);font-size:10px;padding:8px 18px;background:var(--paper2);border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;}
-.btn-save{font-family:var(--mono);font-size:10px;padding:8px 18px;background:var(--gold-border);color:#141414;border:1px solid var(--gold-border);cursor:pointer;}
-.btn-save:hover{background:#5aab7822;/*b860;}
-.btn-delete{font-family:var(--mono);font-size:10px;padding:8px 18px;background:none;border:1px solid rgba(192,57,43,0.3);color:var(--red);cursor:pointer;margin-right:auto;}
-body.dark .btn-cancel{background:#2c2c2c;border-color:#484848;color:var(--ink2);}
-body.dark .btn-save{background:var(--gold-border);color:#141414;}
+/* Follow-up alert */
+.followup-alert { margin: 4px 12px 0; padding: 8px 12px; font-family: var(--mono); font-size: 9px; color: var(--amber); background: var(--amber-bg); border-radius: 6px; }
+.followup-alert.overdue { color: var(--red); background: var(--red-bg); }
 
-/* ── TOAST ── */
-.toast-wrap{position:fixed;bottom:24px;right:24px;display:flex;flex-direction:column;gap:8px;z-index:300;}
-.toast{
-  background:var(--paper);border:1px solid var(--rule);box-shadow:var(--shadow);
-  padding:10px 14px;display:flex;align-items:flex-start;gap:10px;min-width:240px;
-  font-family:var(--sans);font-size:12px;
-}
-body.dark .toast{background:#2c2c2c;border-color:#484848;color:var(--ink);}
-.toast-ico{color:var(--green);font-size:14px;margin-top:1px;}
-.toast-title{font-family:var(--mono);font-size:10px;font-weight:500;color:var(--gold-border);margin-bottom:2px;}
-.toast-msg{color:var(--ink3);}
+/* ── SMART PASTE PANEL ───────────────────────────────────────── */
+.smart-paste-panel { position: absolute; inset: 0; background: var(--paper); z-index: 10; border-radius: 14px 14px 0 0; display: none; flex-direction: column; }
+.smart-paste-panel.open { display: flex; }
+.sp-hdr { padding: 14px 22px 8px; display: flex; align-items: center; justify-content: space-between; flex-shrink: 0; }
+.sp-title { font-family: var(--serif); font-size: 18px; }
+.sp-hint { padding: 0 22px 10px; font-family: var(--mono); font-size: 9px; color: var(--ink5); line-height: 1.5; }
+.sp-textarea { flex: 1; margin: 0 22px; font-family: var(--mono); font-size: 11px; line-height: 1.6; color: var(--ink3); background: var(--paper3); border-radius: 10px; padding: 14px; resize: none; min-height: 120px; }
+.sp-footer { padding: 10px 22px 18px; display: flex; gap: 8px; flex-shrink: 0; }
+.btn-parse { flex: 1; font-family: var(--mono); font-size: 9px; letter-spacing: 1px; text-transform: uppercase; padding: 10px; background: var(--ink); color: var(--paper); border-radius: 8px; cursor: pointer; }
+.btn-sp-cancel { font-family: var(--mono); font-size: 9px; padding: 10px 16px; background: none; border: 1px solid var(--rule2); border-radius: 8px; color: var(--ink4); cursor: pointer; }
 
-/* Empty state */
-.empty-stage{font-family:var(--mono);font-size:9px;color:var(--ink5);text-align:center;padding:16px 8px;}
+/* ── MODAL ───────────────────────────────────────────────────── */
+.modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 999; display: none; align-items: center; justify-content: center; }
+.modal-overlay.open { display: flex; }
+.modal { background: var(--paper); border: 1px solid var(--rule); padding: 28px; width: 360px; max-width: 95vw; border-radius: 4px; }
+.modal-title { font-family: var(--serif); font-size: 18px; margin-bottom: 18px; }
+.modal-field { margin-bottom: 14px; }
+.modal-field label { font-family: var(--mono); font-size: 8px; letter-spacing: 1px; text-transform: uppercase; color: var(--ink4); display: block; margin-bottom: 5px; }
+.modal-field input, .modal-field select { font-family: var(--mono); font-size: 12px; padding: 8px 10px; background: var(--paper2); color: var(--ink); width: 100%; border-radius: 4px; }
+.modal-btns { display: flex; gap: 8px; margin-top: 18px; }
+.btn-modal-save { flex: 1; font-family: var(--mono); font-size: 9px; letter-spacing: 1px; padding: 9px; background: var(--ink); color: var(--paper); border-radius: 4px; cursor: pointer; }
+.btn-modal-cancel { font-family: var(--mono); font-size: 9px; padding: 9px 14px; background: none; border: 1px solid var(--rule); color: var(--ink4); border-radius: 4px; cursor: pointer; }
+
+/* ── TOAST ───────────────────────────────────────────────────── */
+.toast-wrap { position: fixed; bottom: 24px; right: 24px; z-index: 9999; display: flex; flex-direction: column; gap: 6px; }
+.toast { font-family: var(--mono); font-size: 10px; padding: 9px 14px; background: var(--ink2); color: var(--paper); border-left: 3px solid var(--gold); border-radius: 0 4px 4px 0; }
+
+/* ── DELETE BTN ──────────────────────────────────────────────── */
+.btn-del { font-family: var(--mono); font-size: 9px; padding: 5px 14px; background: none; border: 1px solid var(--red); color: var(--red); cursor: pointer; border-radius: 5px; }
+.btn-del:hover { background: var(--red-bg); }
+
+/* ── LOG ENTRY ───────────────────────────────────────────────── */
+.log-entry { display: flex; gap: 8px; padding: 5px 0; align-items: flex-start; }
+.log-date { font-family: var(--mono); font-size: 8px; color: var(--ink5); white-space: nowrap; min-width: 62px; padding-top: 2px; }
+.log-platform { font-family: var(--sans); font-size: 10px; color: var(--blue); white-space: nowrap; padding-top: 1px; flex-shrink: 0; }
+.log-text { font-family: var(--sans); font-size: 11px; color: var(--ink3); flex: 1; line-height: 1.4; }
+.btn-log-remove { background: none; border: none; color: var(--ink5); cursor: pointer; font-size: 10px; padding: 0; flex-shrink: 0; }
+.btn-followup { background: none; border: none; color: var(--ink5); cursor: pointer; font-size: 10px; padding: 0 2px; flex-shrink: 0; }
 </style>
 </head>
 <body>
 
-<style>
-.paq-nav{background:#141414;border-bottom:2px solid #5aab78;display:flex;align-items:center;height:38px;position:sticky;top:0;z-index:200;padding:0 6px;gap:0;}
-.paq-nav-btn{
-  display:flex;align-items:center;justify-content:center;
-  text-decoration:none;padding:0 13px;height:100%;
-  border:none;background:none;cursor:pointer;
-  transition:opacity 0.15s;
-}
-.paq-nav:hover .paq-nav-btn svg{ opacity:0.25; }
-.paq-nav-btn:hover svg{ opacity:1 !important; }
-.paq-nav-btn.active svg{ opacity:1 !important; }
-.paq-nav-ico{display:flex;align-items:center;justify-content:center;}
-.paq-nav-btn svg{ opacity:0.55; transition:opacity 0.15s; }
-
-/* ── RESEARCH VIEW ─────────────────────────────── */
-.research-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:20px;padding:20px 0;}
-.rcard{background:var(--paper);border:1px solid var(--rule);}
-.rcard-hdr{padding:14px 16px 10px;border-bottom:1px solid var(--rule);display:flex;align-items:flex-start;gap:10px;}
-.rcard-name{font-family:var(--serif);font-size:17px;color:var(--ink);line-height:1.2;flex:1;}
-.rcard-alias{font-family:var(--mono);font-size:9px;color:var(--ink4);margin-top:2px;}
-.rcard-body{padding:12px 16px;}
-.rcard-section{margin-bottom:14px;}
-.rcard-section-title{font-family:var(--mono);font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--ink4);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
-.rcard-section-title button{font-family:var(--mono);font-size:7.5px;padding:2px 7px;background:none;border:1px solid var(--rule2);color:var(--ink4);cursor:pointer;}
-.rcard-section-title button:hover{border-color:var(--ink3);color:var(--ink2);}
-/* Links section */
-.rlinks-list{display:flex;flex-direction:column;gap:4px;margin-bottom:6px;}
-.rlink-row{display:flex;align-items:center;gap:6px;}
-.rlink-badge{font-family:var(--mono);font-size:7.5px;padding:1px 6px;border:1px solid;flex-shrink:0;min-width:52px;text-align:center;}
-.rlink-badge.spotify{color:#1db954;border-color:rgba(29,185,84,0.3);}
-.rlink-badge.muso{color:#4a9ef5;border-color:rgba(74,158,245,0.3);}
-.rlink-badge.genius{color:#d4af5a;border-color:rgba(212,175,90,0.3);}
-.rlink-badge.playlist{color:#9b6fd4;border-color:rgba(155,111,212,0.3);}
-.rlink-badge.other{color:var(--ink4);border-color:var(--rule2);}
-.rlink-url{font-family:var(--mono);font-size:8px;color:var(--ink4);flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.rlink-del{background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 3px;flex-shrink:0;}
-.rlink-del:hover{color:var(--red);}
-.rlink-input{display:flex;gap:6px;margin-top:4px;}
-.rlink-input textarea{font-family:var(--mono);font-size:9px;padding:5px 8px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);flex:1;resize:none;height:54px;line-height:1.5;}
-.rlink-input button{font-family:var(--mono);font-size:8px;padding:4px 10px;background:none;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;white-space:nowrap;align-self:flex-end;}
-.rlink-input button:hover{border-color:var(--ink3);color:var(--ink);}
-/* Sync bar */
-.rsync-bar{display:flex;align-items:center;gap:8px;padding:8px 0;border-bottom:1px solid var(--rule);margin-bottom:12px;}
-.rsync-btn{font-family:var(--mono);font-size:8px;padding:4px 12px;background:none;border:1px solid var(--gold-border);color:var(--gold-border);cursor:pointer;}
-.rsync-btn:hover{background:var(--gold-border);color:#141414;}
-.rsync-btn:disabled{opacity:0.4;cursor:default;}
-.rsync-status{font-family:var(--mono);font-size:8px;color:var(--ink4);flex:1;}
-.rsync-last{font-family:var(--mono);font-size:7.5px;color:var(--ink5);}
-/* Threshold */
-.rthresh-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.rthresh-row label{font-family:var(--mono);font-size:8.5px;color:var(--ink3);flex:1;}
-.rthresh-row input{font-family:var(--mono);font-size:9px;padding:3px 6px;border:1px solid var(--rule2);background:var(--paper);color:var(--ink);width:100px;text-align:right;}
-.rthresh-alert{font-family:var(--mono);font-size:8px;padding:5px 8px;background:var(--amber-bg);border:1px solid #f0c070;color:var(--amber);margin-top:4px;}
-.rthresh-alert.hit{background:var(--red-bg);border-color:#e8a8a0;color:var(--red);}
-/* Instagram */
-.ig-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
-.ig-count{font-family:var(--mono);font-size:20px;font-weight:600;color:var(--ink);}
-.ig-growth{font-family:var(--mono);font-size:10px;}
-.ig-growth.up{color:var(--green);}.ig-growth.down{color:var(--red);}.ig-growth.flat{color:var(--ink4);}
-.ig-periods{display:flex;gap:4px;margin-bottom:8px;}
-.ig-period-btn{font-family:var(--mono);font-size:8px;padding:2px 7px;background:none;border:1px solid var(--rule2);color:var(--ink4);cursor:pointer;}
-.ig-period-btn.on{background:var(--ink);color:var(--paper);border-color:var(--ink);}
-.ig-snapshot-row{display:flex;gap:8px;margin-bottom:3px;}
-.ig-snapshot-date{font-family:var(--mono);font-size:8px;color:var(--ink4);min-width:80px;}
-.ig-snapshot-val{font-family:var(--mono);font-size:10px;color:var(--ink2);}
-/* Songs */
-.song-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--rule);font-family:var(--mono);font-size:9.5px;}
-.song-row:last-child{border-bottom:none;}
-.song-title{flex:1;color:var(--ink2);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
-.song-year{color:var(--ink4);font-size:8.5px;flex-shrink:0;width:34px;}
-.song-yt{color:var(--ink3);font-size:8.5px;flex-shrink:0;width:60px;text-align:right;}
-.song-sp{color:var(--ink3);font-size:8.5px;flex-shrink:0;width:60px;text-align:right;}
-.song-mil{color:var(--green);}
-.research-add-btn{font-family:var(--mono);font-size:9px;padding:6px 16px;background:none;border:1px solid var(--rule2);color:var(--ink3);cursor:pointer;margin-bottom:20px;}
-.research-add-btn:hover{border-color:var(--ink3);color:var(--ink);}
-body.dark .rcard{background:var(--paper2);}
-body.dark .rlink-input textarea{background:#2c2c2c;border-color:#404040;color:var(--ink);}
-body.dark .rthresh-row input{background:#2c2c2c;border-color:#404040;color:var(--ink);}
-body.dark .ig-period-btn.on{background:#444;color:var(--gold-border);border-color:#666;}
-
-
-/* ── DETAIL INLINE EDIT ─────────────────────────────── */
-.d-field-row{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid var(--rule);}
-.d-field-row:last-child{border-bottom:none;}
-.d-field-row .d-k{font-family:var(--mono);font-size:8.5px;color:var(--ink4);min-width:110px;flex-shrink:0;}
-.d-v-edit{flex:1;}
-.d-inline-input{font-family:var(--mono);font-size:10px;padding:2px 6px;border:1px solid transparent;background:transparent;color:var(--ink);width:100%;border-radius:0;}
-.d-inline-input:hover{border-color:var(--rule2);}
-.d-inline-input:focus{border-color:var(--gold-border);outline:none;background:var(--paper);}
-select.d-inline-input{cursor:pointer;}
-.d-songs-list{margin-top:4px;}
-.d-songs-hdr{display:flex;gap:6px;font-family:var(--mono);font-size:8px;color:var(--ink5);padding:2px 0;border-bottom:1px solid var(--rule);}
-.d-songs-hdr span:first-child{flex:2;}
-.d-songs-hdr span{flex:1;text-align:right;}
-.d-song-row{display:flex;align-items:center;gap:6px;padding:4px 0;border-bottom:1px solid var(--rule);cursor:pointer;font-family:var(--mono);font-size:9.5px;}
-.d-song-row:hover{background:var(--paper2);}
-.d-song-row:last-child{border-bottom:none;}
-.d-song-title{flex:2;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--ink2);}
-.d-song-val{flex:1;text-align:right;color:var(--ink4);}
-.song-mil{color:var(--green) !important;}
-body.dark .d-inline-input:focus{background:#2c2c2c;}
-
-</style>
+<!-- NAV -->
 <nav class="paq-nav">
-  <a href="index.html" class="paq-nav-btn " title="Roster">
-    <span class="paq-nav-ico" style="color:#d4af5a"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="0.5"/><rect x="10" y="2" width="6" height="6" rx="0.5"/><rect x="2" y="10" width="6" height="6" rx="0.5"/><rect x="10" y="10" width="6" height="6" rx="0.5"/></svg></span>
+  <a href="index.html" class="paq-nav-btn" title="Roster">
+    <span style="color:#d4af5a"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="0.5"/><rect x="10" y="2" width="6" height="6" rx="0.5"/><rect x="2" y="10" width="6" height="6" rx="0.5"/><rect x="10" y="10" width="6" height="6" rx="0.5"/></svg></span>
   </a>
-  <a href="prospects.html" class="paq-nav-btn active" title="Prospects">
-    <span class="paq-nav-ico" style="color:#5aab78"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3.314 2.686-5 6-5s6 1.686 6 5"/><line x1="13" y1="3" x2="13" y2="7"/><line x1="11" y1="5" x2="15" y2="5"/></svg></span>
+  <a href="prospects.html" class="paq-nav-btn active" title="CRM">
+    <span style="color:#5aab78"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3.314 2.686-5 6-5s6 1.686 6 5"/><line x1="13" y1="3" x2="13" y2="7"/><line x1="11" y1="5" x2="15" y2="5"/></svg></span>
   </a>
-  <a href="audit.html" class="paq-nav-btn " title="Audit Check">
-    <span class="paq-nav-ico" style="color:#5b8fd4"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/></svg></span>
+  <a href="audit.html" class="paq-nav-btn" title="Audit">
+    <span style="color:#5b8fd4"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/></svg></span>
   </a>
 </nav>
 
-
-
-<header>
-  <div class="hdr-top">
-    <div>
-      <div class="logo-main">Prospect CRM</div>
-      <div class="logo-sub">Pipeline &amp; Outreach</div>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:10px">
-      <button class="dark-toggle" id="dark-toggle-btn" onclick="toggleDark()">◐ AUTO</button>
-    </div>
-  </div>
-  <div class="hdr-stats">
-    <div class="hstat"><div class="hstat-n" id="stat-total">—</div><div class="hstat-l">Total Prospects</div></div>
-    <div class="hstat"><div class="hstat-n amber" id="stat-outreach">—</div><div class="hstat-l">In Outreach</div></div>
-    <div class="hstat"><div class="hstat-n" id="stat-negotiating">—</div><div class="hstat-l">Negotiating</div></div>
-    <div class="hstat"><div class="hstat-n green" id="stat-signed">—</div><div class="hstat-l">Signed This Year</div></div>
-  </div>
-</header>
-
+<!-- TOOLBAR -->
 <div class="toolbar">
-  <div class="srch">
-    <span class="srch-icon">⌕</span>
-    <input type="text" id="search" placeholder="Search prospects…" oninput="onSearch(this.value)">
-    <button class="srch-clear" id="srch-clear" onclick="clearSearch()">✕</button>
-  </div>
-  <select class="tb-select" id="filter-stage" onchange="renderAll()">
-    <option value="">All Stages</option>
-    <option value="new">New</option>
-    <option value="research">Research</option>
-    <option value="outreach">Outreach</option>
-    <option value="negotiating">Negotiating</option>
-    <option value="signed">Signed</option>
-    <option value="passed">Passed</option>
-  </select>
-  <select class="tb-select" id="filter-priority" onchange="renderAll()">
-    <option value="">All Priorities</option>
-    <option value="high">High</option>
-    <option value="med">Medium</option>
-    <option value="low">Low</option>
-  </select>
-  <select class="tb-select" id="filter-genre" onchange="renderAll()">
-    <option value="">All Genres</option>
-    <option value="Hip-Hop / Rap">Hip-Hop / Rap</option>
-    <option value="Pop">Pop</option>
-    <option value="R&B">R&B</option>
-    <option value="Latin">Latin</option>
-    <option value="Afrobeats">Afrobeats</option>
-    <option value="Electronic">Electronic</option>
-    <option value="Various">Various</option>
-  </select>
-  <div class="view-toggle">
-    <button class="vtb on" id="vt-pipeline" onclick="setView('pipeline')">⊞ Pipeline</button>
-    <button class="vtb" id="vt-research" onclick="setView('research')">◎ Research</button>
-    <button class="vtb" id="vt-list" onclick="setView('list')">☰ List</button>
-  </div>
-  <button class="add-btn" onclick="openAddModal()">+ Add Prospect</button>
+  <div class="toolbar-title">Prospects</div>
+  <input class="search-input" id="search-input" placeholder="Search..." oninput="searchQ=this.value;renderAll()">
 </div>
 
-<div class="layout" id="layout">
-  <div class="main-area" id="main-area">
-    <div class="pipeline" id="pipeline-view">
-      <!-- rendered by JS -->
+<!-- BOARD -->
+<div class="board" id="board"></div>
+
+<!-- DETAIL PANEL -->
+<div class="detail" id="detail-panel">
+  <div class="detail-drag-handle"></div>
+  <div class="detail-hdr">
+    <div>
+      <div class="detail-name" id="d-name"></div>
+      <div class="detail-alias" id="d-alias"></div>
     </div>
-    <div class="research-view" id="research-view" style="display:none">
-      <!-- rendered by renderResearch() -->
-    </div>
-    <div class="list-view" id="list-view">
-      <div class="tbl-wrap">
-        <table>
-          <thead>
-            <tr>
-              <th>Name / Alias</th>
-              <th>Stage</th>
-              <th>Priority</th>
-              <th>PRO</th>
-              <th>Genre</th>
-              <th>Spotify Monthly</th>
-              <th>YouTube Views</th>
-              <th>Last Contact</th>
-              <th>Notes</th>
-            </tr>
-          </thead>
-          <tbody id="tbody"></tbody>
-        </table>
-      </div>
+    <div class="detail-hdr-actions">
+      <button class="btn-smart-paste" onclick="openSmartPaste()">✦ Smart Paste</button>
+      <button class="btn-close-detail" onclick="closeDetail()">✕</button>
     </div>
   </div>
-  <div class="detail" id="detail-panel">
-    <div class="detail-hdr" id="detail-hdr">
-      <div id="d-name">—</div>
-      <div id="d-alias"></div>
-      <div class="d-hdr-actions">
-        <button class="d-btn d-btn-edit" id="d-edit-btn">Edit</button>
-        <button class="d-btn d-btn-del" id="d-del-btn">Delete</button>
-        <button class="d-btn d-btn-convert" id="d-convert-btn" title="Convert to Roster Writer">→ Roster</button>
-      </div>
+  <div class="detail-body" id="d-body"></div>
+  <!-- Smart paste overlay inside detail -->
+  <div class="smart-paste-panel" id="smart-paste-panel">
+    <div class="detail-drag-handle"></div>
+    <div class="sp-hdr">
+      <div class="sp-title">Smart Paste</div>
+      <button class="btn-close-detail" onclick="closeSmartPaste()">✕</button>
     </div>
-    <div class="d-body" id="d-body"></div>
+    <div class="sp-hint">Paste your writer blurb. Parses bio, PRO/IPI, links, streaming data, and top songs automatically.</div>
+    <textarea class="sp-textarea" id="sp-input" placeholder="Paste blurb here..."></textarea>
+    <div class="sp-footer">
+      <button class="btn-parse" onclick="runSmartPaste()">Parse</button>
+      <button class="btn-sp-cancel" onclick="closeSmartPaste()">Cancel</button>
+    </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- ADD MODAL -->
 <div class="modal-overlay" id="modal-overlay">
   <div class="modal">
     <div class="modal-title" id="modal-title">Add Prospect</div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-field"><label class="form-label">Full Name *</label><input class="form-input" id="f-name" type="text" placeholder="Legal name"></div>
-        <div class="form-field"><label class="form-label">Stage Name / pka</label><input class="form-input" id="f-alias" type="text" placeholder="pka"></div>
-      </div>
-      <div class="form-sec" style="margin-top:12px">Links</div>
-      <div class="form-row">
-        <div class="form-field"><label class="form-label">Spotify Artist URL</label><input class="form-input" id="f-spotify-url" type="url" placeholder="open.spotify.com/artist/…"></div>
-        <div class="form-field"><label class="form-label">Instagram</label><input class="form-input" id="f-instagram" type="url" placeholder="instagram.com/…"></div>
-      </div>
-      <div class="form-row">
-        <div class="form-field"><label class="form-label">Muso URL</label><input class="form-input" id="f-muso" type="url" placeholder="credits.muso.ai/profile/…"></div>
-        <div class="form-field"><label class="form-label">Genius URL</label><input class="form-input" id="f-genius" type="url" placeholder="genius.com/artists/…"></div>
-      </div>
-      <!-- Hidden fields needed by saveProspect -->
-      <input type="hidden" id="f-pro" value="">
-      <input type="hidden" id="f-genre" value="Hip-Hop / Rap">
-      <input type="hidden" id="f-ipi" value="">
-      <input type="hidden" id="f-location" value="">
-      <input type="hidden" id="f-stage" value="new">
-      <input type="hidden" id="f-priority" value="med">
-      <input type="hidden" id="f-contact-date" value="">
-      <input type="hidden" id="f-target-admin" value="">
-      <input type="hidden" id="f-twitter" value="">
-      <input type="hidden" id="f-spotify" value="">
-      <input type="hidden" id="f-youtube" value="">
-      <input type="hidden" id="f-notes" value="">
+    <div class="modal-field"><label>Name *</label><input id="m-name" type="text" placeholder="Legal name"></div>
+    <div class="modal-field"><label>pka / Alias</label><input id="m-alias" type="text" placeholder="Stage name"></div>
+    <div class="modal-field">
+      <label>Stage</label>
+      <select id="m-stage">
+        <option value="research">Research</option>
+        <option value="outreach">Outreach</option>
+        <option value="in-talks">In Talks</option>
+        <option value="negotiation">Negotiation</option>
+        <option value="saved">Saved for Later</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+        <option value="other">Other</option>
+      </select>
     </div>
-        <div class="modal-actions">
-      <button class="btn-delete" id="modal-del-btn" style="display:none">Delete</button>
-      <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-      <button class="btn-save" onclick="saveProspect()">Save</button>
+    <div class="modal-btns">
+      <button class="btn-modal-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-modal-save" id="modal-save-btn" onclick="saveProspect()">Add</button>
     </div>
   </div>
 </div>
@@ -624,1260 +242,768 @@ body.dark .d-inline-input:focus{background:#2c2c2c;}
 <div class="toast-wrap" id="toast-wrap"></div>
 
 <script>
-const SB_URL = 'https://jbcqoxiygkdxoaulrhbk.supabase.co';
-const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3FveGl5Z2tkeG9hdWxyaGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTA1MDQsImV4cCI6MjA4ODg2NjUwNH0.IPB_7u7hU53aUI6wS-fYXLOe3_7uCAjMhDwXxQZR4s8';
-const SB_HEADERS = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':`Bearer ${SB_KEY}`};
-const TODAY_STR = new Date().toISOString().split('T')[0];
+// ── CONSTANTS ──────────────────────────────────────────────────────────
+const TODAY = new Date();
+const TODAY_STR = TODAY.toISOString().split('T')[0];
 
+const STAGES_MAIN = [
+  {id:'outreach',    label:'Outreach'},
+  {id:'in-talks',    label:'In Talks'},
+  {id:'negotiation', label:'Negotiation'},
+  {id:'saved',       label:'Saved for Later'},
+];
+const STAGES_ALL = [
+  {id:'research',    label:'Research'},
+  ...STAGES_MAIN,
+  {id:'won',         label:'Won'},
+  {id:'lost',        label:'Lost'},
+  {id:'other',       label:'Other'},
+];
+
+const STAGE_COLORS = {
+  research:'#8b6914', outreach:'#1a5fa8', 'in-talks':'#2d7a4f',
+  negotiation:'#c9931a', saved:'#888', won:'#2d7a4f', lost:'#c0392b', other:'#888'
+};
+
+// ── STATE ──────────────────────────────────────────────────────────────
 let prospects = [];
 let nextId = 1;
 let searchQ = '';
-let currentView = 'pipeline';
-let editingId = null;
 let currentDetailId = null;
+let researchCollapsed = false;
+let closedCollapsed   = false;
+let draggedId = null;
+let editingId = null; // for modal edit
 
-const STAGES = ['new','research','outreach','negotiating','signed','passed'];
-const STAGE_LABELS = {new:'New',research:'Research',outreach:'Outreach',negotiating:'Negotiating',signed:'Signed',passed:'Passed'};
+// ── UTILS ──────────────────────────────────────────────────────────────
+const fmtDate = d => { try { return new Date(d+'T00:00:00').toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}); } catch(e){ return d||''; }};
+const daysUntil = d => { if(!d) return null; return Math.round((new Date(d+'T00:00:00') - new Date(TODAY_STR+'T00:00:00')) / 86400000); };
+const toast = (msg, dur=2500) => { const w=document.getElementById('toast-wrap'); if(!w) return; const t=document.createElement('div'); t.className='toast'; t.textContent=msg; w.appendChild(t); setTimeout(()=>t.remove(),dur); };
+const getFiltered = () => { let d=[...prospects]; if(searchQ){ const q=searchQ.toLowerCase(); d=d.filter(p=>(p.name+' '+(p.alias||'')).toLowerCase().includes(q)); } return d; };
 
-async function sbFetch(path, opts={}){
-  const res = await fetch(`${SB_URL}/rest/v1/${path}`,{headers:SB_HEADERS,...opts});
-  if(!res.ok){const e=await res.text();throw new Error(e);}
-  return res.status===204?null:res.json();
-}
+// ── RENDER ALL ─────────────────────────────────────────────────────────
+function renderAll() { renderBoard(); }
 
-async function dbLoad(){
-  showLoader(true);
-  try{
-    const rows = await sbFetch('prospects?select=id,data&order=id');
-    if(rows&&rows.length>0){
-      prospects = rows.map(r=>({id:r.id,...r.data}));
-      nextId = Math.max(...prospects.map(p=>p.id))+1;
-    }
-  }catch(e){
-    console.error('Load failed:',e);
-    toast('Offline','Working with local data only.');
-  }
-  showLoader(false);
-  renderAll();
-}
+function renderBoard() {
+  const data = getFiltered();
+  const board = document.getElementById('board');
+  if (!board) return;
 
-async function dbSave(p){
-  try{
-    await sbFetch('prospects',{
-      method:'POST',
-      headers:{...SB_HEADERS,'Prefer':'resolution=merge-duplicates'},
-      body:JSON.stringify({id:p.id,data:p})
-    });
-  }catch(e){toast('Save Error','Change may not have saved.');}
-}
-
-async function dbDelete(id){
-  try{await sbFetch(`prospects?id=eq.${id}`,{method:'DELETE'});}
-  catch(e){toast('Delete Error','Could not delete.');}
-}
-
-function showLoader(on){
-  let el=document.getElementById('db-loader');
-  if(!el){el=document.createElement('div');el.id='db-loader';el.style.cssText='position:fixed;top:0;left:0;right:0;height:3px;background:linear-gradient(90deg,#5aab78,#6abf88,#5aab78);z-index:999;transition:opacity .3s';document.body.prepend(el);}
-  el.style.opacity=on?'1':'0';
-}
-
-function fmtNum(n){
-  if(!n) return '—';
-  const num = parseInt(String(n).replace(/[^0-9]/g,''));
-  if(isNaN(num)) return n;
-  if(num>=1000000) return (num/1000000).toFixed(1)+'M';
-  if(num>=1000) return (num/1000).toFixed(0)+'K';
-  return num.toString();
-}
-
-function fmtDate(d){
-  if(!d) return '—';
-  const dt = new Date(d+'T00:00:00');
-  return dt.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-}
-
-function daysSince(d){
-  if(!d) return null;
-  return Math.floor((Date.now()-new Date(d+'T00:00:00'))/(86400000));
-}
-
-function getFiltered(){
-  let d=[...prospects];
-  const q=searchQ.toLowerCase();
-  if(q) d=d.filter(p=>(p.name+' '+(p.alias||'')).toLowerCase().includes(q));
-  const st=document.getElementById('filter-stage').value;
-  const pri=document.getElementById('filter-priority').value;
-  const genre=document.getElementById('filter-genre').value;
-  if(st) d=d.filter(p=>p.stage===st);
-  if(pri) d=d.filter(p=>p.priority===pri);
-  if(genre) d=d.filter(p=>p.genre===genre);
-  return d;
-}
-
-function renderAll(){
-  renderStats();
-  if(currentView==='pipeline') renderPipeline();
-  else if(currentView==='research') renderResearch();
-  else renderList();
-}
-
-function renderStats(){
-  const all=prospects;
-  document.getElementById('stat-total').textContent=all.length;
-  document.getElementById('stat-outreach').textContent=all.filter(p=>p.stage==='outreach').length;
-  document.getElementById('stat-negotiating').textContent=all.filter(p=>p.stage==='negotiating').length;
-  const thisYear=new Date().getFullYear();
-  document.getElementById('stat-signed').textContent=all.filter(p=>p.stage==='signed'&&p.contactDate&&new Date(p.contactDate).getFullYear()===thisYear).length;
-}
-
-function renderPipeline(){
-  const data=getFiltered();
-  const wrap=document.getElementById('pipeline-view');
-  wrap.innerHTML=STAGES.map(stage=>{
-    const cards=data.filter(p=>p.stage===stage);
-    return `<div class="stage-col stage-${stage}">
+  // Stage column builder
+  function stageCol(stage) {
+    const sid = stage.id;
+    const cards = data.filter(p => p.stage === sid);
+    return `<div class="stage-col" data-stage="${sid}" ondragover="colDragOver(event)" ondragleave="colDragLeave(event)" ondrop="colDrop(event)">
       <div class="stage-hdr">
-        <span class="stage-title">${STAGE_LABELS[stage]}</span>
+        <span class="stage-hdr-name ${sid}">${stage.label}</span>
         <span class="stage-count">${cards.length}</span>
+        <button class="stage-add-btn" data-stage="${sid}" onclick="quickAdd(this.dataset.stage)" title="Add">+</button>
       </div>
-      <div class="stage-cards">
-        ${cards.length?cards.map(p=>makeCard(p)).join(''):`<div class="empty-stage">No prospects</div>`}
+      <div class="stage-cards" id="cards-${sid}">
+        ${cards.sort(followupSort).map(makeCard).join('')}
       </div>
     </div>`;
+  }
+
+  // Research band
+  const resCards = data.filter(p => p.stage === 'research');
+  const resRow = `<div class="band-row">
+    <div class="band-hdr" onclick="toggleBand('research')">
+      <span class="band-chevron" id="res-chev">${researchCollapsed?'›':'‹'}</span>
+      <span class="band-label">Research</span>
+      <span class="band-count">${resCards.length}</span>
+      <button class="stage-add-btn" onclick="event.stopPropagation();quickAdd('research')" style="margin-left:6px">+</button>
+    </div>
+    <div id="research-cards" data-stage="research" style="display:${researchCollapsed?'none':'flex'};flex-wrap:wrap;gap:12px;padding:10px 12px"
+      ondragover="colDragOver(event)" ondragleave="colDragLeave(event)" ondrop="colDrop(event)">
+      ${resCards.sort(followupSort).map(makeCard).join('')}
+    </div>
+  </div>`;
+
+  // Main columns
+  const mainCols = `<div class="main-cols">${STAGES_MAIN.map(stageCol).join('')}</div>`;
+
+  // Closed band
+  const wonCards   = data.filter(p => p.stage === 'won');
+  const lostCards  = data.filter(p => p.stage === 'lost');
+  const otherCards = data.filter(p => p.stage === 'other');
+  const closedTotal = wonCards.length + lostCards.length + otherCards.length;
+  const closedCols = ['won','lost','other'].map(sid => {
+    const stageDef = STAGES_ALL.find(s => s.id === sid);
+    const cards = data.filter(p => p.stage === sid);
+    return `<div class="stage-col" data-stage="${sid}" ondragover="colDragOver(event)" ondragleave="colDragLeave(event)" ondrop="colDrop(event)">
+      <div class="stage-hdr">
+        <span class="stage-hdr-name ${sid}">${stageDef.label}</span>
+        <span class="stage-count">${cards.length}</span>
+      </div>
+      <div class="stage-cards">${cards.map(makeCard).join('')}</div>
+    </div>`;
   }).join('');
+  const closedRow = `<div class="band-row">
+    <div class="band-hdr" onclick="toggleBand('closed')">
+      <span class="band-chevron" id="closed-chev">${closedCollapsed?'›':'‹'}</span>
+      <span class="band-label">Closed</span>
+      <span class="band-count">${closedTotal}</span>
+    </div>
+    <div id="closed-cards" class="band-cards" style="display:${closedCollapsed?'none':'flex'}">
+      ${closedCols}
+    </div>
+  </div>`;
+
+  board.innerHTML = resRow + mainCols + closedRow;
 }
 
-function makeCard(p){
-  const priCls=p.priority==='high'?'priority-high':p.priority==='low'?'priority-low':'priority-med';
-  const days=daysSince(p.contactDate);
-  const daysStr=days!==null?(days===0?'Today':days===1?'Yesterday':`${days}d ago`):'';
-  return `<div class="pcard ${priCls}" onclick="openDetail(${p.id})">
-    <div class="pcard-name">${p.name}</div>
-    ${p.alias?`<div class="pcard-alias">pka ${p.alias}</div>`:''}
-    <div class="pcard-meta">
-      ${p.pro?`<span class="ptag pro-${(p.pro||'').toLowerCase()}">${p.pro}</span>`:''}
-      ${p.genre?`<span class="ptag genre">${p.genre}</span>`:''}
-      ${p.targetAdmin?`<span class="ptag">${p.targetAdmin}</span>`:''}
+function toggleBand(band) {
+  if (band === 'research') {
+    researchCollapsed = !researchCollapsed;
+    document.getElementById('research-cards').style.display = researchCollapsed ? 'none' : 'flex';
+    document.getElementById('res-chev').textContent = researchCollapsed ? '›' : '‹';
+  } else {
+    closedCollapsed = !closedCollapsed;
+    document.getElementById('closed-cards').style.display = closedCollapsed ? 'none' : 'flex';
+    document.getElementById('closed-chev').textContent = closedCollapsed ? '›' : '‹';
+  }
+}
+
+function followupSort(a, b) {
+  const da = daysUntil(a.followupDate), db = daysUntil(b.followupDate);
+  if (da !== null && db === null) return -1;
+  if (da === null && db !== null) return  1;
+  if (da !== null && db !== null) return da - db;
+  return a.name.localeCompare(b.name);
+}
+
+function makeCard(p) {
+  const days = daysUntil(p.followupDate);
+  const overdue  = days !== null && days < 0;
+  const dueSoon  = days !== null && days >= 0 && days <= 3;
+  const cls = overdue ? 'p-card followup-overdue' : dueSoon ? 'p-card followup-due' : 'p-card';
+  const followup = p.followupDate ? `<div class="p-card-followup${overdue?' overdue':''}">${overdue?'⚠ Overdue '+Math.abs(days)+'d':days===0?'Today':'In '+days+'d'}</div>` : '';
+  return `<div class="${cls}" draggable="true" data-pid="${p.id}"
+    ondragstart="dragStart(event,${p.id})" ondragend="dragEnd(event)"
+    onclick="openDetail(${p.id})">
+    <div class="p-card-name">${p.name}</div>
+    ${p.alias ? `<div class="p-card-alias">pka ${p.alias}</div>` : ''}
+    <div class="p-card-meta">
+      ${p.genre ? `<span class="p-card-tag">${p.genre}</span>` : ''}
+      ${p.pro   ? `<span class="p-card-tag">${p.pro.split(':')[0]}</span>` : ''}
+      ${followup}
     </div>
-    ${(p.spotifyMonthly||p.youtubeViews)?`<div class="pcard-streams">
-      ${p.spotifyMonthly?`<span>♫ <span class="stream-n">${fmtNum(p.spotifyMonthly)}</span></span>`:''}
-      ${p.youtubeViews?`<span>▶ <span class="stream-n">${fmtNum(p.youtubeViews)}</span></span>`:''}
-    </div>`:''}
-    ${daysStr?`<div class="pcard-date">${daysStr}</div>`:''}
+    ${p.notes ? `<div class="p-card-note">${p.notes}</div>` : ''}
   </div>`;
 }
 
-function renderList(){
-  const data=getFiltered();
-  const tb=document.getElementById('tbody');
-  if(!data.length){tb.innerHTML=`<tr><td colspan="9" style="text-align:center;padding:24px;font-family:var(--mono);font-size:11px;color:var(--ink4)">No prospects match filters.</td></tr>`;return;}
-  tb.innerHTML=data.map(p=>`<tr onclick="openDetail(${p.id})">
-    <td><div class="td-name">${p.name}</div>${p.alias?`<div class="td-alias">pka ${p.alias}</div>`:''}</td>
-    <td><span class="stage-badge sb-${p.stage}">${STAGE_LABELS[p.stage]||p.stage}</span></td>
-    <td><span class="pri-dot pri-${p.priority||'med'}"></span>${(p.priority||'med').charAt(0).toUpperCase()+(p.priority||'med').slice(1)}</td>
-    <td>${p.pro||'—'}</td>
-    <td>${p.genre||'—'}</td>
-    <td style="font-family:var(--mono);font-size:10px">${fmtNum(p.spotifyMonthly)}</td>
-    <td style="font-family:var(--mono);font-size:10px">${fmtNum(p.youtubeViews)}</td>
-    <td style="font-family:var(--mono);font-size:10px">${fmtDate(p.contactDate)}</td>
-    <td style="color:var(--ink4);max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.notes||'—'}</td>
-  </tr>`).join('');
+// ── DRAG & DROP ────────────────────────────────────────────────────────
+function dragStart(e, id) {
+  draggedId = id;
+  e.dataTransfer.effectAllowed = 'move';
+  setTimeout(() => { const el = e.target.closest('.p-card'); if(el) el.classList.add('dragging'); }, 0);
 }
-
-function setView(v){
-  currentView=v;
-  document.getElementById('vt-pipeline').classList.toggle('on',v==='pipeline');
-  document.getElementById('vt-list').classList.toggle('on',v==='list');
-  document.getElementById('vt-research').classList.toggle('on',v==='research');
-  document.getElementById('pipeline-view').style.display=v==='pipeline'?'flex':'none';
-  document.getElementById('research-view').style.display=v==='research'?'block':'none';
-  document.getElementById('list-view').style.display=v==='list'?'block':'none';
+function dragEnd() {
+  document.querySelectorAll('.dragging').forEach(el => el.classList.remove('dragging'));
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+}
+function colDragOver(e) { e.preventDefault(); e.currentTarget.classList.add('drag-over'); }
+function colDragLeave(e) { if(!e.relatedTarget || !e.currentTarget.contains(e.relatedTarget)) e.currentTarget.classList.remove('drag-over'); }
+function colDrop(e) {
+  e.preventDefault();
+  document.querySelectorAll('.drag-over').forEach(el => el.classList.remove('drag-over'));
+  const sid = e.currentTarget.dataset.stage;
+  if (!draggedId || !sid) return;
+  const p = prospects.find(x => x.id === draggedId);
+  draggedId = null;
+  if (!p || p.stage === sid) return;
+  p.stage = sid;
+  if (!p.log) p.log = [];
+  p.log.push({date:TODAY_STR, platform:'', text:'Moved to ' + (STAGES_ALL.find(s=>s.id===sid)?.label||sid)});
+  dbSave(p);
   renderAll();
+  if (currentDetailId === p.id) renderDetailBody(p);
 }
 
-function openDetail(id){
-  if(currentDetailId===id && document.getElementById('detail-panel').classList.contains('open')){
-    closeDetail(); return;
+// ── INLINE ADD ─────────────────────────────────────────────────────────
+function quickAdd(stage) {
+  document.getElementById('inline-add-form')?.remove();
+  let target = null;
+  if (stage === 'research') {
+    target = document.getElementById('research-cards');
+  } else {
+    target = document.querySelector(`[data-stage="${stage}"] .stage-cards`);
   }
-  currentDetailId=id;
-  renderDetail(id);
+  if (!target) return;
+  const form = document.createElement('div');
+  form.id = 'inline-add-form';
+  form.className = 'inline-form';
+  form.innerHTML = `
+    <input id="ia-name" placeholder="Name *" data-stage="${stage}"
+      onkeydown="if(event.key==='Enter')saveInline(this.dataset.stage)">
+    <input id="ia-alias" placeholder="pka / alias" data-stage="${stage}"
+      onkeydown="if(event.key==='Enter')saveInline(this.dataset.stage)"
+      style="font-size:11px;color:var(--ink4)">
+    <div class="btns">
+      <button class="btn-add-confirm" data-stage="${stage}" onclick="saveInline(this.dataset.stage)">Add</button>
+      <button class="btn-cancel-sm" onclick="document.getElementById('inline-add-form').remove()">✕</button>
+    </div>`;
+  target.insertBefore(form, target.firstChild);
+  document.getElementById('ia-name').focus();
+}
+
+async function saveInline(stage) {
+  const name = document.getElementById('ia-name')?.value.trim();
+  if (!name) { document.getElementById('ia-name').style.color = 'var(--red)'; return; }
+  const alias = document.getElementById('ia-alias')?.value.trim() || '';
+  const p = { id:nextId++, name, alias, stage, bio:'', notes:'', genre:'', pro:'', followupDate:'',
+    links:{}, streaming:{}, contacts:[], topSongs:[], log:[{date:TODAY_STR,platform:'',text:'Added'}] };
+  prospects.push(p);
+  await dbSave(p);
+  document.getElementById('inline-add-form')?.remove();
+  renderAll();
+  toast(name + ' added.');
+}
+
+// ── MODAL (fallback) ────────────────────────────────────────────────────
+function openAddModal() {
+  editingId = null;
+  document.getElementById('modal-title').textContent = 'Add Prospect';
+  document.getElementById('modal-save-btn').textContent = 'Add';
+  document.getElementById('modal-save-btn').onclick = saveProspect;
+  document.getElementById('m-name').value = '';
+  document.getElementById('m-alias').value = '';
+  document.getElementById('m-stage').value = 'outreach';
+  document.getElementById('modal-overlay').classList.add('open');
+}
+function closeModal() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.getElementById('modal-save-btn').onclick = saveProspect;
+}
+async function saveProspect() {
+  const name = document.getElementById('m-name').value.trim();
+  if (!name) return;
+  if (editingId) {
+    const p = prospects.find(x => x.id === editingId);
+    if (p) {
+      p.name  = name;
+      p.alias = document.getElementById('m-alias').value.trim();
+      p.stage = document.getElementById('m-stage').value;
+      await dbSave(p);
+      closeModal(); renderAll();
+      if (currentDetailId === p.id) {
+        document.getElementById('d-name').textContent = p.name;
+        document.getElementById('d-alias').textContent = p.alias ? 'pka ' + p.alias : '';
+        renderDetailBody(p);
+      }
+    }
+  } else {
+    const p = { id:nextId++, name,
+      alias: document.getElementById('m-alias').value.trim(),
+      stage: document.getElementById('m-stage').value,
+      bio:'', notes:'', genre:'', pro:'', followupDate:'',
+      links:{}, streaming:{}, contacts:[], topSongs:[],
+      log:[{date:TODAY_STR,platform:'',text:'Added'}] };
+    prospects.push(p);
+    await dbSave(p);
+    closeModal(); renderAll();
+    toast(name + ' added.');
+  }
+}
+
+// ── DETAIL PANEL ───────────────────────────────────────────────────────
+function openDetail(id) {
+  if (currentDetailId === id && document.getElementById('detail-panel').classList.contains('open')) { closeDetail(); return; }
+  currentDetailId = id;
+  const p = prospects.find(x => x.id === id);
+  if (!p) return;
+  setDetailHeader(p);
+  renderDetailBody(p);
   document.getElementById('detail-panel').classList.add('open');
 }
 
-function renderDetail(id){
-  const p=prospects.find(x=>x.id===id); if(!p) return;
-  const r=p.research||{};
-  const songs=(r.songs||[]).filter(s=>s.year===0||s.year>=(new Date().getFullYear()-3)).sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-
-  document.getElementById('d-name').textContent=p.name;
-  document.getElementById('d-alias').textContent=p.alias?`pka ${p.alias}`:'';
-  document.getElementById('d-edit-btn').onclick=()=>openEditModal(id);
-  document.getElementById('d-del-btn').onclick=()=>delProspect(id);
-  document.getElementById('d-convert-btn').onclick=()=>convertToRoster(id);
-
-  const outreachHtml=(p.outreach||[]).length
-    ?p.outreach.map(o=>`<div class="outreach-item"><div class="outreach-date">${fmtDate(o.date)}</div><div class="outreach-text">${o.note}</div></div>`).join('')
-    :`<div style="font-family:var(--mono);font-size:9px;color:var(--ink5);padding:6px 0">No outreach logged yet.</div>`;
-
-  // Inline editable field helper
-  const field = (label, val, inputId, type='text', opts='') =>
-    `<div class="d-field-row">
-      <div class="d-k">${label}</div>
-      <div class="d-v-edit">
-        ${type==='select'
-          ? `<select class="d-inline-input" id="${inputId}" onchange="saveDetailField(${id},'${inputId}',this.value)">${opts}</select>`
-          : `<input class="d-inline-input" type="${type}" id="${inputId}" value="${(val||'').toString().replace(/"/g,'&quot;')}" placeholder="—" onblur="saveDetailField(${id},'${inputId}',this.value)">`
-        }
-      </div>
-    </div>`;
-
-  const stageOpts = ['new','research','outreach','negotiating','signed','passed']
-    .map(s=>`<option value="${s}" ${p.stage===s?'selected':''}>${STAGE_LABELS[s]||s}</option>`).join('');
-  const priOpts = ['high','med','low'].map(v=>`<option value="${v}" ${(p.priority||'med')===v?'selected':''}>${v.charAt(0).toUpperCase()+v.slice(1)}</option>`).join('');
-  const proOpts = ['','BMI','ASCAP','SESAC','PRS','SOCAN','Other'].map(v=>`<option value="${v}" ${p.pro===v?'selected':''}>${v||'Unknown'}</option>`).join('');
-  const genreOpts = ['Hip-Hop / Rap','Pop','R&B','Latin','Afrobeats','Electronic','Various'].map(v=>`<option value="${v}" ${p.genre===v?'selected':''}>${v}</option>`).join('');
-
-  // Songs section — auto from research, click to edit
-  const songsHtml = songs.length
-    ? `<div class="d-songs-list">
-        <div class="d-songs-hdr"><span>Title</span><span>Year</span><span>YT Views</span><span>Spotify</span></div>
-        ${songs.map((s,i)=>`<div class="d-song-row" onclick="editSongInline(${id},${i},this)">
-          <span class="d-song-title">${s.title}</span>
-          <span class="d-song-val">${s.year||'?'}</span>
-          <span class="d-song-val">${s.ytViews?fmtNum(s.ytViews):'—'}</span>
-          <span class="d-song-val ${(s.spStreams||0)>=1000000?'song-mil':''}">${s.spStreams?fmtNum(s.spStreams):'—'}</span>
-        </div>`).join('')}
-      </div>`
-    : `<div style="font-family:var(--mono);font-size:9px;color:var(--ink5);padding:4px 0">No songs yet — add source links and sync</div>`;
-
-  document.getElementById('d-body').innerHTML=`
-    <div class="d-sec">
-      <div class="d-sec-title">Pipeline</div>
-      ${field('Stage','',`dp-stage-${id}`,'select',stageOpts)}
-      ${field('Priority','',`dp-pri-${id}`,'select',priOpts)}
-      ${field('Target Admin',p.targetAdmin,`dp-admin-${id}`)}
-      ${field('First Contact',p.contactDate,`dp-contact-${id}`,'date')}
-    </div>
-    <div class="d-sec">
-      <div class="d-sec-title">Identity</div>
-      ${field('Full Name',p.name,`dp-name-${id}`)}
-      ${field('Alias / Stage Name',p.alias,`dp-alias-${id}`)}
-      ${field('PRO','',`dp-pro-${id}`,'select',proOpts)}
-      ${field('Genre','',`dp-genre-${id}`,'select',genreOpts)}
-      ${field('IPI #',p.ipi,`dp-ipi-${id}`)}
-      ${field('Location',p.location,`dp-location-${id}`)}
-    </div>
-    <div class="d-sec">
-      <div class="d-sec-title">Streaming <span style="font-size:8px;color:var(--ink5);font-weight:400">— click values to edit</span></div>
-      ${field('Spotify Monthly Listeners',p.spotifyMonthly||r.spFollowers||'',`dp-spotify-${id}`,'text')}
-      ${field('YouTube Total Views',p.youtubeViews||'',`dp-youtube-${id}`,'text')}
-      <div class="d-sec-title" style="margin-top:10px">Top Songs (last 3 yrs)</div>
-      ${songsHtml}
-      <button class="d-save-btn" style="margin-top:6px" onclick="openAddSong(${id})">+ Add Song Manually</button>
-    </div>
-    <div class="d-sec">
-      <div class="d-sec-title">Links</div>
-      ${field('Spotify Artist URL',p.spotifyUrl||r.spotifyUrl||'',`dp-spurl-${id}`,'url')}
-      ${field('Instagram',p.instagram||'',`dp-ig-${id}`,'url')}
-      ${field('Muso URL',p.musoUrl||'',`dp-muso-${id}`,'url')}
-      ${field('Genius URL',p.geniusUrl||'',`dp-genius-${id}`,'url')}
-      ${field('Twitter / X',p.twitter||'',`dp-twitter-${id}`,'url')}
-    </div>
-    <div class="d-sec">
-      <div class="d-sec-title">Notes</div>
-      <textarea class="d-textarea" id="d-notes-edit" placeholder="Add notes…" onblur="saveDetailField(${id},'dp-notes-${id}',this.value)">${p.notes||''}</textarea>
-    </div>
-    <div class="d-sec">
-      <div class="d-sec-title">Outreach History</div>
-      <div class="outreach-list">${outreachHtml}</div>
-      <div class="add-outreach-area">
-        <input type="date" id="outreach-date-${id}" value="${TODAY_STR}" max="${TODAY_STR}">
-        <textarea class="d-textarea" id="outreach-note-${id}" placeholder="Log outreach note…" style="min-height:55px"></textarea>
-        <button class="d-save-btn" onclick="addOutreach(${id})">+ Log Outreach</button>
-      </div>
-    </div>`;
-}
-
-// Map detail field IDs to prospect properties
-const FIELD_MAP = {
-  'dp-stage':'stage','dp-pri':'priority','dp-admin':'targetAdmin','dp-contact':'contactDate',
-  'dp-name':'name','dp-alias':'alias','dp-pro':'pro','dp-genre':'genre','dp-ipi':'ipi','dp-location':'location',
-  'dp-spotify':'spotifyMonthly','dp-youtube':'youtubeViews',
-  'dp-spurl':'spotifyUrl','dp-ig':'instagram','dp-muso':'musoUrl','dp-genius':'geniusUrl','dp-twitter':'twitter',
-  'dp-notes':'notes'
-};
-
-async function saveDetailField(pid, inputId, val){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  // Find field key from inputId (strip the -ID suffix)
-  const key=Object.keys(FIELD_MAP).find(k=>inputId.startsWith(k+'-'));
-  if(!key) return;
-  const prop=FIELD_MAP[key];
-  p[prop]=val;
-  // Update header if name changed
-  if(prop==='name') document.getElementById('d-name').textContent=val;
-  if(prop==='alias') document.getElementById('d-alias').textContent=val?`pka ${val}`:'';
-  await dbSave(p);
-  renderAll();
-}
-
-function editSongInline(pid, songIdx, rowEl){
-  if(rowEl.querySelector('input')) return; // already editing
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  const visible=(p.research?.songs||[]).filter(s=>s.year===0||s.year>=(new Date().getFullYear()-3)).sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-  const s=visible[songIdx]; if(!s) return;
-  rowEl.innerHTML=`
-    <input class="d-inline-input" style="flex:2" value="${s.title}" id="se-title-${pid}-${songIdx}">
-    <input class="d-inline-input" style="width:50px" value="${s.year||''}" id="se-year-${pid}-${songIdx}" placeholder="Year">
-    <input class="d-inline-input" style="width:70px" value="${s.ytViews||''}" id="se-yt-${pid}-${songIdx}" placeholder="YT Views">
-    <input class="d-inline-input" style="width:70px" value="${s.spStreams||''}" id="se-sp-${pid}-${songIdx}" placeholder="Streams">
-    <button onclick="saveSongEdit(${pid},${songIdx})" style="font-family:var(--mono);font-size:8px;padding:2px 7px;background:none;border:1px solid var(--rule2);cursor:pointer">✓</button>
-    <button onclick="removeSong(${pid},${songIdx})" style="font-family:var(--mono);font-size:8px;padding:2px 5px;background:none;border:none;cursor:pointer;color:var(--ink5)">×</button>`;
-}
-
-async function saveSongEdit(pid, songIdx){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  const visible=(p.research?.songs||[]).filter(s=>s.year===0||s.year>=(new Date().getFullYear()-3)).sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-  const s=visible[songIdx]; if(!s) return;
-  s.title=document.getElementById(`se-title-${pid}-${songIdx}`)?.value?.trim()||s.title;
-  s.year=parseInt(document.getElementById(`se-year-${pid}-${songIdx}`)?.value)||s.year;
-  s.ytViews=parseInt((document.getElementById(`se-yt-${pid}-${songIdx}`)?.value||'').replace(/[^0-9]/g,''))||s.ytViews;
-  s.spStreams=parseInt((document.getElementById(`se-sp-${pid}-${songIdx}`)?.value||'').replace(/[^0-9]/g,''))||s.spStreams;
-  await dbSave(p);
-  renderDetail(pid);
-}
-function closeDetail(){
+function closeDetail() {
   document.getElementById('detail-panel').classList.remove('open');
-  currentDetailId=null;
+  currentDetailId = null;
+  closeSmartPaste();
 }
 
-async function saveNotes(id){
-  const p=prospects.find(x=>x.id===id);
-  p.notes=document.getElementById('d-notes-edit').value.trim();
-  toast('Notes Saved',`Notes updated for ${p.name}.`);
-  openDetail(id);
-  await dbSave(p);
+function setDetailHeader(p) {
+  const dn = document.getElementById('d-name');
+  const da = document.getElementById('d-alias');
+  dn.innerHTML = `<span onclick="editName(${p.id})">${p.name}</span> <button onclick="editName(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 0 0 4px">✎</button>`;
+  da.innerHTML = p.alias
+    ? `<span onclick="editAlias(${p.id})">pka ${p.alias}</span> <button onclick="editAlias(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:9px;padding:0 0 0 3px">✎</button>`
+    : `<button onclick="editAlias(${p.id})" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-family:var(--mono);font-size:9px;padding:0">+ pka</button>`;
 }
 
-async function addOutreach(id){
-  const p=prospects.find(x=>x.id===id);
-  const date=document.getElementById(`outreach-date-${id}`).value;
-  const note=document.getElementById(`outreach-note-${id}`).value.trim();
-  if(!note){toast('Missing Note','Please add an outreach note.');return;}
-  if(!p.outreach) p.outreach=[];
-  p.outreach.unshift({date,note});
-  p.contactDate=p.contactDate||date;
-  toast('Logged',`Outreach logged for ${p.name}.`);
-  openDetail(id);
-  renderAll();
-  await dbSave(p);
+function editName(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  const el = document.getElementById('d-name');
+  el.innerHTML = `<input id="dn-inp" value="${p.name}" style="font-family:var(--serif);font-size:22px;background:none;color:var(--ink);width:calc(100% - 20px)">`;
+  const inp = document.getElementById('dn-inp'); inp.focus(); inp.select();
+  const save = async () => { const v = inp.value.trim(); if(!v) return; p.name=v; await dbSave(p); setDetailHeader(p); renderBoard(); };
+  inp.onblur = save;
+  inp.onkeydown = e => { if(e.key==='Enter') inp.blur(); };
 }
 
-function convertToRoster(id){
-  const p=prospects.find(x=>x.id===id);
-  if(!confirm(`Convert ${p.name} to a roster writer? This will open the roster page with pre-filled info.`)) return;
-  const params=new URLSearchParams({
-    name:p.name,alias:p.alias||'',pro:p.pro||'',genre:p.genre||'',
-    company:'',admin:p.targetAdmin||''
-  });
-  window.open(`index.html?prefill=1&${params.toString()}`, '_blank');
+function editAlias(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  const el = document.getElementById('d-alias');
+  el.innerHTML = `<input id="da-inp" value="${p.alias||''}" placeholder="stage name" style="font-family:var(--mono);font-size:10px;background:none;color:var(--ink);width:calc(100% - 16px)">`;
+  const inp = document.getElementById('da-inp'); inp.focus();
+  const save = async () => { p.alias=inp.value.trim(); await dbSave(p); setDetailHeader(p); renderBoard(); };
+  inp.onblur = save;
+  inp.onkeydown = e => { if(e.key==='Enter') inp.blur(); };
 }
 
-// ── AUTOFILL NAME FROM LINKS ─────────────────────────────────────────
-async function autofillFromLinks(){
-  const nameEl = document.getElementById('f-name');
-  if(!nameEl || nameEl.value.trim()) return; // don't overwrite if already filled
+function renderDetailBody(p) {
+  const pid   = p.id;
+  const links = p.links    || {};
+  const str   = p.streaming|| {};
+  const ctcs  = p.contacts || [];
+  const log   = p.log      || [];
+  const songs = p.topSongs || [];
 
-  const spotifyUrl = document.getElementById('f-spotify-url')?.value.trim();
-  const musoUrl = document.getElementById('f-muso')?.value.trim();
-  const geniusUrl = document.getElementById('f-genius')?.value.trim();
-  const statusEl = document.getElementById('f-name-status');
+  // Follow-up alert
+  const days = daysUntil(p.followupDate);
+  const overdue = days !== null && days < 0;
+  const alertHtml = p.followupDate
+    ? `<div class="followup-alert${overdue?' overdue':''}">${overdue?'Overdue by '+Math.abs(days)+'d':days===0?'Due today':'Due in '+days+'d'}</div>`
+    : '';
 
-  // Try Spotify first (fastest, most reliable)
-  if(spotifyUrl && spotifyUrl.includes('spotify.com/artist') && getSpotifySecret()){
-    if(statusEl) statusEl.textContent = '⟳ Looking up…';
-    const data = await spotifyLookupArtist(spotifyUrl);
-    if(data?.name){
-      nameEl.value = data.name;
-      if(statusEl) statusEl.textContent = '✓ from Spotify';
-      if(document.getElementById('f-spotify') && !document.getElementById('f-spotify').value)
-        document.getElementById('f-spotify').value = data.followers || '';
-      return;
-    }
+  // Stage strip
+  const sc = STAGE_COLORS[p.stage] || '#888';
+  const stageStrip = `<div class="stage-strip" style="background:${sc}14">
+    <span style="font-family:var(--mono);font-size:9px;font-weight:700;letter-spacing:1.5px;color:${sc}">${(STAGES_ALL.find(s=>s.id===p.stage)?.label||p.stage).toUpperCase()}</span>
+    <select onchange="moveStage(${pid},this.value)" style="color:${sc}">
+      ${STAGES_ALL.map(s=>`<option value="${s.id}" ${p.stage===s.id?'selected':''}>${s.label}</option>`).join('')}
+    </select>
+  </div>`;
+
+  // Link chips — vertical, plain clickable text
+  function linkLabel(url) {
+    if (!url) return 'Link';
+    if (url.includes('spotify'))    return 'Spotify';
+    if (url.includes('genius'))     return 'Genius';
+    if (url.includes('muso'))       return 'Muso';
+    if (url.includes('instagram'))  return 'Instagram';
+    if (url.includes('soundcloud')) return 'SoundCloud';
+    if (url.includes('youtube') || url.includes('youtu.be')) return 'YouTube';
+    if (url.includes('tiktok'))     return 'TikTok';
+    try { return new URL(url).hostname.replace('www.',''); } catch(e) { return 'Link'; }
   }
+  const linkEntries = Object.entries(links).filter(([k,v]) => v);
+  const ml = str.monthlyListeners || '';
+  const linkRows = linkEntries.map(([k,v]) => {
+    const lbl = linkLabel(v);
+    const mlField = lbl === 'Spotify'
+      ? `<input value="${ml}" placeholder="monthly listeners" data-pid="${pid}" data-sk="monthlyListeners"
+          oninput="saveStreaming(+this.dataset.pid,this.dataset.sk,this.value)"
+          style="font-family:var(--sans);font-size:10px;color:var(--ink4);width:130px;margin-left:8px">`
+      : '';
+    return `<div style="display:flex;align-items:center;gap:4px;margin-bottom:4px">
+      <a href="${v}" target="_blank" style="font-family:var(--sans);font-size:12px;color:var(--blue);text-decoration:none;text-shadow:0 1px 4px rgba(26,95,168,0.12)">${lbl}</a>
+      <button data-pid="${pid}" data-lk="${k}" onclick="removeLink(+this.dataset.pid,this.dataset.lk)"
+        style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 2px">×</button>
+      ${mlField}
+    </div>`;
+  }).join('');
+  const addLinkBtn = `<button data-pid="${pid}" onclick="promptAddLink(+this.dataset.pid)"
+    style="font-family:var(--sans);font-size:11px;background:none;border:none;color:var(--ink5);cursor:pointer;padding:0;margin-top:2px;display:block">+ add link</button>`;
 
-  // Try extracting name from Muso URL pattern: credits.muso.ai/profile/UUID/credits
-  // Muso URLs don't contain the name, but page title would — skip for now
+  // PRO / IPI split
+  const proMatch = (p.pro||'').match(/^(\w+)\s*:\s*(.+)$/);
+  const proName  = proMatch ? proMatch[1] : (p.pro||'');
+  const proIpi   = proMatch ? proMatch[2] : '';
 
-  // Try Genius URL: genius.com/artists/artist-name
-  if(geniusUrl && geniusUrl.includes('genius.com')){
-    if(statusEl) statusEl.textContent = '⟳ Looking up…';
-    try {
-      const match = geniusUrl.match(/genius\.com\/artists\/([^/?#]+)/);
-      if(match){
-        const slug = match[1].replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-        nameEl.value = slug;
-        if(statusEl) statusEl.textContent = '✓ from Genius';
-        return;
-      }
-    } catch(e){}
-  }
+  // Contacts
+  const contactRows = ctcs.map((c,idx) => `
+    <div style="padding:4px 0 8px 0">
+      <div style="display:flex;align-items:center;gap:6px">
+        <input value="${c.name||''}" placeholder="Name / Role" data-pid="${pid}" data-ci="${idx}" data-ck="name"
+          oninput="saveContact(+this.dataset.pid,+this.dataset.ci,this.dataset.ck,this.value)"
+          style="flex:1;font-family:var(--sans);font-size:12px;font-weight:500;background:none;color:var(--ink)">
+        <button data-pid="${pid}" data-ci="${idx}" onclick="removeContact(+this.dataset.pid,+this.dataset.ci)"
+          style="background:none;border:none;color:var(--ink5);cursor:pointer;font-size:12px;padding:0">×</button>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:3px">
+        <input value="${c.email||''}" placeholder="email" data-pid="${pid}" data-ci="${idx}" data-ck="email"
+          oninput="saveContact(+this.dataset.pid,+this.dataset.ci,this.dataset.ck,this.value)"
+          style="flex:1;font-family:var(--sans);font-size:11px;color:var(--ink4);background:none">
+        <input value="${c.phone||''}" placeholder="phone" data-pid="${pid}" data-ci="${idx}" data-ck="phone"
+          oninput="saveContact(+this.dataset.pid,+this.dataset.ci,this.dataset.ck,this.value)"
+          style="flex:1;font-family:var(--sans);font-size:11px;color:var(--ink4);background:none">
+      </div>
+    </div>`).join('');
 
-  // Try Spotify URL without API — parse artist name from URL isn't possible (just ID)
-  // Fall through: user fills name manually
-  if(statusEl) statusEl.textContent = '';
-}
+  // Top songs
+  const songRows = songs.map((s,idx) => `
+    <div style="padding:7px 0">
+      <div style="display:flex;align-items:baseline;gap:10px;margin-bottom:3px">
+        <input value="${s.title||''}" placeholder="Song title" data-pid="${pid}" data-si="${idx}" data-sk="title"
+          oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
+          style="font-family:var(--sans);font-size:13px;font-weight:600;color:var(--ink);flex:1;background:none">
+        <input value="${s.artist||''}" placeholder="artist" data-pid="${pid}" data-si="${idx}" data-sk="artist"
+          oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
+          style="font-family:var(--sans);font-size:11px;color:var(--ink4);width:100px;background:none">
+        <button data-pid="${pid}" data-si="${idx}" onclick="removeSong(+this.dataset.pid,+this.dataset.si)"
+          style="background:none;border:none;color:var(--ink5);cursor:pointer;font-size:10px;padding:0">×</button>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">
+        <input value="${s.date||''}" placeholder="date" data-pid="${pid}" data-si="${idx}" data-sk="date"
+          oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
+          style="font-family:var(--mono);font-size:9px;color:var(--ink5);width:76px;background:none">
+        <span style="font-family:var(--sans);font-size:9px;color:var(--ink5)">Spotify</span>
+        <input value="${s.spotify||''}" placeholder="—" data-pid="${pid}" data-si="${idx}" data-sk="spotify"
+          oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
+          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:60px;background:none">
+        <span style="font-family:var(--sans);font-size:9px;color:var(--ink5)">YT</span>
+        <input value="${s.youtube||''}" placeholder="—" data-pid="${pid}" data-si="${idx}" data-sk="youtube"
+          oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
+          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:60px;background:none">
+      </div>
+    </div>`).join('');
 
-// ── AUTO-FILL NAME FROM LINKS ────────────────────────────────────────
-async function autoFillFromLinks(){
-  const nameEl = document.getElementById('f-name');
-  if(!nameEl || nameEl.value.trim()) return; // don't overwrite manual entry
-
-  const spotifyUrl = document.getElementById('f-spotify-url')?.value.trim()||'';
-  const musoUrl = document.getElementById('f-muso')?.value.trim()||'';
-  const geniusUrl = document.getElementById('f-genius')?.value.trim()||'';
-
-  let name = '';
-
-  // Try Spotify first (most reliable — uses API)
-  if(spotifyUrl.includes('spotify.com/artist') && getSpotifySecret()){
-    const data = await spotifyLookupArtist(spotifyUrl);
-    if(data?.name) name = data.name;
-  }
-
-  // Try Genius URL (parse name from URL path)
-  if(!name && geniusUrl.includes('genius.com')){
-    // e.g. https://genius.com/artists/drake → "Drake"
-    const m = geniusUrl.match(/genius\.com\/artists\/([^/?#]+)/);
-    if(m) name = m[1].replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase());
-  }
-
-  // Try Muso URL (parse name from page title via iframe)
-  if(!name && musoUrl.includes('muso.ai')){
-    name = await new Promise(resolve=>{
-      const fr = document.createElement('iframe');
-      fr.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0';
-      fr.src = musoUrl;
-      let done = false;
-      fr.onload = () => {
-        if(done) return; done = true;
-        try{
-          const title = fr.contentDocument?.title||'';
-          // Title format: "Artist Name - Credits | Muso"
-          const m = title.match(/^(.+?)\s*[-|]/);
-          resolve(m ? m[1].trim() : '');
-        }catch(e){ resolve(''); }
-        fr.remove();
-      };
-      fr.onerror = () => { if(!done){done=true;resolve('');fr.remove();} };
-      document.body.appendChild(fr);
-      setTimeout(()=>{ if(!done){done=true;resolve('');try{fr.remove();}catch(e){}} }, 6000);
-    });
-  }
-
-  if(name){
-    nameEl.value = name;
-    const hint = document.getElementById('f-name-autofill-hint');
-    if(hint) hint.style.display = 'inline';
-  }
-}
-
-function openAddModal(){
-  editingId=null;
-  clearForm();
-  document.getElementById('modal-title').textContent='Add Prospect';
-  document.getElementById('modal-del-btn').style.display='none';
-  document.getElementById('modal-overlay').classList.add('open');
-  const st = document.getElementById('f-name-status');
-  if(st) st.textContent='';
-}
-
-function openEditModal(id){
-  editingId=id;
-  const p=prospects.find(x=>x.id===id);
-  document.getElementById('modal-title').textContent='Edit Prospect';
-  document.getElementById('modal-del-btn').style.display='inline-block';
-  document.getElementById('modal-del-btn').onclick=()=>{closeModal();delProspect(id);};
-  document.getElementById('f-name').value=p.name;
-  document.getElementById('f-alias').value=p.alias||'';
-  document.getElementById('f-pro').value=p.pro||'';
-  document.getElementById('f-genre').value=p.genre||'Hip-Hop / Rap';
-  document.getElementById('f-ipi').value=p.ipi||'';
-  document.getElementById('f-location').value=p.location||'';
-  document.getElementById('f-stage').value=p.stage||'new';
-  document.getElementById('f-priority').value=p.priority||'med';
-  document.getElementById('f-contact-date').value=p.contactDate||'';
-  document.getElementById('f-target-admin').value=p.targetAdmin||'';
-  document.getElementById('f-instagram').value=p.instagram||'';
-  document.getElementById('f-twitter').value=p.twitter||'';
-  document.getElementById('f-spotify').value=p.spotifyMonthly||'';
-  if(document.getElementById('f-spotify-url')) document.getElementById('f-spotify-url').value=p.spotifyUrl||p.research?.spotifyUrl||'';
-  document.getElementById('f-youtube').value=p.youtubeViews||'';
-  document.getElementById('f-muso').value=p.musoUrl||'';
-  document.getElementById('f-genius').value=p.geniusUrl||'';
-  document.getElementById('f-notes').value=p.notes||'';
-  document.getElementById('modal-overlay').classList.add('open');
-}
-
-function clearForm(){
-  ['f-name','f-alias','f-ipi','f-location','f-contact-date','f-instagram','f-twitter','f-spotify','f-youtube','f-muso','f-genius','f-notes'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
-  document.getElementById('f-pro').value='';
-  document.getElementById('f-genre').value='Hip-Hop / Rap';
-  document.getElementById('f-stage').value='new';
-  document.getElementById('f-priority').value='med';
-  document.getElementById('f-target-admin').value='';
-}
-
-function closeModal(){document.getElementById('modal-overlay').classList.remove('open');}
-
-async function saveProspect(){
-  const name=document.getElementById('f-name').value.trim();
-  if(!name){alert('Name is required.');return;}
-  const spotifyUrl = document.getElementById('f-spotify-url')?.value.trim()||'';
-  const musoUrl = document.getElementById('f-muso').value.trim();
-  const geniusUrl = document.getElementById('f-genius').value.trim();
-  // Build source links for research card
-  const sourceLinks = [spotifyUrl, musoUrl, geniusUrl].filter(Boolean);
-
-  const data={
-    name, alias:document.getElementById('f-alias').value.trim(),
-    pro:document.getElementById('f-pro').value,
-    genre:document.getElementById('f-genre').value,
-    ipi:document.getElementById('f-ipi').value.trim(),
-    location:document.getElementById('f-location').value.trim(),
-    stage:document.getElementById('f-stage').value,
-    priority:document.getElementById('f-priority').value,
-    contactDate:document.getElementById('f-contact-date').value,
-    targetAdmin:document.getElementById('f-target-admin').value,
-    instagram:document.getElementById('f-instagram').value.trim(),
-    twitter:document.getElementById('f-twitter').value.trim(),
-    spotifyMonthly:document.getElementById('f-spotify').value.trim(),
-    youtubeViews:document.getElementById('f-youtube').value.trim(),
-    musoUrl, geniusUrl, spotifyUrl,
-    notes:document.getElementById('f-notes').value.trim(),
+  // Streaming fields
+  const sRow = (label, key, ph) => {
+    const v = str[key] || '';
+    return `<div style="display:flex;align-items:baseline;gap:10px;padding:3px 0">
+      <span style="font-family:var(--sans);font-size:11px;color:var(--ink4);min-width:140px">${label}</span>
+      <input value="${v}" placeholder="${ph}" data-pid="${pid}" data-sk="${key}"
+        oninput="saveStreaming(+this.dataset.pid,this.dataset.sk,this.value)"
+        style="font-family:var(--sans);font-size:12px;color:var(--ink);width:160px;background:none">
+    </div>`;
   };
-  let saved;
-  if(editingId){
-    const i=prospects.findIndex(p=>p.id===editingId);
-    prospects[i]={...prospects[i],...data};
-    saved=prospects[i];
-    toast('Updated',`${name} updated.`);
-  } else {
-    const p={id:nextId++,...data,outreach:[]};
-    prospects.push(p);
-    saved=p;
-    toast('Added',`${name} added to pipeline.`);
-  }
-  closeModal();
 
-  // Seed research data from form links
-  if(!saved.research) saved.research = {};
-  if(!saved.research.igSnapshots) saved.research.igSnapshots = [];
-  if(!saved.research.igPeriod) saved.research.igPeriod = '1m';
-  if(!saved.research.songs) saved.research.songs = [];
+  // Log entries
+  const lastEntry = log.length ? log[log.length - 1] : null;
+  const lastBadge = lastEntry
+    ? `<div style="font-family:var(--sans);font-size:11px;color:var(--ink4);margin-bottom:10px">
+        Last contacted <strong style="color:var(--ink2)">${lastEntry.date}</strong>
+        ${lastEntry.platform ? ` via <span style="color:var(--blue)">${lastEntry.platform}</span>` : ''}
+       </div>`
+    : '';
+  const logRows = log.slice().reverse().map((e, ri) => {
+    const idx = log.length - 1 - ri;
+    return `<div class="log-entry">
+      <span class="log-date">${e.date}</span>
+      ${e.platform ? `<span class="log-platform">${e.platform}</span>` : ''}
+      <span class="log-text">${e.text}</span>
+      <button class="btn-followup" data-pid="${pid}" data-date="${e.date}"
+        onclick="setFollowup(+this.dataset.pid,this.dataset.date)" title="Set follow-up">📅</button>
+      <button class="btn-log-remove" data-pid="${pid}" data-li="${idx}"
+        onclick="removeLog(+this.dataset.pid,+this.dataset.li)">×</button>
+    </div>`;
+  }).join('');
 
-  // Add source links from form (don't duplicate)
-  if(!saved.research.sourceLinks) saved.research.sourceLinks = [];
-  sourceLinks.forEach(url => {
-    if(url && !saved.research.sourceLinks.includes(url))
-      saved.research.sourceLinks.push(url);
-  });
+  document.getElementById('d-body').innerHTML = `
+    ${alertHtml}
+    ${stageStrip}
 
-  // If Spotify URL provided, auto-pull top songs in background
-  if(spotifyUrl && spotifyUrl.includes('spotify.com/artist') && !editingId){
-    saved.research.spotifyUrl = spotifyUrl;
-    if(getSpotifySecret()){
-      // Non-blocking — pull in background after save
-      setTimeout(async()=>{
-        const data = await spotifyLookupArtist(spotifyUrl);
-        if(data && data.tracks){
-          saved.research.spFollowers = data.followers;
-          data.tracks.forEach(t => {
-            if(!saved.research.songs.find(s=>s.title===t.title)){
-              saved.research.songs.push({title:t.title,year:t.year,ytViews:0,spStreams:0,trackId:t.trackId||''});
-            }
-          });
-          await dbSave(saved);
-          renderResearch();
-        }
-      }, 500);
+    <div class="dp-card">
+      ${linkRows}
+      ${addLinkBtn}
+      <div style="margin-top:12px;margin-bottom:12px">
+        <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:1px;margin-bottom:5px">Bio</div>
+        <textarea data-pid="${pid}" data-key="bio"
+          oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
+          placeholder="Background, vibe, anything worth knowing..."
+          style="font-family:var(--sans);font-size:13px;line-height:1.7;color:var(--ink2);width:100%;resize:none;min-height:80px;background:none">${p.bio||''}</textarea>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1.8fr 1fr;gap:14px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">PRO</div>
+          <input id="dp-pro-${pid}" value="${proName}" placeholder="BMI"
+            oninput="savePro(${pid})"
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+        </div>
+        <div>
+          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">IPI</div>
+          <input id="dp-ipi-${pid}" value="${proIpi}" placeholder="76170217"
+            oninput="savePro(${pid})"
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+        </div>
+        <div>
+          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Genre</div>
+          <input value="${p.genre||''}" placeholder="—" data-pid="${pid}" data-key="genre"
+            oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:10px">
+        <div>
+          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Follow-up</div>
+          <input type="date" value="${p.followupDate||''}" data-pid="${pid}" data-key="followupDate"
+            onchange="saveField(+this.dataset.pid,this.dataset.key,this.value)"
+            style="font-family:var(--sans);font-size:12px;color:var(--ink);width:100%;background:none">
+        </div>
+        <div>
+          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Notes</div>
+          <input value="${p.notes||''}" placeholder="—" data-pid="${pid}" data-key="notes"
+            oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+        </div>
+      </div>
+      ${contactRows}
+      <button data-pid="${pid}" onclick="addContact(+this.dataset.pid)"
+        style="font-family:var(--sans);font-size:11px;background:none;border:none;color:var(--ink5);cursor:pointer;padding:2px 0;margin-top:4px">+ add contact</button>
+    </div>
+
+    <div class="dp-card">
+      <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:1px;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center">
+        Top Songs
+        <button data-pid="${pid}" onclick="addSong(+this.dataset.pid)"
+          style="font-family:var(--sans);font-size:11px;background:none;border:none;color:var(--ink5);cursor:pointer;padding:0">+ add song</button>
+      </div>
+      ${songs.length ? songRows : '<div style="font-family:var(--sans);font-size:11px;color:var(--ink5)">No songs yet — use Smart Paste or add manually.</div>'}
+    </div>
+
+    <div class="dp-card">
+      <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Streaming</div>
+      ${sRow('Monthly Listeners','monthlyListeners','—')}
+      ${sRow('Qualified Streams','qualifiedStreams','—')}
+      ${sRow('Top Song','topSongName','—')}
+      ${sRow('Top Song Streams','topSongStreams','—')}
+    </div>
+
+    <div class="dp-card">
+      <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:1px;margin-bottom:8px">Outreach Log</div>
+      ${lastBadge}
+      ${logRows ? `<div style="margin-bottom:12px">${logRows}</div>` : ''}
+      <div style="background:var(--paper3);border-radius:8px;padding:10px 12px">
+        <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:8px">Log Contact</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:flex-end">
+          <div>
+            <div style="font-family:var(--sans);font-size:8px;color:var(--ink5);margin-bottom:3px">Date</div>
+            <input type="date" id="df-date" value="${TODAY_STR}"
+              style="font-family:var(--sans);font-size:11px;color:var(--ink);background:none">
+          </div>
+          <div style="flex:0 0 110px">
+            <div style="font-family:var(--sans);font-size:8px;color:var(--ink5);margin-bottom:3px">Via</div>
+            <input id="df-platform" placeholder="Email, DM, Text..."
+              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:100%;background:none">
+          </div>
+          <div style="flex:1;min-width:120px">
+            <div style="font-family:var(--sans);font-size:8px;color:var(--ink5);margin-bottom:3px">Summary</div>
+            <input id="df-log" data-pid="${pid}"
+              onkeydown="if(event.key==='Enter')addLog(+this.dataset.pid)"
+              placeholder="What happened..."
+              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:100%;background:none">
+          </div>
+          <button data-pid="${pid}" onclick="addLog(+this.dataset.pid)"
+            style="font-family:var(--sans);font-size:11px;padding:6px 14px;background:var(--ink);color:var(--paper);border-radius:6px;cursor:pointer">Log</button>
+        </div>
+      </div>
+    </div>
+
+    <div style="padding:6px 12px 20px">
+      <button class="btn-del" data-pid="${pid}" onclick="delProspect(+this.dataset.pid)">Delete Prospect</button>
+    </div>`;
+}
+
+// ── SMART PASTE ────────────────────────────────────────────────────────
+function openSmartPaste() {
+  document.getElementById('smart-paste-panel').classList.add('open');
+  setTimeout(() => document.getElementById('sp-input')?.focus(), 50);
+}
+function closeSmartPaste() {
+  document.getElementById('smart-paste-panel').classList.remove('open');
+}
+function runSmartPaste() {
+  const input = document.getElementById('sp-input')?.value?.trim();
+  if (!input || !currentDetailId) { closeSmartPaste(); return; }
+  const p = prospects.find(x => x.id === currentDetailId);
+  if (!p) return;
+
+  const lines = input.split('\n').map(l => l.trim()).filter(l => l);
+  let inTopSongs = false;
+  const bioParts = [];
+
+  for (const line of lines) {
+    if (/^(BMI|ASCAP|SESAC|PRO)\s*:\s*\d+/i.test(line)) { p.pro = line; continue; }
+    if (/^https?:\/\//i.test(line)) {
+      if (!p.links) p.links = {};
+      const url = line.toLowerCase();
+      const key = url.includes('spotify') ? 'spotify' : url.includes('genius') ? 'genius'
+        : url.includes('instagram') ? 'instagram' : url.includes('muso') ? 'muso'
+        : url.includes('soundcloud') ? 'soundcloud' : url.includes('youtube') ? 'youtube'
+        : url.includes('tiktok') ? 'tiktok' : 'link_' + Date.now();
+      p.links[key] = line;
+      continue;
     }
-  }
-
-  // Old pending tracks path (from openAddResearchFlow)
-  if(window._pendingSpotifyTracks && !editingId){
-    const pt = window._pendingSpotifyTracks;
-    saved.research.spotifyUrl = pt.url;
-    saved.research.spFollowers = pt.followers;
-    pt.tracks.forEach(t => {
-      if(!saved.research.songs.find(s => s.title === t.title)){
-        saved.research.songs.push({title:t.title, year:t.year, ytViews:0, spStreams:0});
+    if (/^top songs/i.test(line)) { inTopSongs = true; continue; }
+    if (inTopSongs) {
+      const m = line.match(/^([\d\/\-]+):\s*(.+?)\s*-\s*(.+?)(?:\s*\[(.+?)\])?$/);
+      if (m) {
+        const [, date, artist, title, streams] = m;
+        const song = { date:date.trim(), artist:artist.trim(), title:title.trim(), spotify:'', youtube:'' };
+        if (streams) {
+          const sp = streams.match(/Spotify:\s*([^\|]+)/i);
+          const yt = streams.match(/YT(?:[^:]*)?:\s*([^\|,\]]+)/i);
+          if (sp) song.spotify = sp[1].trim();
+          if (yt) song.youtube = yt[1].trim();
+        }
+        if (!p.topSongs) p.topSongs = [];
+        p.topSongs.push(song);
+        continue;
       }
-    });
-    window._pendingSpotifyTracks = null;
+    }
+    const ml = line.match(/(\d+[\d.]*\s*(?:mil|million|bil|billion))\s*monthly listeners/i);
+    if (ml) { if (!p.streaming) p.streaming={}; p.streaming.monthlyListeners = ml[1]; }
+    if (!inTopSongs && !/^https?:\/\//i.test(line) && !/^(BMI|ASCAP|SESAC)\s*:/i.test(line)) bioParts.push(line);
   }
+  p.bio = bioParts.join('\n').trim();
 
-  renderAll();
-  await dbSave(saved);
+  dbSave(p);
+  closeSmartPaste();
+  setDetailHeader(p);
+  renderDetailBody(p);
+  renderBoard();
+  toast('Parsed successfully.');
 }
 
-async function delProspect(id){
-  const p=prospects.find(x=>x.id===id);
-  if(!confirm(`Remove ${p.name} from prospects?`)) return;
-  prospects=prospects.filter(x=>x.id!==id);
-  closeDetail();
-  renderAll();
-  await dbDelete(id);
+// ── LINKS ──────────────────────────────────────────────────────────────
+function promptAddLink(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  document.getElementById('link-url-overlay')?.remove();
+  const btn = event.target;
+  const ov = document.createElement('div');
+  ov.id = 'link-url-overlay';
+  ov.style.cssText = 'display:inline-flex;gap:6px;align-items:center;margin-left:6px;vertical-align:middle';
+  ov.innerHTML = `<input id="link-inp" placeholder="paste URL..." style="font-family:var(--mono);font-size:10px;color:var(--ink);width:200px;background:none">
+    <button id="link-save" style="font-family:var(--mono);font-size:8px;padding:3px 8px;background:var(--ink);color:var(--paper);border-radius:4px;cursor:pointer">Save</button>
+    <button onclick="document.getElementById('link-url-overlay').remove()" style="font-family:var(--mono);font-size:9px;padding:3px 6px;background:none;border:1px solid var(--rule);border-radius:4px;color:var(--ink4);cursor:pointer">×</button>`;
+  btn.insertAdjacentElement('afterend', ov);
+  const inp = document.getElementById('link-inp'); inp.focus();
+  const save = async () => {
+    const v = inp.value.trim(); if (!v) { ov.remove(); return; }
+    if (!p.links) p.links = {};
+    p.links['link_' + Date.now()] = v;
+    await dbSave(p); ov.remove(); renderDetailBody(p);
+  };
+  inp.onkeydown = e => { if(e.key==='Enter') save(); if(e.key==='Escape') ov.remove(); };
+  document.getElementById('link-save').onclick = save;
+}
+async function removeLink(id, key) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  delete p.links[key]; await dbSave(p); renderDetailBody(p);
 }
 
-function onSearch(v){
-  searchQ=v;
-  document.getElementById('srch-clear').classList.toggle('visible',v.length>0);
-  renderAll();
+// ── FIELD SAVES ────────────────────────────────────────────────────────
+async function saveField(id, key, val) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  p[key] = val; await dbSave(p); renderBoard();
+  if (key === 'followupDate') renderDetailBody(p);
 }
-function clearSearch(){
-  searchQ='';
-  document.getElementById('search').value='';
-  document.getElementById('srch-clear').classList.remove('visible');
-  renderAll();
+async function savePro(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  const name = document.getElementById(`dp-pro-${id}`)?.value.trim() || '';
+  const ipi  = document.getElementById(`dp-ipi-${id}`)?.value.trim() || '';
+  p.pro = name && ipi ? `${name}: ${ipi}` : name || ipi;
+  await dbSave(p);
 }
-
-// ── SOLAR AUTO DARK MODE ─────────────────────────────────────────────
-const SOLAR_LAT = 41.8781;
-const SOLAR_LNG = -87.6298;
-const SOLAR_TZ  = 'America/Chicago';
-
-function solarTime(date, isRise){
-  const rad = Math.PI / 180;
-  const localStr = new Date(date).toLocaleDateString('en-CA', {timeZone: SOLAR_TZ});
-  const [yr, mo, dy] = localStr.split('-').map(Number);
-  const A = Math.floor((14 - mo) / 12);
-  const Y = yr + 4800 - A;
-  const M = mo + 12 * A - 3;
-  const JD = dy + Math.floor((153*M+2)/5) + 365*Y + Math.floor(Y/4) - Math.floor(Y/100) + Math.floor(Y/400) - 32045 - 0.5;
-  const n   = JD - 2451545.0;
-  const L   = ((280.460 + 0.9856474 * n) % 360 + 360) % 360;
-  const g   = ((357.528 + 0.9856003 * n) % 360 + 360) % 360;
-  const lam = L + 1.915 * Math.sin(g * rad) + 0.020 * Math.sin(2 * g * rad);
-  const eps = 23.439 - 0.0000004 * n;
-  const sinDec = Math.sin(eps * rad) * Math.sin(lam * rad);
-  const dec = Math.asin(sinDec);
-  const cosHA = (Math.cos(90.833 * rad) - Math.sin(SOLAR_LAT * rad) * sinDec)
-              / (Math.cos(SOLAR_LAT * rad) * Math.cos(dec));
-  if(cosHA < -1 || cosHA > 1) return null;
-  const HA = Math.acos(Math.max(-1, Math.min(1, cosHA))) / rad;
-  const EoT = 4 * (L - 0.0057183 - lam);
-  const solarNoon = 720 - 4 * SOLAR_LNG - EoT;
-  const eventMin = isRise ? solarNoon - HA * 4 : solarNoon + HA * 4;
-  const utcBase = new Date(localStr + 'T00:00:00Z');
-  return new Date(utcBase.getTime() + eventMin * 60000);
+async function saveStreaming(id, key, val) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  if (!p.streaming) p.streaming = {}; p.streaming[key] = val; await dbSave(p);
 }
-
-let _darkOverride = null;
-
-function applyAutoTheme(){
-  const now = new Date();
-  const rise = solarTime(now, true);
-  const set  = solarTime(now, false);
-  const isDark = _darkOverride !== null ? _darkOverride
-               : (!rise || !set || now < rise || now >= set);
-  document.body.classList.toggle('dark', isDark);
-  const btn = document.getElementById('dark-toggle-btn');
-  if(!btn) return;
-  const fmt = t => t ? t.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit',timeZone:SOLAR_TZ}) : '--';
-  if(_darkOverride !== null){
-    btn.textContent = isDark ? '◑ MANUAL' : '◐ MANUAL';
-    btn.title = 'Manual override — click again to return to auto';
-  } else {
-    btn.textContent = isDark ? '◑ AUTO' : '◐ AUTO';
-    btn.title = 'Auto (Chicago) · Sunrise ' + fmt(rise) + ' · Sunset ' + fmt(set);
-  }
+async function saveContact(id, idx, key, val) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  if (!p.contacts) p.contacts = []; if (!p.contacts[idx]) p.contacts[idx] = {};
+  p.contacts[idx][key] = val; await dbSave(p);
 }
-
-function toggleDark(){
-  if(_darkOverride === null){
-    _darkOverride = !document.body.classList.contains('dark');
-  } else {
-    _darkOverride = null;
-  }
-  applyAutoTheme();
+async function addContact(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  if (!p.contacts) p.contacts = []; p.contacts.push({name:'',email:'',phone:''});
+  await dbSave(p); renderDetailBody(p);
 }
-
-if(document.readyState==='loading'){
-  document.addEventListener('DOMContentLoaded', applyAutoTheme);
-} else {
-  applyAutoTheme();
+async function removeContact(id, idx) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  p.contacts.splice(idx, 1); await dbSave(p); renderDetailBody(p);
 }
-setInterval(applyAutoTheme, 60000);
-
-function toast(title,msg){
-  const el=document.createElement('div');el.className='toast';
-  el.innerHTML=`<div class="toast-ico">✓</div><div><div class="toast-title">${title}</div><div class="toast-msg">${msg}</div></div>`;
-  document.getElementById('toast-wrap').appendChild(el);
-  setTimeout(()=>{el.style.opacity='0';el.style.transition='opacity .3s';setTimeout(()=>el.remove(),350);},4000);
+async function addLog(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  const inp = document.getElementById('df-log'); if (!inp || !inp.value.trim()) return;
+  const platform = (document.getElementById('df-platform')?.value || '').trim();
+  const date     = document.getElementById('df-date')?.value || TODAY_STR;
+  if (!p.log) p.log = [];
+  p.log.push({date, platform, text:inp.value.trim()});
+  inp.value = ''; await dbSave(p); renderDetailBody(p); renderBoard();
+}
+async function removeLog(id, idx) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  p.log.splice(idx, 1); await dbSave(p); renderDetailBody(p);
+}
+async function setFollowup(id, fromDate) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  const base = new Date((fromDate||TODAY_STR)+'T00:00:00'); base.setDate(base.getDate()+7);
+  const val = prompt('Set follow-up date:', base.toISOString().split('T')[0]);
+  if (!val) return; p.followupDate = val; await dbSave(p); renderBoard(); renderDetailBody(p);
+}
+async function moveStage(id, stage) {
+  const p = prospects.find(x => x.id === id); if (!p || p.stage === stage) return;
+  p.stage = stage;
+  if (!p.log) p.log = [];
+  p.log.push({date:TODAY_STR, platform:'', text:'Moved to ' + (STAGES_ALL.find(s=>s.id===stage)?.label||stage)});
+  await dbSave(p); renderAll(); renderDetailBody(p);
+}
+async function delProspect(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  if (!confirm('Remove ' + p.name + '?')) return;
+  prospects = prospects.filter(x => x.id !== id);
+  try { await sbFetch('prospects?id=eq.' + id, {method:'DELETE'}); } catch(e) {}
+  closeDetail(); renderAll();
+}
+async function updateSong(id, idx, key, val) {
+  const p = prospects.find(x => x.id === id); if (!p || !p.topSongs?.[idx]) return;
+  p.topSongs[idx][key] = val; await dbSave(p);
+}
+async function addSong(id) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  if (!p.topSongs) p.topSongs = [];
+  p.topSongs.push({date:'',title:'',artist:'',spotify:'',youtube:''});
+  await dbSave(p); renderDetailBody(p);
+}
+async function removeSong(id, idx) {
+  const p = prospects.find(x => x.id === id); if (!p) return;
+  p.topSongs.splice(idx, 1); await dbSave(p); renderDetailBody(p);
 }
 
-document.getElementById('modal-overlay').addEventListener('click',function(e){if(e.target===this)closeModal();});
-document.addEventListener('click',function(e){
-  const panel=document.getElementById('detail-panel');
-  if(panel.classList.contains('open')&&!panel.contains(e.target)&&!e.target.closest('.pcard')&&!e.target.closest('tbody tr'))closeDetail();
+// ── SUPABASE ───────────────────────────────────────────────────────────
+const SB_URL = 'https://jbcqoxiygkdxoaulrhbk.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3FveGl5Z2tkeG9hdWxyaGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTA1MDQsImV4cCI6MjA4ODg2NjUwNH0.IPB_7u7hU53aUI6wS-fYXLOe3_7uCAjMhDwXxQZR4s8';
+const SB_HDR = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
+
+async function sbFetch(path, opts={}) {
+  const res = await fetch(SB_URL + '/rest/v1/' + path, {headers:SB_HDR, ...opts});
+  if (!res.ok) { const e = await res.text(); throw new Error(e); }
+  return res.status === 204 ? null : res.json();
+}
+
+async function dbLoad() {
+  try {
+    const rows = await sbFetch('prospects?select=id,data&order=id');
+    if (rows && rows.length > 0) {
+      prospects = rows.map(r => ({id:r.id, ...r.data}));
+      nextId = Math.max(...prospects.map(p => p.id)) + 1;
+      renderAll(); // re-render with loaded data
+    }
+  } catch(e) { console.error('Load failed:', e); }
+}
+
+async function dbSave(p) {
+  try {
+    await sbFetch('prospects', {method:'POST',
+      headers:{...SB_HDR,'Prefer':'resolution=merge-duplicates'},
+      body:JSON.stringify({id:p.id, data:p})});
+  } catch(e) { console.error('Save error:', e); }
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────
+renderAll(); // Show board immediately
+
+document.addEventListener('click', e => {
+  if (!e.target.closest('#detail-panel') && !e.target.closest('.p-card') && !e.target.closest('#inline-add-form'))
+    closeDetail();
 });
 
-
-// ── RESEARCH ──────────────────────────────────────────────────────────
-const SPOTIFY_CLIENT_ID = '6416b3fde21c4883b006daeb066c3325';
-let _spotifyToken = null;
-let _spotifyTokenExp = 0;
-const THIS_YEAR = new Date().getFullYear();
-const CUTOFF_YEAR = THIS_YEAR - 3;
-const SYNC_INTERVAL_DAYS = 7;
-const SYNC_KEY = 'paq-research-last-sync';
-
-// Publishing credits that carry royalties
-const PUB_CREDITS = ['Composer','Lyricist','Primary Artist','Producer','Featured Artist',
-  'Executive Producer','Co-Writer','Co-Producer','Vocals','Vocalist','Songwriter',
-  'Writer','Remix Artist'];
-const NON_PUB = ['Background Vocals','Miscellaneous','Drums','Engineer','Guitar',
-  'Instrumentation','Mixing','Bass','Ensemble','Keyboard','Misc Vox','Programmer',
-  'Percussion','Strings','Horns','Arranger'];
-
-function getSpotifySecret(){ return localStorage.getItem('paq-spotify-secret')||''; }
-
-async function getSpotifyToken(){
-  if(_spotifyToken && Date.now()<_spotifyTokenExp) return _spotifyToken;
-  const secret=getSpotifySecret(); if(!secret) return null;
-  try{
-    const res=await fetch('https://accounts.spotify.com/api/token',{
-      method:'POST',
-      headers:{'Content-Type':'application/x-www-form-urlencoded','Authorization':'Basic '+btoa(SPOTIFY_CLIENT_ID+':'+secret)},
-      body:'grant_type=client_credentials'
-    });
-    if(!res.ok) return null;
-    const data=await res.json();
-    _spotifyToken=data.access_token;
-    _spotifyTokenExp=Date.now()+(data.expires_in-60)*1000;
-    return _spotifyToken;
-  }catch(e){return null;}
-}
-
-function fmtNum(n){
-  if(!n&&n!==0)return '—';
-  n=parseInt(n)||0;
-  if(n>=1000000)return (n/1000000).toFixed(1)+'M';
-  if(n>=1000)return (n/1000).toFixed(0)+'K';
-  return n.toString();
-}
-
-function igGrowth(snapshots,period){
-  if(!snapshots||snapshots.length<2) return null;
-  const sorted=[...snapshots].sort((a,b)=>new Date(a.date)-new Date(b.date));
-  const latest=sorted[sorted.length-1];
-  const daysMap={'1m':30,'3m':90,'6m':180,'1y':365};
-  const days=daysMap[period]||30;
-  const cutoff=new Date(latest.date); cutoff.setDate(cutoff.getDate()-days);
-  const old=sorted.slice().reverse().find(s=>new Date(s.date)<=cutoff);
-  if(!old) return null;
-  const diff=latest.count-old.count;
-  const pct=old.count>0?(diff/old.count*100).toFixed(1):null;
-  return{diff,pct,from:old.count,to:latest.count};
-}
-
-function detectLinkType(url){
-  if(!url) return 'other';
-  if(url.includes('spotify.com/artist')) return 'spotify';
-  if(url.includes('spotify.com/playlist')) return 'playlist';
-  if(url.includes('muso.ai')||url.includes('credits.muso')) return 'muso';
-  if(url.includes('genius.com')) return 'genius';
-  return 'other';
-}
-
-function researchProspects(){ return prospects.filter(p=>p.stage==='research'); }
-
-// ── THRESHOLD ALERTS ─────────────────────────────────────────────────
-function checkThresholds(p){
-  const r=p.research||{};
-  const songs=r.songs||[];
-  const thresh=r.thresholds||{};
-  const alerts=[];
-
-  // Single song over 1M
-  songs.forEach(s=>{
-    if((s.spStreams||0)>=1000000&&!(r.alertedSongs||[]).includes(s.title)){
-      alerts.push({type:'song1m',msg:'"'+s.title+'" crossed 1M streams ('+fmtNum(s.spStreams)+')'});
-    }
-  });
-
-  // Total catalog threshold
-  const totalStreams=songs.reduce((sum,s)=>sum+(s.spStreams||0),0);
-  if(thresh.totalCatalog&&totalStreams>=thresh.totalCatalog){
-    alerts.push({type:'totalCatalog',msg:'Total catalog hit '+fmtNum(totalStreams)+' streams (threshold: '+fmtNum(thresh.totalCatalog)+')'});
-  }
-
-  // Qualified catalog (only songs over 1M)
-  const qualStreams=songs.filter(s=>(s.spStreams||0)>=1000000).reduce((sum,s)=>sum+(s.spStreams||0),0);
-  if(thresh.qualCatalog&&qualStreams>=thresh.qualCatalog){
-    alerts.push({type:'qualCatalog',msg:'Qualified catalog (songs >1M) hit '+fmtNum(qualStreams)+' streams (threshold: '+fmtNum(thresh.qualCatalog)+')'});
-  }
-
-  return{alerts,totalStreams,qualStreams};
-}
-
-// ── SYNC ENGINE ──────────────────────────────────────────────────────
-// Returns year from track page via iframe
-function getYearFromTrackPage(trackId){
-  return new Promise(resolve=>{
-    if(!trackId){resolve(0);return;}
-    const fr=document.createElement('iframe');
-    fr.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0';
-    fr.src='https://open.spotify.com/track/'+trackId;
-    let done=false;
-    fr.onload=()=>{
-      if(done)return;done=true;
-      try{
-        const txt=fr.contentDocument?.body?.innerText||'';
-        const m1=txt.match(/(January|February|March|April|May|June|July|August|September|October|November|December)\s+\d+,\s+(\d{4})/);
-        if(m1){resolve(parseInt(m1[2]));fr.remove();return;}
-        const m2=txt.match(/•(\d{4})•\d+:\d+/);
-        if(m2){resolve(parseInt(m2[1]));fr.remove();return;}
-      }catch(e){}
-      resolve(0);fr.remove();
-    };
-    fr.onerror=()=>{if(!done){done=true;resolve(0);fr.remove();}};
-    document.body.appendChild(fr);
-    setTimeout(()=>{if(!done){done=true;resolve(0);try{fr.remove();}catch(e){}}},7000);
-  });
-}
-
-// Sync a single URL — returns array of song objects
-function syncUrl(url){
-  return new Promise(resolve=>{
-    const type=detectLinkType(url);
-    const fr=document.createElement('iframe');
-    fr.style.cssText='position:fixed;top:-9999px;left:-9999px;width:800px;height:600px;opacity:0';
-    fr.src=url;
-    let done=false;
-    const finish=(songs)=>{
-      if(done)return;done=true;
-      fr.remove();
-      resolve(songs);
-    };
-    fr.onload=async()=>{
-      if(done)return;
-      try{
-        await new Promise(r=>setTimeout(r,2000)); // wait for JS render
-        const doc=fr.contentDocument;
-        if(!doc){finish([]);return;}
-        const songs=[];
-
-        if(type==='spotify'||type==='playlist'){
-          // Read tracklist rows
-          const rows=[...doc.querySelectorAll('[data-testid="tracklist-row"]')];
-          // For artist page — click See more first
-          const seeMore=[...doc.querySelectorAll('button')].find(b=>b.textContent.trim()==='See more');
-          if(seeMore){seeMore.click();await new Promise(r=>setTimeout(r,600));}
-          const rows2=[...doc.querySelectorAll('[data-testid="tracklist-row"]')];
-          const activeRows=rows2.length>rows.length?rows2:rows;
-          for(const row of activeRows.slice(0,10)){
-            const title=row.querySelector('[data-testid="internal-track-link"]')?.textContent?.trim();
-            const plays=row.querySelector('[aria-colindex="3"]')?.textContent?.trim();
-            const trackLink=row.querySelector('a[href*="/track/"]')?.href||'';
-            const trackId=trackLink.match(/track\/([A-Za-z0-9]+)/)?.[1]||'';
-            if(title&&trackId){
-              const streams=parseInt((plays||'').replace(/[^0-9]/g,''))||0;
-              songs.push({title,streams,trackId,spotifyUrl:trackLink,year:0,credits:type==='spotify'?'Primary Artist':'Playlist'});
-            }
-          }
-          // Monthly listeners for artist page
-          const listenersEl=[...doc.querySelectorAll('span')].find(s=>s.textContent.includes('monthly listeners'));
-          const ml=parseInt((listenersEl?.textContent||'').replace(/[^0-9]/g,''))||0;
-          if(ml) songs._monthlyListeners=ml;
-
-        }else if(type==='muso'){
-          const tbRows=[...doc.querySelectorAll('tbody tr')];
-          tbRows.forEach(row=>{
-            const parts=row.innerText.split('\n').map(s=>s.trim()).filter(Boolean);
-            if(parts.length<3)return;
-            const title=parts[1];
-            const dateStr=parts.find(p=>/\b(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d+,\s+\d{4}/.test(p));
-            const year=dateStr?parseInt(dateStr.split(', ').pop()):0;
-            const credits=parts.filter(p=>
-              [...PUB_CREDITS,...NON_PUB].some(c=>p===c||p.startsWith(c))
-            );
-            const hasPub=credits.length===0||credits.some(c=>PUB_CREDITS.some(p=>c===p||c.startsWith(p)));
-            const onlyNonPub=credits.length>0&&credits.every(c=>NON_PUB.some(n=>c===n||c.startsWith(n)));
-            if(onlyNonPub)return;
-            if(!hasPub)return;
-            if(year&&year<CUTOFF_YEAR)return;
-            const spotifyLink=[...row.querySelectorAll('a')].find(a=>a.href?.includes('spotify.com/track'))?.href||'';
-            const trackId=spotifyLink.match(/track\/([A-Za-z0-9]+)/)?.[1]||'';
-            if(title) songs.push({title,year:year||0,streams:0,trackId,spotifyUrl:spotifyLink,credits:credits.slice(0,3).join(', ')});
-          });
-        }
-        finish(songs);
-      }catch(e){finish([]);}
-    };
-    fr.onerror=()=>finish([]);
-    document.body.appendChild(fr);
-    setTimeout(()=>finish([]),15000);
-  });
-}
-
-// Full sync for one prospect
-async function syncProspect(p, onProgress){
-  const r=p.research||{};
-  const links=r.sourceLinks||[];
-  if(links.length===0) return false;
-
-  let allSongs=[];
-  let monthlyListeners=r.spFollowers||0;
-
-  for(let i=0;i<links.length;i++){
-    const url=links[i];
-    if(onProgress) onProgress('Syncing '+(i+1)+'/'+links.length+': '+detectLinkType(url).toUpperCase()+'…');
-    const songs=await syncUrl(url);
-    if(songs._monthlyListeners) monthlyListeners=songs._monthlyListeners;
-    allSongs.push(...songs);
-    await new Promise(r=>setTimeout(r,500));
-  }
-
-  // For songs with trackId but no year, fetch year
-  const noYear=allSongs.filter(s=>s.year===0&&s.trackId);
-  for(let i=0;i<Math.min(noYear.length,10);i++){
-    if(onProgress) onProgress('Fetching release years… ('+(i+1)+'/'+Math.min(noYear.length,10)+')');
-    noYear[i].year=await getYearFromTrackPage(noYear[i].trackId);
-    await new Promise(r=>setTimeout(r,200));
-  }
-
-  // Filter to last 3 years
-  const filtered=allSongs.filter(s=>s.year===0||s.year>=CUTOFF_YEAR);
-
-  // Merge with existing songs
-  if(!p.research) p.research={};
-  if(!p.research.songs) p.research.songs=[];
-  filtered.forEach(s=>{
-    const ex=p.research.songs.find(e=>e.title.toLowerCase()===s.title.toLowerCase());
-    if(ex){
-      if(s.streams) ex.spStreams=s.streams;
-      if(s.year) ex.year=s.year;
-      if(s.trackId) ex.trackId=s.trackId;
-      if(s.credits) ex.credits=s.credits;
-    }else{
-      p.research.songs.push({title:s.title,year:s.year||0,ytViews:0,spStreams:s.streams||0,trackId:s.trackId||'',spotifyUrl:s.spotifyUrl||'',credits:s.credits||''});
-    }
-  });
-
-  if(monthlyListeners) p.research.spFollowers=monthlyListeners;
-  p.research.lastSync=new Date().toLocaleDateString('en-CA');
-  await dbSave(p);
-  return true;
-}
-
-// ── AUTO SYNC ────────────────────────────────────────────────────────
-async function runAutoSync(){
-  const last=localStorage.getItem(SYNC_KEY);
-  if(last){
-    const daysSince=(Date.now()-new Date(last))/(86400000);
-    if(daysSince<SYNC_INTERVAL_DAYS) return;
-  }
-  const rps=researchProspects().filter(p=>(p.research?.sourceLinks||[]).length>0);
-  if(rps.length===0) return;
-  console.log('PAQ: Running auto-sync for',rps.length,'research prospects…');
-  for(const p of rps){
-    await syncProspect(p,null);
-    await new Promise(r=>setTimeout(r,1000));
-  }
-  localStorage.setItem(SYNC_KEY,new Date().toLocaleDateString('en-CA'));
-  renderResearch();
-}
-
-// ── RENDER ───────────────────────────────────────────────────────────
-function renderResearch(){
-  const el=document.getElementById('research-view');
-  if(!el) return;
-  const rps=researchProspects();
-  const hasSecret=!!getSpotifySecret();
-  const lastSync=localStorage.getItem(SYNC_KEY)||'Never';
-
-  const bar='<div style="display:flex;align-items:center;gap:10px;margin-bottom:16px;flex-wrap:wrap">'
-    +'<button class="research-add-btn" style="margin-bottom:0" onclick="openAddResearchFlow()">+ Add Research Prospect</button>'
-    +'<button onclick="openSpotifySettings()" style="font-family:var(--mono);font-size:8px;padding:5px 12px;background:none;border:1px solid '+(hasSecret?'var(--green)':'var(--rule2)')+';color:'+(hasSecret?'var(--green)':'var(--ink4)')+';cursor:pointer">'
-    +(hasSecret?'✓ Spotify Connected':'⚙ Connect Spotify')+'</button>'
-    +'<span style="font-family:var(--mono);font-size:8px;color:var(--ink5);margin-left:auto">Last sync: '+lastSync+'</span>'
-    +'</div>';
-
-  if(rps.length===0){
-    el.innerHTML=bar+'<div style="font-family:var(--mono);font-size:11px;color:var(--ink4);text-align:center;padding:40px">No research prospects yet.<br><br>Set a prospect&#39;s stage to "Research" to track them here.</div>';
-    return;
-  }
-  el.innerHTML=bar+'<div class="research-grid">'+rps.map(p=>renderResearchCard(p)).join('')+'</div>';
-}
-
-function buildThreshSection(p, thresh, alerts, totalStreams, qualStreams){
-  let html = '<div class="rcard-section">'
-    + '<div class="rcard-section-title">Alert Thresholds</div>';
-  if(alerts.length) html += alerts.map(a=>'<div class="rthresh-alert hit">⚡ '+a.msg+'</div>').join('');
-  html += '<div class="rthresh-row"><label>Total catalog streams</label>'
-    + '<input type="text" id="rth-total-'+p.id+'" value="'+(thresh.totalCatalog?fmtNum(thresh.totalCatalog):'')+'" placeholder="e.g. 10M" onblur="saveThreshold('+p.id+String.fromCharCode(44)+String.fromCharCode(39)+'totalCatalog'+String.fromCharCode(39)+String.fromCharCode(44)+'this.value)">'
-    + '</div>'
-    + '<div class="rthresh-row"><label>Qualified catalog (songs &gt;1M only)</label>'
-    + '<input type="text" id="rth-qual-'+p.id+'" value="'+(thresh.qualCatalog?fmtNum(thresh.qualCatalog):'')+'" placeholder="e.g. 5M" onblur="saveThreshold('+p.id+String.fromCharCode(44)+String.fromCharCode(39)+'qualCatalog'+String.fromCharCode(39)+String.fromCharCode(44)+'this.value)">'
-    + '</div>'
-    + '<div style="font-family:var(--mono);font-size:8px;color:var(--ink5);margin-top:4px">'
-    + 'Total: '+fmtNum(totalStreams)+' · Qualified (&gt;1M songs): '+fmtNum(qualStreams)
-    + '</div></div>';
-  return html;
-}
-
-function renderResearchCard(p){
-  const r=p.research||{};
-  const snaps=(r.igSnapshots||[]).sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const period=r.igPeriod||'1m';
-  const latestSnap=snaps[0];
-  const growth=igGrowth(snaps,period);
-  const songs=(r.songs||[]).filter(s=>s.year===0||s.year>=CUTOFF_YEAR).sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-  const links=r.sourceLinks||[];
-  const {alerts,totalStreams,qualStreams}=checkThresholds(p);
-  const thresh=r.thresholds||{};
-
-  // Links section
-  const linksSection='<div class="rcard-section">'
-    +'<div class="rcard-section-title">Source Links'
-    +'<button onclick="saveLinkInput('+p.id+')">+ Add</button>'
-    +'</div>'
-    +(links.length>0
-      ?'<div class="rlinks-list">'+links.map((url,i)=>{
-          const type=detectLinkType(url);
-          const short=url.replace('https://','').replace('www.','').substring(0,45);
-          return '<div class="rlink-row">'
-            +'<span class="rlink-badge '+type+'">'+type.toUpperCase()+'</span>'
-            +'<a href="'+url+'" target="_blank" class="rlink-url" title="'+url+'">'+short+'</a>'
-            +'<button class="rlink-del" onclick="removeLink('+p.id+','+i+')" title="Remove">×</button>'
-            +'</div>';
-        }).join('')+'</div>'
-      :'<div style="font-family:var(--mono);font-size:9px;color:var(--ink5);margin-bottom:6px">No links yet — paste Spotify, Muso, or Genius URLs below</div>')
-    +'<div class="rlink-input">'
-    +'<textarea id="rlink-input-'+p.id+'" placeholder="Paste links here (one per line)&#10;spotify.com/artist/...&#10;credits.muso.ai/profile/...&#10;genius.com/artists/..."></textarea>'
-    +'<button onclick="saveLinkInput('+p.id+')">Save</button>'
-    +'</div>'
-    +'</div>';
-
-  // Sync bar
-  const syncBar='<div class="rsync-bar">'
-    +'<button class="rsync-btn" id="rsync-btn-'+p.id+'" onclick="syncOne('+p.id+')" '+(links.length===0?'disabled':'')+'>⟳ Sync All</button>'
-    +'<span class="rsync-status" id="rsync-st-'+p.id+'"></span>'
-    +'<span class="rsync-last">'+(r.lastSync?'Last: '+r.lastSync:'Never synced')+'</span>'
-    +'</div>';
-
-  // Threshold section
-  const threshSection = buildThreshSection(p, thresh, alerts, totalStreams, qualStreams)
-
-  // Songs section
-  const songsSection='<div class="rcard-section">'
-    +'<div class="rcard-section-title">Top Songs (last 3 yrs)'
-    +'<button onclick="openAddSong('+p.id+')">+ Manual</button>'
-    +'</div>'
-    +(songs.length>0
-      ?'<div>'
-        +'<div class="song-row" style="color:var(--ink5);font-size:8px;padding:2px 0"><span class="song-year"></span><span class="song-title">Title</span><span class="song-yt">YT</span><span class="song-sp">Spotify</span></div>'
-        +songs.map((s,i)=>'<div class="song-row">'
-          +'<span class="song-year">'+s.year+'</span>'
-          +'<span class="song-title" title="'+s.title+'">'
-          +((s.spStreams||0)>=1000000?'<span style="color:var(--green)">★</span> ':'')+s.title
-          +'</span>'
-          +'<span class="song-yt">'+(s.ytViews?fmtNum(s.ytViews):'—')+'</span>'
-          +'<span class="song-sp '+(s.spStreams>=1000000?'song-mil':'')+'">'+(s.spStreams?fmtNum(s.spStreams):'—')+'</span>'
-          +'<button onclick="removeSong('+p.id+','+i+')" style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:10px;padding:0 2px">×</button>'
-          +'</div>').join('')
-        +'</div>'
-      :'<div style="font-family:var(--mono);font-size:9px;color:var(--ink5);padding:6px 0">No songs yet — add source links and click Sync All</div>')
-    +'</div>';
-
-  // Instagram section
-  const igSection='<div class="rcard-section">'
-    +'<div class="rcard-section-title">Instagram'
-    +'<button onclick="openIgScrape('+p.id+')">↻ Fetch</button>'
-    +'<button onclick="openIgManual('+p.id+')">+ Snapshot</button>'
-    +'</div>'
-    +(latestSnap
-      ?'<div class="ig-row"><div class="ig-count">'+fmtNum(latestSnap.count)+'</div>'
-        +(growth?'<div class="ig-growth '+(growth.diff>0?'up':growth.diff<0?'down':'flat')+'">'+(growth.diff>0?'↑':'↓')+' '+Math.abs(growth.diff).toLocaleString()+' ('+growth.pct+'%) over</div>':'')
-        +'</div>'
-        +'<div class="ig-periods">'+['1m','3m','6m','1y'].map(pd=>'<button class="ig-period-btn'+(period===pd?' on':'')+'" onclick="setIgPeriod('+p.id+',\''+pd+'\')">'+pd+'</button>').join('')+'</div>'
-        +'<div style="max-height:70px;overflow-y:auto">'+snaps.slice(0,5).map(s=>'<div class="ig-snapshot-row"><span class="ig-snapshot-date">'+s.date+'</span><span class="ig-snapshot-val">'+parseInt(s.count).toLocaleString()+'</span></div>').join('')+'</div>'
-      :'<div style="font-family:var(--mono);font-size:9px;color:var(--ink5)">No snapshots yet</div>')
-    +(p.instagram?'<div style="font-family:var(--mono);font-size:8px;color:var(--ink4);margin-top:4px"><a href="'+p.instagram+'" target="_blank" style="color:inherit">⇗ '+p.instagram.replace('https://instagram.com/','@').replace('https://www.instagram.com/','@')+'</a></div>':'')
-    +'</div>';
-
-  const spListeners=r.spFollowers
-    ?'<div style="font-family:var(--mono);font-size:9px;color:var(--ink4);margin-bottom:10px">Spotify monthly listeners: <span style="color:var(--ink);font-weight:600">'+parseInt(r.spFollowers).toLocaleString()+'</span></div>'
-    :'';
-
-  return '<div class="rcard" id="rcard-'+p.id+'">'
-    +'<div class="rcard-hdr">'
-    +'<div style="flex:1">'
-    +'<div class="rcard-name">'+p.name+(alerts.length>0?' <span style="color:var(--amber);font-size:12px" title="'+alerts.map(a=>a.msg).join('; ')+'">⚡</span>':'')+'</div>'
-    +(p.alias?'<div class="rcard-alias">pka '+p.alias+'</div>':'')
-    +(p.genre?'<div style="font-family:var(--mono);font-size:8px;color:var(--ink5);margin-top:2px">'+p.genre+'</div>':'')
-    +'</div>'
-    +'<button onclick="openEditModal('+p.id+')" style="background:none;border:none;cursor:pointer;color:var(--ink4);font-size:10px;padding:2px 6px;font-family:var(--mono)">edit</button>'
-    +'</div>'
-    +'<div class="rcard-body">'
-    +syncBar
-    +linksSection
-    +threshSection
-    +spListeners
-    +igSection
-    +songsSection
-    +(p.notes?'<div class="rcard-section"><div class="rcard-section-title">Notes</div><div style="font-family:var(--mono);font-size:9px;color:var(--ink3);line-height:1.6">'+p.notes+'</div></div>':'')
-    +'</div>'
-    +'</div>';
-}
-
-// ── LINK MANAGEMENT ──────────────────────────────────────────────────
-function saveLinkInput(pid){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  const el=document.getElementById('rlink-input-'+pid); if(!el) return;
-  const raw=el.value.trim(); if(!raw) return;
-  const newLinks=raw.split('\n').map(s=>s.trim()).filter(s=>s.startsWith('http'));
-  if(newLinks.length===0){alert('Please enter valid URLs starting with http');return;}
-  if(!p.research) p.research={};
-  if(!p.research.sourceLinks) p.research.sourceLinks=[];
-  newLinks.forEach(url=>{
-    if(!p.research.sourceLinks.includes(url)) p.research.sourceLinks.push(url);
-  });
-  dbSave(p);
-  renderResearch();
-}
-
-function removeLink(pid,idx){
-  const p=prospects.find(x=>x.id===pid); if(!p||!p.research?.sourceLinks) return;
-  p.research.sourceLinks.splice(idx,1);
-  dbSave(p);
-  renderResearch();
-}
-
-function saveThreshold(pid,key,val){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  if(!p.research) p.research={};
-  if(!p.research.thresholds) p.research.thresholds={};
-  // Parse value like "10M", "500K", "1000000"
-  const clean=val.trim().toUpperCase();
-  let num=0;
-  if(clean.endsWith('M')) num=parseFloat(clean)*1000000;
-  else if(clean.endsWith('K')) num=parseFloat(clean)*1000;
-  else num=parseInt(clean.replace(/[^0-9]/g,''))||0;
-  if(num>0) p.research.thresholds[key]=num;
-  else delete p.research.thresholds[key];
-  dbSave(p);
-}
-
-// ── ONE PROSPECT MANUAL SYNC ─────────────────────────────────────────
-async function syncOne(pid){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  const btn=document.getElementById('rsync-btn-'+pid);
-  const st=document.getElementById('rsync-st-'+pid);
-  if(btn){btn.disabled=true;btn.textContent='Syncing…';}
-  const ok=await syncProspect(p,(msg)=>{if(st)st.textContent=msg;});
-  if(btn){btn.disabled=false;btn.textContent='⟳ Sync All';}
-  if(st)st.textContent=ok?'✓ Done':'No links to sync';
-  renderResearch();
-}
-
-// ── SPOTIFY SETTINGS ─────────────────────────────────────────────────
-function openSpotifySettings(){
-  const current=getSpotifySecret();
-  const secret=prompt('Enter your Spotify Client Secret:\n(Stored locally on your device only)',current?'••••••••':'');
-  if(secret===null)return;
-  if(secret&&secret!=='••••••••'){
-    localStorage.setItem('paq-spotify-secret',secret);
-    _spotifyToken=null;
-    alert('Spotify Client Secret saved.');
-    renderResearch();
-  }
-}
-
-// ── ADD RESEARCH PROSPECT ────────────────────────────────────────────
-async function openAddResearchFlow(){
-  openAddModal();
-  setTimeout(()=>{const s=document.getElementById('f-stage');if(s)s.value='research';},100);
-}
-
-// ── IG MANAGEMENT ────────────────────────────────────────────────────
-function setIgPeriod(pid,period){
-  const p=prospects.find(x=>x.id===pid); if(!p) return;
-  if(!p.research)p.research={};
-  p.research.igPeriod=period;
-  dbSave(p);renderResearch();
-}
-function openIgManual(pid){
-  const countStr=prompt('Enter current Instagram follower count:');
-  if(!countStr)return;
-  const count=parseInt(countStr.replace(/[^0-9]/g,''));
-  if(isNaN(count))return alert('Enter a valid number.');
-  addIgSnapshot(pid,count);
-}
-function addIgSnapshot(pid,count){
-  const p=prospects.find(x=>x.id===pid); if(!p)return;
-  if(!p.research)p.research={};
-  if(!p.research.igSnapshots)p.research.igSnapshots=[];
-  const today=new Date().toLocaleDateString('en-CA');
-  const ex=p.research.igSnapshots.find(s=>s.date===today);
-  if(ex)ex.count=count; else p.research.igSnapshots.push({date:today,count});
-  dbSave(p);renderResearch();
-}
-async function openIgScrape(pid){
-  const p=prospects.find(x=>x.id===pid); if(!p)return;
-  if(!p.instagram){
-    const url=prompt('Enter Instagram profile URL:');
-    if(!url)return;
-    p.instagram=url;
-  }
-  const username=p.instagram.replace(/.*instagram\.com\//,'').replace(/\//,'').replace(/@/,'');
-  try{
-    const res=await fetch('https://www.instagram.com/'+username+'/?__a=1&__d=dis',{mode:'cors'});
-    if(res.ok){
-      const json=await res.json();
-      const count=json?.graphql?.user?.edge_followed_by?.count||json?.data?.user?.edge_followed_by?.count;
-      if(count){addIgSnapshot(pid,count);return;}
-    }
-  }catch(e){}
-  const fallback=prompt('Auto-fetch failed. Enter follower count manually for @'+username+':');
-  if(fallback){const count=parseInt(fallback.replace(/[^0-9]/g,''));if(!isNaN(count))addIgSnapshot(pid,count);}
-}
-
-// ── SONG MANAGEMENT ──────────────────────────────────────────────────
-function openAddSong(pid){
-  const title=prompt('Song title:'); if(!title)return;
-  const year=prompt('Release year:'); if(!year)return;
-  const yr=parseInt(year);
-  if(yr<CUTOFF_YEAR){alert('Only songs from '+CUTOFF_YEAR+' onwards (last 3 years).');return;}
-  const ytStr=prompt('YouTube views (blank if unknown):');
-  const spStr=prompt('Spotify streams (blank if unknown):');
-  const ytViews=ytStr?parseInt(ytStr.replace(/[^0-9]/g,''))||0:0;
-  const spStreams=spStr?parseInt(spStr.replace(/[^0-9]/g,''))||0:0;
-  const p=prospects.find(x=>x.id===pid); if(!p)return;
-  if(!p.research)p.research={};
-  if(!p.research.songs)p.research.songs=[];
-  p.research.songs.push({title:title.trim(),year:yr,ytViews,spStreams,trackId:'',spotifyUrl:'',credits:'Manual'});
-  p.research.songs.sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-  dbSave(p);renderResearch();
-}
-function removeSong(pid,songIdx){
-  const p=prospects.find(x=>x.id===pid); if(!p||!p.research?.songs)return;
-  const visible=p.research.songs.filter(s=>s.year===0||s.year>=CUTOFF_YEAR).sort((a,b)=>(b.spStreams||0)-(a.spStreams||0));
-  const song=visible[songIdx];
-  if(!song||!confirm('Remove "'+song.title+'"?'))return;
-  const idx=p.research.songs.indexOf(song);
-  p.research.songs.splice(idx,1);
-  dbSave(p);renderResearch();
-}
-
-// ── INIT ─────────────────────────────────────────────────────────────
-setTimeout(()=>runAutoSync(),5000); // run auto-sync 5s after page load
-
-
-dbLoad();
+dbLoad(); // Load from Supabase in background
 </script>
 </body>
 </html>
