@@ -28,12 +28,26 @@ input, textarea, select, button { font-family: inherit; outline: none !important
 body { background: var(--paper); color: var(--ink); font-family: var(--sans); font-size: 13px; min-height: 100vh; }
 
 /* ── NAV ─────────────────────────────────────────────────────── */
-.paq-nav { background: #141414; border-bottom: 2px solid #c9931a; display: flex; align-items: center; height: 38px; position: sticky; top: 0; z-index: 200; padding: 0 6px; }
-.paq-nav-btn { display: flex; align-items: center; justify-content: center; text-decoration: none; padding: 0 13px; height: 100%; border: none; background: none; cursor: pointer; }
-.paq-nav:hover .paq-nav-btn svg { opacity: 0.25; }
-.paq-nav-btn:hover svg, .paq-nav-btn.active svg { opacity: 1 !important; }
-.paq-nav-btn svg { opacity: 0.55; transition: opacity 0.15s; }
+.paq-nav{background:#141414;border-bottom:2px solid #d4af5a;display:flex;align-items:center;height:38px;position:sticky;top:0;z-index:200;padding:0 6px;gap:0;}
+.paq-nav-btn{display:flex;align-items:center;justify-content:center;text-decoration:none;padding:0 13px;height:100%;border:none;background:none;cursor:pointer;}
+.paq-nav:hover .paq-nav-btn svg{ opacity:0.25; }
+.paq-nav-btn:hover svg{ opacity:1 !important; }
+.paq-nav-btn.active svg{ opacity:1 !important; }
+.paq-nav-ico{display:flex;align-items:center;justify-content:center;}
+.paq-nav-btn svg{ opacity:0.55; transition:opacity 0.15s; }
 
+
+/* ── CRM HEADER ──────────────────────────────────────────────── */
+.crm-header { background: #141414; padding: 14px 24px 16px; border-bottom: 1px solid #2a2620; }
+.crm-header-top { display: flex; align-items: baseline; gap: 20px; margin-bottom: 12px; }
+.crm-brand { font-family: var(--serif); font-size: 22px; color: #e8e2d6; letter-spacing: -0.3px; }
+.crm-subtitle { font-family: var(--mono); font-size: 9px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); }
+.crm-stats { display: flex; gap: 0; }
+.crm-stat { padding: 0 28px 0 0; }
+.crm-stat:first-child { padding-left: 0; }
+.crm-stat-num { font-family: var(--serif); font-size: 28px; color: #e8e2d6; line-height: 1; margin-bottom: 2px; }
+.crm-stat-num.alert { color: var(--red); }
+.crm-stat-label { font-family: var(--mono); font-size: 8px; letter-spacing: 2px; text-transform: uppercase; color: #706050; }
 /* ── TOOLBAR ─────────────────────────────────────────────────── */
 .toolbar { display: flex; align-items: center; gap: 14px; padding: 12px 24px; border-bottom: 1px solid var(--rule); background: var(--paper); }
 .toolbar-title { font-family: var(--serif); font-size: 20px; color: var(--ink); }
@@ -164,20 +178,33 @@ body { background: var(--paper); color: var(--ink); font-family: var(--sans); fo
 <!-- NAV -->
 <nav class="paq-nav">
   <a href="index.html" class="paq-nav-btn" title="Roster">
-    <span style="color:#d4af5a"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="0.5"/><rect x="10" y="2" width="6" height="6" rx="0.5"/><rect x="2" y="10" width="6" height="6" rx="0.5"/><rect x="10" y="10" width="6" height="6" rx="0.5"/></svg></span>
+    <span class="paq-nav-ico" style="color:#d4af5a"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="6" height="6" rx="0.5"/><rect x="10" y="2" width="6" height="6" rx="0.5"/><rect x="2" y="10" width="6" height="6" rx="0.5"/><rect x="10" y="10" width="6" height="6" rx="0.5"/></svg></span>
   </a>
-  <a href="prospects.html" class="paq-nav-btn active" title="CRM">
-    <span style="color:#5aab78"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3.314 2.686-5 6-5s6 1.686 6 5"/><line x1="13" y1="3" x2="13" y2="7"/><line x1="11" y1="5" x2="15" y2="5"/></svg></span>
+  <a href="prospects.html" class="paq-nav-btn active" title="Prospects">
+    <span class="paq-nav-ico" style="color:#5aab78"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="6" r="3"/><path d="M3 15c0-3.314 2.686-5 6-5s6 1.686 6 5"/><line x1="13" y1="3" x2="13" y2="7"/><line x1="11" y1="5" x2="15" y2="5"/></svg></span>
   </a>
-  <a href="audit.html" class="paq-nav-btn" title="Audit">
-    <span style="color:#5b8fd4"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/></svg></span>
+  <a href="audit.html" class="paq-nav-btn" title="Audit Check">
+    <span class="paq-nav-ico" style="color:#5b8fd4"><svg width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="8" r="5"/><line x1="12" y1="12" x2="16" y2="16"/></svg></span>
   </a>
 </nav>
 
+<!-- CRM HEADER -->
+<div class="crm-header">
+  <div class="crm-header-top">
+    <div class="crm-brand">PAQ Publishing</div>
+    <div class="crm-subtitle">Prospect CRM</div>
+  </div>
+  <div class="crm-stats" id="crm-stats">
+    <div class="crm-stat"><div class="crm-stat-num" id="stat-total">0</div><div class="crm-stat-label">Total Prospects</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="stat-active">0</div><div class="crm-stat-label">Active</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="stat-followup" style="color:#b87314">0</div><div class="crm-stat-label">Follow-ups Due</div></div>
+    <div class="crm-stat"><div class="crm-stat-num" id="stat-won" style="color:#2d7a4f">0</div><div class="crm-stat-label">Won</div></div>
+  </div>
+</div>
+
 <!-- TOOLBAR -->
 <div class="toolbar">
-  <div class="toolbar-title">Prospects</div>
-  <input class="search-input" id="search-input" placeholder="Search..." oninput="searchQ=this.value;renderAll()">
+  <input class="search-input" id="search-input" placeholder="Search prospects..." oninput="searchQ=this.value;renderAll()">
 </div>
 
 <!-- BOARD -->
@@ -281,8 +308,21 @@ const daysUntil = d => { if(!d) return null; return Math.round((new Date(d+'T00:
 const toast = (msg, dur=2500) => { const w=document.getElementById('toast-wrap'); if(!w) return; const t=document.createElement('div'); t.className='toast'; t.textContent=msg; w.appendChild(t); setTimeout(()=>t.remove(),dur); };
 const getFiltered = () => { let d=[...prospects]; if(searchQ){ const q=searchQ.toLowerCase(); d=d.filter(p=>(p.name+' '+(p.alias||'')).toLowerCase().includes(q)); } return d; };
 
+
+function updateStats() {
+  const total    = prospects.length;
+  const active   = prospects.filter(p => !['won','lost','other'].includes(p.stage)).length;
+  const followup = prospects.filter(p => { const d = daysUntil(p.followupDate); return d !== null && d <= 0; }).length;
+  const won      = prospects.filter(p => p.stage === 'won').length;
+  const el = id => document.getElementById(id);
+  if (el('stat-total'))   el('stat-total').textContent   = total;
+  if (el('stat-active'))  el('stat-active').textContent  = active;
+  if (el('stat-followup'))el('stat-followup').textContent= followup;
+  if (el('stat-won'))     el('stat-won').textContent     = won;
+}
+
 // ── RENDER ALL ─────────────────────────────────────────────────────────
-function renderAll() { renderBoard(); }
+function renderAll() { renderBoard(); updateStats(); }
 
 function renderBoard() {
   const data = getFiltered();
@@ -646,18 +686,18 @@ function renderDetailBody(p) {
         <button data-pid="${pid}" data-si="${idx}" onclick="removeSong(+this.dataset.pid,+this.dataset.si)"
           style="background:none;border:none;color:var(--ink5);cursor:pointer;font-size:10px;padding:0">×</button>
       </div>
-      <div style="display:flex;align-items:center;gap:12px">
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
         <input value="${s.date||''}" placeholder="date" data-pid="${pid}" data-si="${idx}" data-sk="date"
           oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
-          style="font-family:var(--mono);font-size:9px;color:var(--ink5);width:76px;background:none">
+          style="font-family:var(--mono);font-size:9px;color:var(--ink5);width:72px;background:none">
         <span style="font-family:var(--sans);font-size:9px;color:var(--ink5)">Spotify</span>
         <input value="${s.spotify||''}" placeholder="—" data-pid="${pid}" data-si="${idx}" data-sk="spotify"
           oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
-          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:60px;background:none">
+          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:55px;background:none">
         <span style="font-family:var(--sans);font-size:9px;color:var(--ink5)">YT</span>
         <input value="${s.youtube||''}" placeholder="—" data-pid="${pid}" data-si="${idx}" data-sk="youtube"
           oninput="updateSong(+this.dataset.pid,+this.dataset.si,this.dataset.sk,this.value)"
-          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:60px;background:none">
+          style="font-family:var(--sans);font-size:11px;color:var(--ink3);width:55px;background:none">
       </div>
     </div>`).join('');
 
@@ -707,39 +747,37 @@ function renderDetailBody(p) {
           placeholder="Background, vibe, anything worth knowing..."
           style="font-family:var(--sans);font-size:13px;line-height:1.7;color:var(--ink2);width:100%;resize:none;min-height:80px;background:none">${p.bio||''}</textarea>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1.8fr 1fr;gap:14px;margin-bottom:10px">
+      <div style="display:flex;gap:20px;flex-wrap:wrap;margin-bottom:10px">
         <div>
           <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">PRO</div>
           <input id="dp-pro-${pid}" value="${proName}" placeholder="BMI"
             oninput="savePro(${pid})"
-            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:70px;background:none">
         </div>
         <div>
           <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">IPI</div>
           <input id="dp-ipi-${pid}" value="${proIpi}" placeholder="76170217"
             oninput="savePro(${pid})"
-            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:110px;background:none">
         </div>
         <div>
           <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Genre</div>
           <input value="${p.genre||''}" placeholder="—" data-pid="${pid}" data-key="genre"
             oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
-            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
+            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100px;background:none">
         </div>
-      </div>
-      <div style="display:grid;grid-template-columns:1fr 2fr;gap:14px;margin-bottom:10px">
         <div>
           <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Follow-up</div>
           <input type="date" value="${p.followupDate||''}" data-pid="${pid}" data-key="followupDate"
             onchange="saveField(+this.dataset.pid,this.dataset.key,this.value)"
-            style="font-family:var(--sans);font-size:12px;color:var(--ink);width:100%;background:none">
+            style="font-family:var(--sans);font-size:12px;color:var(--ink);background:none">
         </div>
-        <div>
-          <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Notes</div>
-          <input value="${p.notes||''}" placeholder="—" data-pid="${pid}" data-key="notes"
-            oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
-            style="font-family:var(--sans);font-size:13px;color:var(--ink);width:100%;background:none">
-        </div>
+      </div>
+      <div style="margin-bottom:10px">
+        <div style="font-family:var(--sans);font-size:9px;color:var(--ink5);text-transform:uppercase;letter-spacing:0.8px;margin-bottom:4px">Notes</div>
+        <input value="${p.notes||''}" placeholder="—" data-pid="${pid}" data-key="notes"
+          oninput="saveField(+this.dataset.pid,this.dataset.key,this.value)"
+          style="font-family:var(--sans);font-size:13px;color:var(--ink);width:280px;max-width:100%;background:none">
       </div>
       ${contactRows}
       <button data-pid="${pid}" onclick="addContact(+this.dataset.pid)"
@@ -775,17 +813,17 @@ function renderDetailBody(p) {
             <input type="date" id="df-date" value="${TODAY_STR}"
               style="font-family:var(--sans);font-size:11px;color:var(--ink);background:none">
           </div>
-          <div style="flex:0 0 110px">
+          <div>
             <div style="font-family:var(--sans);font-size:8px;color:var(--ink5);margin-bottom:3px">Via</div>
             <input id="df-platform" placeholder="Email, DM, Text..."
-              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:100%;background:none">
+              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:120px;background:none">
           </div>
-          <div style="flex:1;min-width:120px">
+          <div>
             <div style="font-family:var(--sans);font-size:8px;color:var(--ink5);margin-bottom:3px">Summary</div>
             <input id="df-log" data-pid="${pid}"
               onkeydown="if(event.key==='Enter')addLog(+this.dataset.pid)"
               placeholder="What happened..."
-              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:100%;background:none">
+              style="font-family:var(--sans);font-size:11px;color:var(--ink);width:220px;background:none">
           </div>
           <button data-pid="${pid}" onclick="addLog(+this.dataset.pid)"
             style="font-family:var(--sans);font-size:11px;padding:6px 14px;background:var(--ink);color:var(--paper);border-radius:6px;cursor:pointer">Log</button>
@@ -990,7 +1028,7 @@ async function dbLoad() {
 async function dbSave(p) {
   try {
     await sbFetch('prospects', {method:'POST',
-      headers:{...SB_HDR,'Prefer':'resolution=merge-duplicates'},
+      headers:{...SB_HDR, 'Prefer':'resolution=merge-duplicates'},
       body:JSON.stringify({id:p.id, data:p})});
   } catch(e) { console.error('Save error:', e); }
 }
