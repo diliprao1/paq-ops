@@ -511,7 +511,7 @@ function makeCard(p) {
       ${p.pro   ? `<span class="p-card-tag">${p.pro.split(':')[0]}</span>` : ''}
       ${followup}
     </div>
-    ${p._isOwn === false ? `<div style="font-family:var(--mono);font-size:8px;color:var(--blue);margin-top:4px;opacity:0.7">↗ shared by someone</div>` : ''}
+    ${p._isOwn === false ? `<div style="font-family:var(--mono);font-size:8px;color:var(--blue);margin-top:4px;opacity:0.8">↗ ${profilesMap[p.owner_id] || 'shared lead'}</div>` : ''}
     ${p._isOwn !== false && p.shared ? `<div style="font-family:var(--mono);font-size:8px;color:var(--blue);margin-top:4px">◉ shared</div>` : ''}
     ${p.notes ? `<div class="p-card-note">${p.notes}</div>` : ''}
   </div>`;
@@ -709,7 +709,10 @@ function renderDetailBody(p) {
     ${p._isOwn !== false ? `
     <button onclick="toggleShared(${pid})" class="vis-toggle ${p.shared?'shared':''}">
       ${p.shared ? '◉ Shared' : '○ Private'}
-    </button>` : '<span style="font-family:var(--mono);font-size:8px;color:var(--blue)">↗ Shared lead</span>'}
+    </button>
+    <button onclick="openEditorPanel(${pid})" style="font-family:var(--mono);font-size:8px;padding:2px 8px;background:none;border:1px solid var(--rule2);border-radius:10px;color:var(--ink4);cursor:pointer;margin-left:4px">
+      + Editor${(editorsMap[pid]||[]).length ? ' (' + (editorsMap[pid]||[]).length + ')' : ''}
+    </button>` : '<span style="font-family:var(--mono);font-size:8px;color:var(--blue)">↗ ${profilesMap[p.owner_id] || \'Shared lead\'}</span>'}
   </div>`;
 
   // Link chips — vertical, plain clickable text
@@ -1101,6 +1104,17 @@ async function removeSong(id, idx) {
 
 // ── AUTH FUNCTIONS ─────────────────────────────────────────────────────
 
+
+function saveSession(data, user) {
+  const u = user || currentUser;
+  localStorage.setItem('paq_crm_session', JSON.stringify({
+    token: data.access_token,
+    refreshToken: data.refresh_token,
+    user: u,
+    expires: Date.now() + (data.expires_in || 3600) * 1000
+  }));
+}
+
 function setLoginMode(mode) {
   const isCreate = mode === 'create';
   document.getElementById('signin-fields').style.display  = isCreate ? 'none'  : 'block';
@@ -1141,9 +1155,7 @@ async function doCreateAccount() {
         body: JSON.stringify({id: currentUser.id, username: email, display_name: name})});
     } catch(e) { console.warn('Profile create error:', e); }
 
-    localStorage.setItem('paq_crm_session', JSON.stringify({
-      token: authToken, user: currentUser, expires: Date.now() + 3600000
-    }));
+    saveSession(data);
     errEl.textContent = '';
     showApp();
   } catch(e) {
@@ -1177,12 +1189,7 @@ async function doLogin() {
       else currentUser.display_name = currentUser.email.split('@')[0];
     } catch(e) { currentUser.display_name = currentUser.email.split('@')[0]; }
 
-    // Save session (expires in 1 hour)
-    localStorage.setItem('paq_crm_session', JSON.stringify({
-      token: authToken,
-      user: currentUser,
-      expires: Date.now() + 3600000
-    }));
+    saveSession(data);
     showApp();
   } catch(e) {
     document.getElementById('login-error').textContent = 'Error: ' + e.message;
@@ -1214,12 +1221,101 @@ async function toggleShared(id) {
   if (currentDetailId === id) renderDetailBody(p);
 }
 
+
+// ── CO-EDITOR MANAGEMENT ───────────────────────────────────────────────
+function openEditorPanel(pid) {
+  const p = prospects.find(x => x.id === pid); if (!p) return;
+  const editors = editorsMap[pid] || [];
+
+  // Build editor rows
+  const editorRows = editors.map(uid => {
+    const name = profilesMap[uid] || uid;
+    return `<div style="display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--rule)">
+      <span style="font-family:var(--sans);font-size:12px;color:var(--ink);flex:1">${name}</span>
+      <button data-pid="${pid}" data-uid="${uid}" onclick="removeEditor(+this.dataset.pid, this.dataset.uid)"
+        style="background:none;border:none;color:var(--ink5);cursor:pointer;font-size:11px;padding:0">×</button>
+    </div>`;
+  }).join('');
+
+  // All users from profiles except current user and existing editors
+  const addableUsers = Object.entries(profilesMap).filter(([uid]) =>
+    uid !== currentUser?.id && !editors.includes(uid)
+  );
+
+  const userOptions = addableUsers.length
+    ? `<div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+        <select id="editor-select-${pid}" style="font-family:var(--sans);font-size:12px;padding:6px 8px;background:var(--paper3);color:var(--ink);border-radius:6px;flex:1">
+          ${addableUsers.map(([uid,name]) => `<option value="${uid}">${name}</option>`).join('')}
+        </select>
+        <button data-pid="${pid}" onclick="addEditor(+this.dataset.pid)"
+          style="font-family:var(--mono);font-size:9px;padding:6px 12px;background:var(--ink);color:var(--paper);border-radius:6px;cursor:pointer;white-space:nowrap">Add</button>
+      </div>`
+    : '<div style="font-family:var(--sans);font-size:11px;color:var(--ink5);margin-top:8px">No other users to add.</div>';
+
+  // Show as an overlay within the detail panel
+  const existing = document.getElementById('editor-panel-overlay');
+  if (existing) { existing.remove(); return; }
+
+  const panel = document.createElement('div');
+  panel.id = 'editor-panel-overlay';
+  panel.style.cssText = 'position:absolute;bottom:0;left:0;right:0;background:var(--paper);border-top:1px solid var(--rule);padding:16px 18px 20px;z-index:20;box-shadow:0 -4px 20px rgba(0,0,0,0.1)';
+  panel.innerHTML = `
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+      <div style="font-family:var(--sans);font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--ink5)">Co-Editors</div>
+      <button onclick="document.getElementById('editor-panel-overlay').remove()"
+        style="background:none;border:none;cursor:pointer;color:var(--ink5);font-size:12px;padding:0">✕</button>
+    </div>
+    ${editors.length ? editorRows : '<div style="font-family:var(--sans);font-size:11px;color:var(--ink5);margin-bottom:4px">No co-editors yet.</div>'}
+    ${userOptions}`;
+
+  document.getElementById('detail-panel').appendChild(panel);
+}
+
+async function addEditor(pid) {
+  const sel = document.getElementById('editor-select-' + pid);
+  if (!sel) return;
+  const uid = sel.value;
+  if (!uid) return;
+  try {
+    await sbFetch('prospect_editors', {
+      method: 'POST',
+      headers: {...SB_HDR, 'Authorization': 'Bearer ' + authToken, 'Prefer': 'resolution=ignore-duplicates'},
+      body: JSON.stringify({prospect_id: pid, user_id: uid})
+    });
+    if (!editorsMap[pid]) editorsMap[pid] = [];
+    editorsMap[pid].push(uid);
+    // Re-open panel to refresh
+    document.getElementById('editor-panel-overlay')?.remove();
+    openEditorPanel(pid);
+    const p = prospects.find(x => x.id === pid);
+    if (p) renderDetailBody(p);
+    toast(profilesMap[uid] + ' added as editor.');
+  } catch(e) { console.error('Add editor error:', e); }
+}
+
+async function removeEditor(pid, uid) {
+  try {
+    await sbFetch('prospect_editors?prospect_id=eq.'+pid+'&user_id=eq.'+uid, {
+      method: 'DELETE',
+      headers: {...SB_HDR, 'Authorization': 'Bearer ' + authToken}
+    });
+    editorsMap[pid] = (editorsMap[pid]||[]).filter(u => u !== uid);
+    document.getElementById('editor-panel-overlay')?.remove();
+    openEditorPanel(pid);
+    const p = prospects.find(x => x.id === pid);
+    if (p) renderDetailBody(p);
+    toast('Editor removed.');
+  } catch(e) { console.error('Remove editor error:', e); }
+}
+
 // ── SUPABASE ───────────────────────────────────────────────────────────
 const SB_URL = 'https://jbcqoxiygkdxoaulrhbk.supabase.co';
 
 // ── AUTH STATE ─────────────────────────────────────────────────────────
 let currentUser  = null; // { id, email, display_name }
 let authToken    = null; // JWT for authenticated requests
+let profilesMap  = {};   // { user_id: display_name }
+let editorsMap   = {};   // { prospect_id: [user_id, ...] }
 const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImpiY3FveGl5Z2tkeG9hdWxyaGJrIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzMyOTA1MDQsImV4cCI6MjA4ODg2NjUwNH0.IPB_7u7hU53aUI6wS-fYXLOe3_7uCAjMhDwXxQZR4s8';
 const SB_HDR = {'Content-Type':'application/json','apikey':SB_KEY,'Authorization':'Bearer '+SB_KEY};
 
@@ -1234,14 +1330,31 @@ async function sbFetch(path, opts={}) {
 
 async function dbLoad() {
   try {
-    const rows = await sbFetch('prospects?select=id,data,owner_id,shared&order=id');
+    // Load all in parallel
+    const [rows, profiles, editors] = await Promise.all([
+      sbFetch('prospects?select=id,data,owner_id,shared&order=id'),
+      sbFetch('profiles?select=id,display_name').catch(()=>[]),
+      sbFetch('prospect_editors?select=prospect_id,user_id').catch(()=>[])
+    ]);
+
+    // Build profiles map { user_id -> display_name }
+    profilesMap = {};
+    (profiles||[]).forEach(p => { profilesMap[p.id] = p.display_name || p.id; });
+
+    // Build editors map { prospect_id -> [user_id] }
+    editorsMap = {};
+    (editors||[]).forEach(e => {
+      if (!editorsMap[e.prospect_id]) editorsMap[e.prospect_id] = [];
+      editorsMap[e.prospect_id].push(e.user_id);
+    });
+
     if (rows && rows.length > 0) {
       prospects = rows.map(r => ({
         ...r.data,
         id: r.id,
         owner_id: r.owner_id,
         shared: r.shared,
-        _isOwn: r.owner_id === currentUser?.id
+        _isOwn: r.owner_id === currentUser?.id || (editorsMap[r.id]||[]).includes(currentUser?.id)
       }));
       if (prospects.length > 0) nextId = Math.max(...prospects.map(p => p.id)) + 1;
       renderAll();
@@ -1272,17 +1385,39 @@ document.addEventListener('click', e => {
     closeDetail();
 });
 
-// Check for existing session in localStorage
-(function() {
+// Check for existing session — use refresh token if expired
+(async function() {
   const saved = localStorage.getItem('paq_crm_session');
   if (saved) {
     try {
       const s = JSON.parse(saved);
+      // Token still valid
       if (s.token && s.user && s.expires > Date.now()) {
         authToken = s.token;
         currentUser = s.user;
         showApp();
         return;
+      }
+      // Token expired but we have a refresh token — silently refresh
+      if (s.refreshToken) {
+        const res = await fetch(SB_URL + '/auth/v1/token?grant_type=refresh_token', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json','apikey':SB_KEY},
+          body: JSON.stringify({refresh_token: s.refreshToken})
+        });
+        if (res.ok) {
+          const data = await res.json();
+          authToken = data.access_token;
+          currentUser = s.user;
+          // Update display name if profile exists
+          try {
+            const p = await sbFetch('profiles?id=eq.'+currentUser.id+'&select=display_name');
+            if (p && p[0]) currentUser.display_name = p[0].display_name || currentUser.display_name;
+          } catch(e) {}
+          saveSession(data, currentUser);
+          showApp();
+          return;
+        }
       }
     } catch(e) {}
   }
